@@ -253,5 +253,23 @@ public class UserDao {
         }
         return result;
     }
-
+  //@PT--根据用户手机号码获取用户ID
+    public int getUserId(String userPhone) {
+		Connection connection = null;
+		int userid = 0;
+		try {
+			User u = null;
+			connection = DBUtils.getConnection();
+			String sql = "SELECT user_id,user_name,user_phone,user_passwd,user_grade,is_verify,created_by,stamp_created,updated_by,stamp_updated,state FROM lc_user WHERE user_phone = ?";
+			DBUtils.beginTx(connection);
+			u = qR.query(connection,sql,new BeanHandler<User>(User.class),userPhone);
+			userid = u.getUser_id();
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		} finally{
+			DBUtils.releaseDB(null, null, connection);
+		}
+    	return userid;
+    }
 }
