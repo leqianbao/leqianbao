@@ -89,7 +89,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			        </tr>
 		        </thead>
 		        <thead>
-		        	<c:forEach items="${result.data_list }" var="fetch">
+		        	<c:forEach items="${result.data_list }" var="userOrder">
 						<tr>
 							<td><c:out value="${userOrder.id }"></c:out></td>
 							<td><c:out value="${userOrder.order_no }"></c:out></td>
@@ -102,10 +102,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td>
 								<span>
 									<c:if test="${userOrder.order_state eq 3 }">
-										<label>编辑</label>
+										<label class="gray">编辑</label>
 									</c:if>
-									<c:if test="${userOrder.order_state gt 3 }">
-										<a class="red">编辑</a>
+									<c:if test="${userOrder.order_state lt 3 }">
+										<a class="red" href="#">编辑</a>
 									</c:if>									
 								</span>
 							</td>						

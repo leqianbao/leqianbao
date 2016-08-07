@@ -13,9 +13,11 @@ import cn.lc.beans.Commodity;
 import cn.lc.beans.Pager;
 import cn.lc.beans.User;
 import cn.lc.beans.UserOrder;
+import cn.lc.dao.CommodityDao;
 import cn.lc.dao.UserDao;
 import cn.lc.dao.UserOrderDao;
 import cn.lc.utils.DataUtil;
+import cn.lc.utils.StringUtils;
 
 public class DoUserOrderServlet extends HttpServlet{
 
@@ -62,10 +64,49 @@ public class DoUserOrderServlet extends HttpServlet{
             searchModel.setUser_id(userId);
             searchModel.setOrder_no(order_no);
             searchModel.setCreate_date(create_date);
-//            // 调用service 获取查询结果
-//            Pager<Commodity> result = dao.getCommodityList(searchModel, pageNum, pageSize);
-//            // 返回结果到页面
-//            request.setAttribute("result", result);
+            // 调用service 获取查询结果
+            Pager<UserOrder> result = dao.getUserOrderPager(searchModel, pageNum, pageSize);
+            for(int i=0;i<result.getData_list().size();i++) {
+            	UserOrder userOrder = result.getData_list().get(i);
+            	
+                //根据商品ID，获取各个订单中的商品名称
+            	long commodity_id = userOrder.getCommodity_id();
+            	CommodityDao commodityDao = new CommodityDao();
+            	Commodity commodity = commodityDao.getCommodityById(commodity_id);
+            	String commodity_name = "";
+            	if(commodity != null) {
+            		commodity_name = commodity.getCommodity_name();
+            	}
+        		result.getData_list().get(i).setCommodity_name(commodity_name);
+        		
+
+                //根据用户ID，获取各个订单中的用户手机号
+        		UserDao userDao = new UserDao();
+            	int user_id = userOrder.getUser_id();
+        		User user = userDao.getUserById(user_id);
+        		String userPhone = "";
+        		if(user != null) {
+        			userPhone = user.getUser_phone();
+        		}
+        		result.getData_list().get(i).setUser_phone(userPhone);
+        		
+        		//格式化创建时间戳
+        		String createDate = userOrder.getCreate_date();
+        		if(!TextUtils.isEmpty(createDate)) {
+        			createDate = StringUtils.formatDateString(createDate);
+            		result.getData_list().get(i).setCreate_date(createDate);
+        		}
+        		
+        		//格式化结束时间戳
+        		String endDate = userOrder.getEnd_date();
+        		if(!TextUtils.isEmpty(endDate)) {
+        			endDate = StringUtils.formatDateString(endDate);
+            		result.getData_list().get(i).setEnd_date(endDate);
+        		}
+        		
+            }
+            // 返回结果到页面
+            request.setAttribute("result", result);
             request.setAttribute("user_phone", user_phone);
             request.setAttribute("order_no", order_no);
             request.setAttribute("create_date", create_date);

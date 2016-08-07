@@ -10,10 +10,29 @@ public class UserOrder {
     private String end_date;  //订单结束时间
     private String order_state; //0:订单提交，1:等待确认，2:已收货
     private String logistics_number;  //后台发货之后填写物流单号
-    
-    public UserOrder() {
+    private String commodity_name;  //商品名称
+    private String user_phone; //用户手机号码
+
+	public UserOrder() {
     	
     }
+    
+	public String getUser_phone() {
+		return user_phone;
+	}
+
+	public void setUser_phone(String user_phone) {
+		this.user_phone = user_phone;
+	}
+	
+    public String getCommodity_name() {
+		return commodity_name;
+	}
+
+	public void setCommodity_name(String commodity_name) {
+		this.commodity_name = commodity_name;
+	}
+
 
 	public Integer getId() {
 		return id;

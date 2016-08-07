@@ -37,7 +37,7 @@ public class DoLoginServlet extends HttpServlet {
         if (StringUtils.IsEmpty(loginID)) {
             request.setAttribute("codeError", "登录账号不能为空！");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
-        } else if (StringUtils.IsEmpty(upass) == false) {
+        } else if (StringUtils.IsEmpty(upass)) {
             request.setAttribute("codeError", "密码不能为空！");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
         } else if (StringUtils.IsEmpty(code)) {
