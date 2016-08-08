@@ -4,18 +4,51 @@ public class UserOrder {
 	private Integer id;
     private int user_id;      //客户id
     private String order_no;     //按一定规则生成的订单号
-    private long commodity_id; //商品id
+    private String commodity_id; //商品id
     private int commodity_num; //下单商品数量
     private String create_date;  //订单创建时间
     private String end_date;  //订单结束时间
     private String order_state; //0:订单提交，1:等待确认，2:已收货
     private String logistics_number;  //后台发货之后填写物流单号
+    private long receipt_address_id;  //收货地址Id
     private String commodity_name;  //商品名称
     private String user_phone; //用户手机号码
+    private String address_addres;  //收件人地址
+    private String address_phone;   //收件人电话
+    private String address_name;  //收件人名字
 
 	public UserOrder() {
     	
     }
+	public long getReceipt_address_id() {
+		return receipt_address_id;
+	}
+	public void setReceipt_address_id(long receipt_address_id) {
+		this.receipt_address_id = receipt_address_id;
+	}
+	public String getAddress_addres() {
+		return address_addres;
+	}
+
+	public void setAddress_addres(String address_addres) {
+		this.address_addres = address_addres;
+	}
+
+	public String getAddress_phone() {
+		return address_phone;
+	}
+
+	public void setAddress_phone(String address_phone) {
+		this.address_phone = address_phone;
+	}
+
+	public String getAddress_name() {
+		return address_name;
+	}
+
+	public void setAddress_name(String address_name) {
+		this.address_name = address_name;
+	}
     
 	public String getUser_phone() {
 		return user_phone;
@@ -58,11 +91,11 @@ public class UserOrder {
 		this.order_no = order_no;
 	}
 
-	public long getCommodity_id() {
+	public String getCommodity_id() {
 		return commodity_id;
 	}
 
-	public void setCommodity_id(long commodity_id) {
+	public void setCommodity_id(String commodity_id) {
 		this.commodity_id = commodity_id;
 	}
 

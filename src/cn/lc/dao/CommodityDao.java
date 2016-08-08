@@ -74,7 +74,7 @@ public class CommodityDao {
         Commodity commodity = new Commodity();
         
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT * FROM lc_commodity_details WHERE commodity_id = ?");
+        sql.append("SELECT * FROM lc_commodity_details WHERE id = ?");
         try {
             connection = DBUtils.getConnection();
             DBUtils.beginTx(connection);
