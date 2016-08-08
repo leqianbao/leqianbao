@@ -1,10 +1,22 @@
 package cn.lc.beans;
 
+
 public class AddressBean {
+	
+	
+	private int id;
 	private String user_id;
 	private String address_address;
 	private String address_phone;
 	private String address_name;
+	
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getUser_id() {
 		return user_id;
 	}
@@ -29,4 +41,7 @@ public class AddressBean {
 	public void setAddress_name(String address_name) {
 		this.address_name = address_name;
 	}
+	
+	
+
 }

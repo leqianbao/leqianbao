@@ -85,6 +85,9 @@ public class BalanceStatisticServlet extends HttpServlet {
 		String balance = new DecimalFormat("0.00").format(balances);
         String interest = new DecimalFormat("0.00").format(licai);
 		
+        
+        
+        
 		map.put("RSPCOD","000000");
 		map.put("RSPMSG","查询余额成功!");
 		map.put("interest",interest);//利息-理财
