@@ -137,6 +137,10 @@
     <servlet-name>DoCommodityServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.DoCommodityServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>DoUserOrderServlet</servlet-name>
+    <servlet-class>cn.lc.pt.servlet.DoUserOrderServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>UserLoginServlet</servlet-name>
     <url-pattern>/app/userlogin</url-pattern>
@@ -257,6 +261,10 @@
     <servlet-name>DoCommodityServlet</servlet-name>
     <url-pattern>/pt/doCommodityServlet</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DoUserOrderServlet</servlet-name>
+    <url-pattern>/pt/doUserOrder</url-pattern>
+  </servlet-mapping>  
   <welcome-file-list>
     <welcome-file>login.jsp</welcome-file>
   </welcome-file-list>

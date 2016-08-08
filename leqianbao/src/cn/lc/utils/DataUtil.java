@@ -72,6 +72,5 @@ public class DataUtil {
         Matcher matcher = pattern.matcher(string);
         return matcher.matches();
     }
-	
 
 }

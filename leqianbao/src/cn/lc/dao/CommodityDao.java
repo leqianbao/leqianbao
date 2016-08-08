@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import cn.lc.beans.Commodity;
 import cn.lc.beans.Pager;
+import cn.lc.beans.User;
 
 public class CommodityDao {
 	QueryRunner qR = new QueryRunner();
@@ -64,5 +66,22 @@ public class CommodityDao {
             DBUtils.releaseDB(null, null, connection);
         }
         return page;
+    }
+    //@PT--根据商品ID获取商品信息
+    public Commodity getCommodityById(long commodity_id){
+		Connection connection = null;
+		Commodity commodity = null;
+		try {
+			connection = DBUtils.getConnection();
+			String sql = "SELECT * FROM lc_commodity_details WHERE commodity_id = ?";
+			DBUtils.beginTx(connection);
+			commodity = qR.query(connection,sql,new BeanHandler<Commodity>(Commodity.class),commodity_id);
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		} finally{
+			DBUtils.releaseDB(null, null, connection);
+		}
+		return commodity;
     }
 }

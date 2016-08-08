@@ -43,5 +43,32 @@ public class StringUtils {
         }
         return strs;
     }
-	
+    /**
+     * 格式化时间戳
+     * @param date YYYYMMDDHHMMSS
+     * @return YYYY-MM-DD HH:MM:SS
+     */
+	public static String formatDateString(String date){
+		String formatDate = "";
+		for(int i=0;i<date.length();i++) {
+			String str = date.substring(i,i+1);
+			switch (i) {
+			case 4:
+			case 6:
+			    formatDate = formatDate + "-" + str;
+				break;
+			case 8:
+				formatDate = formatDate + " " + str;
+				break;
+			case 10:
+			case 12:
+				formatDate = formatDate + ":" + str;
+				break;
+			default:
+				formatDate = formatDate + str;
+				break;
+			}
+		}
+		return formatDate;
+	}
 }
