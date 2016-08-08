@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import cn.lc.beans.Commodity;
 import cn.lc.beans.Pager;
-import cn.lc.beans.User;
 
 public class CommodityDao {
 	QueryRunner qR = new QueryRunner();
@@ -18,7 +16,7 @@ public class CommodityDao {
 	// @APP--银行卡列表
     public Pager<Commodity> getCommodityList(Commodity searchMode, Integer pageNum, Integer pageRows) {
     	
-    	Pager<Commodity> page = new Pager(0, 0, 0, 0,null);
+    	Pager<Commodity> page = new Pager<Commodity>(0, 0, 0, 0,null);
 
         Connection connection = null;
         List<Commodity> list = null;
@@ -26,14 +24,14 @@ public class CommodityDao {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT * FROM lc_commodity_details WHERE 1=1");
         
-        String commodity_name = searchMode.getCommodity_name();
+        String commodity_id = searchMode.getCommodity_id();
         String commodity_use_flag = searchMode.getCommodity_use_flag();
         
         //参数集合
         List<String> params = new ArrayList<String>(); 
-        if(null!=commodity_name&&!"".equals(commodity_name.trim())){
-        	sql.append(" and commodity_name = ? ");
-        	params.add(commodity_name.trim());
+        if(null!=commodity_id&&!"".equals(commodity_id.trim())){
+        	sql.append(" and commodity_id = ? ");
+        	params.add(commodity_id.trim());
         }
         if(null!=commodity_use_flag&&!"".equals(commodity_use_flag.trim())){
         	sql.append(" and commodity_use_flag = ? ");
@@ -51,7 +49,7 @@ public class CommodityDao {
             connection = DBUtils.getConnection();
             DBUtils.beginTx(connection);
             // 获取总记录数
-            totalRecord =(Long) (Number) qR.query(connection,sql.toString(),new BeanListHandler<Commodity>(Commodity.class), paramStr);
+            totalRecord =(Integer)qR.query(connection,sql.toString(),new BeanListHandler<Commodity>(Commodity.class), paramStr).size();
             list = qR.query(connection, sql.toString(), new BeanListHandler<Commodity>(Commodity.class), paramStr);
             long totalPage = totalRecord / pageRows;
             if(totalRecord % pageRows !=0){
@@ -67,21 +65,35 @@ public class CommodityDao {
         }
         return page;
     }
-    //@PT--根据商品ID获取商品信息
-    public Commodity getCommodityById(long commodity_id){
-		Connection connection = null;
-		Commodity commodity = null;
-		try {
-			connection = DBUtils.getConnection();
-			String sql = "SELECT * FROM lc_commodity_details WHERE commodity_id = ?";
-			DBUtils.beginTx(connection);
-			commodity = qR.query(connection,sql,new BeanHandler<Commodity>(Commodity.class),commodity_id);
-		} catch (Exception e) {
-			DBUtils.rollback(connection);
-			e.printStackTrace();
-		} finally{
-			DBUtils.releaseDB(null, null, connection);
-		}
-		return commodity;
+    
+    /**
+     * 根据指定id查询商品信息
+     * */
+    public Commodity getCommodityById(String commodity_id){
+    	Connection connection = null;
+        Commodity commodity = new Commodity();
+        
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT * FROM lc_commodity_details WHERE commodity_id = ?");
+        try {
+            connection = DBUtils.getConnection();
+            DBUtils.beginTx(connection);
+            commodity = qR.query(connection, sql.toString(), new BeanListHandler<Commodity>(Commodity.class), commodity_id).get(0);
+        } catch (Exception e) {
+            DBUtils.rollback(connection);
+            e.printStackTrace();
+        } finally {
+            DBUtils.releaseDB(null, null, connection);
+        }
+        return commodity;
+    }
+    
+   /**
+    * 根据指定id更行商品
+    * */
+    public Boolean updateCommodity(String id, String name, Integer pay, 
+    		Integer num, String use_flag, String type, String comment){
+    	
+    	return true;
     }
 }

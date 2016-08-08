@@ -44,7 +44,7 @@ public class StringUtils {
         return strs;
     }
     /**
-     * 鏍煎紡鍖栨椂闂存埑
+     * 格式化时间戳
      * @param date YYYYMMDDHHMMSS
      * @return YYYY-MM-DD HH:MM:SS
      */

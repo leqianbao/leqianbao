@@ -138,6 +138,14 @@
     <servlet-class>cn.lc.pt.servlet.DoCommodityServlet</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>DoCommodityDetailServlet</servlet-name>
+    <servlet-class>cn.lc.pt.servlet.DoCommodityDetailServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>DoFileUploadServlet</servlet-name>
+    <servlet-class>cn.lc.pt.servlet.DoFileUploadServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>DoUserOrderServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.DoUserOrderServlet</servlet-class>
   </servlet>
@@ -259,12 +267,20 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>DoCommodityServlet</servlet-name>
-    <url-pattern>/pt/doCommodityServlet</url-pattern>
+    <url-pattern>/pt/doCommodity</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DoCommodityDetailServlet</servlet-name>
+    <url-pattern>/pt/doCommodityDetail</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DoFileUploadServlet</servlet-name>
+    <url-pattern>/pt/doFileUpload</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>DoUserOrderServlet</servlet-name>
     <url-pattern>/pt/doUserOrder</url-pattern>
-  </servlet-mapping>  
+  </servlet-mapping> 
   <welcome-file-list>
     <welcome-file>login.jsp</welcome-file>
   </welcome-file-list>

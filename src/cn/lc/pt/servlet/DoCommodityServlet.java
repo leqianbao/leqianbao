@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.lc.beans.Commodity;
-import cn.lc.beans.FetchCash;
 import cn.lc.beans.Pager;
 import cn.lc.dao.CommodityDao;
 import cn.lc.utils.DataUtil;
@@ -33,11 +32,13 @@ public class DoCommodityServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8"); 
+		response.setContentType("text/html;charset=utf-8"); 
 		CommodityDao dao = new CommodityDao();
 		String tag=request.getParameter("tag");
 		if(tag.equals("query")){
 			String commodity_status = request.getParameter("commodity_status"); //商品销售状态
-			String commodity_name = request.getParameter("commodity_name"); //商品名称
+			String commodity_id = request.getParameter("commodity_id"); //商品id
 			String pageNumStr = request.getParameter("pageNum"); //页数
 			if (pageNumStr != null && !DataUtil.isNum(pageNumStr)) {
                 request.setAttribute("errorMsg", "参数传输错误");
@@ -55,15 +56,24 @@ public class DoCommodityServlet extends HttpServlet {
             }
             // 组装查询条件
             Commodity searchModel = new Commodity();
-            searchModel.setCommodity_name(commodity_name);
+            searchModel.setCommodity_id(commodity_id);
             searchModel.setCommodity_use_flag(commodity_status);
             // 调用service 获取查询结果
             Pager<Commodity> result = dao.getCommodityList(searchModel, pageNum, pageSize);
             // 返回结果到页面
             request.setAttribute("result", result);
             request.setAttribute("commodity_status", commodity_status);
-            request.setAttribute("commodity_name", commodity_name);
+            request.setAttribute("commodity_id", commodity_id);
             request.getRequestDispatcher("/WEB-INF/intergral/commoditylist.jsp").forward(request, response);
+		}else if(tag.equals("edit")){
+			String commodity_id = request.getParameter("commodity_id"); //商品id
+			Commodity result = new Commodity("","", 0, 0, "", "0", "0", "");
+			if(commodity_id != null && !(commodity_id.trim().equals(""))){
+				// 调用service 获取查询结果
+				result = dao.getCommodityById(commodity_id);
+			}
+            request.setAttribute("result", result);
+			request.getRequestDispatcher("/WEB-INF/intergral/commodityDetail.jsp").forward(request, response);
 		}
 	}
 
