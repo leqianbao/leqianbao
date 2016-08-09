@@ -225,6 +225,15 @@ $(function(){
 	         		<li><cite></cite><a href="${queryCommodityList}" target="rightFrame">查看商品</a><i></i></li>
 	        	</c:if>
 			 </c:forEach> 
+			 <c:forEach items="${sessionScope.rightList}" var="right">
+				<c:if test="${right=='AA'}">
+					 <c:url value="/pt/doCommodity" var="handler">
+						<c:param name="tag" value="edit"/>
+					</c:url>
+					<li><cite></cite><a href="${handler}" target="rightFrame">新增商品</a></li>
+	        	</c:if>
+			 </c:forEach> 
+			 
 	    	 <c:forEach items="${sessionScope.rightList}" var="right">
 				<c:if test="${right=='AA'}">
 					 <c:url value="/pt/doUserOrder" var="queryOrderList">
@@ -233,7 +242,7 @@ $(function(){
 					</c:url>
 	         		<li><cite></cite><a href="${queryOrderList}" target="rightFrame">查看订单</a><i></i></li>
 	        	</c:if>
-			 </c:forEach> 			 
+			 </c:forEach> 
 	    </ul>
     </dd> 
      

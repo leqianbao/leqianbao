@@ -1,6 +1,7 @@
 package cn.lc.pt.servlet;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,9 +47,9 @@ public class DoCommodityDetailServlet extends HttpServlet {
 		//商品名称
 		String name = request.getParameter("commodity_name");
 		//商品价格
-		Integer pay = Integer.parseInt(request.getParameter("comodity_pay"));
+		Integer pay = Integer.parseInt(request.getParameter("commodity_pay"));
 		//商品数量
-		Integer num = Integer.parseInt(request.getParameter("comodity_num"));
+		Integer num = Integer.parseInt(request.getParameter("commodity_num"));
 		//商品出售状态
 		String use_flag = request.getParameter("commodity_use_flag");
 		//商品类别
@@ -58,11 +59,36 @@ public class DoCommodityDetailServlet extends HttpServlet {
 		//结果
 		Boolean update = true;
 		if(tag.equals("add")){
-			if(commodity_id != null){
+			if(commodity_id != null && !(commodity_id.trim().equals(""))){
 				update = dao.updateCommodity(commodity_id, name, pay,
 							num, use_flag, type, comment);
+			}else if(commodity_id == null || commodity_id.trim().equals("")){
+				commodity_id = getCommodityId();
+				update = dao.createCommodity(commodity_id, name, pay,
+						num, use_flag, type, comment);
+			}
+			if(update){
+				String path = request.getContextPath();
+	            String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	            response.sendRedirect(basePath+"/pt/doCommodity?tag=edit&commodity_id="+commodity_id);
 			}
 		}
+	}
+	
+	/**
+	 * 规则生成商品id
+	 * 
+	 * */
+	private String getCommodityId(){
+		Calendar time = Calendar.getInstance();
+		String commodity_id = String.valueOf("SP"+time.get(Calendar.YEAR))
+			   	+ String.valueOf(time.get(Calendar.MONTH))
+			   	+ String.valueOf(time.get(Calendar.DAY_OF_MONTH))
+			   	+ String.valueOf(time.get(Calendar.HOUR_OF_DAY))
+			   	+ String.valueOf(time.get(Calendar.MINUTE))
+			   	+ String.valueOf(time.get(Calendar.SECOND))
+			   	+ String.valueOf(time.get(Calendar.MILLISECOND));
+		return commodity_id;
 	}
 
 }
