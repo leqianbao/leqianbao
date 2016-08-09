@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.util.TextUtils;
 
 import cn.lc.dao.AddressDao;
 import cn.lc.json.model.REQ_BODY;
@@ -75,17 +76,17 @@ public class AddressManagerServlet extends HttpServlet {
 	private Map<String, String> addAddress(REQ_BODY request) {
 		Map<String, String> map = new HashMap<>();
 		AddressDao addressDao = new AddressDao();
-		if (StringUtils.isEmpty(request.getAddress_name())) {
+		if (TextUtils.isEmpty(request.getAddress_name())) {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ADDRESS_NAME_ERROR);
 			return map;
 		}
-		if (StringUtils.isEmpty(request.getAddress_phone())) {
+		if (TextUtils.isEmpty(request.getAddress_phone())) {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ADDRESS_PHONE_ERROR);
 			return map;
 		}
-		if (StringUtils.isEmpty(request.getAddress())) {
+		if (TextUtils.isEmpty(request.getAddress())) {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ADDRESS_ADDRESS_ERROR);
 			return map;

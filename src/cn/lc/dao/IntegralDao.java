@@ -76,7 +76,7 @@ public class IntegralDao {
 	/**
 	 * 根据用户id获取积分列表
 	 * @param userId 用户Id
-	 * @param getState 0：收入，1：支出
+	 * @param getState 0：全部 1：收入 2：支出
 	 * @return
 	 */
 	public List<IntegralBean> getIntegralList(String userId,int getState){
@@ -96,9 +96,12 @@ public class IntegralDao {
 		return integrals;
 	}
 	
-//	public boolean rechargeIntegral(String userId){
-//		
-//	}
+	public boolean rechargeIntegral(String userId){
+		
+	}
+	
+	
+	
 	
 	
 }
