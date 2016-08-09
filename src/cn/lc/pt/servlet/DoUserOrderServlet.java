@@ -2,7 +2,9 @@ package cn.lc.pt.servlet;
 
 import java.io.IOException;
 
+
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,13 +14,16 @@ import org.apache.http.util.TextUtils;
 import cn.lc.beans.Commodity;
 import cn.lc.beans.Pager;
 import cn.lc.beans.User;
+import cn.lc.beans.UserAddress;
 import cn.lc.beans.UserOrder;
 import cn.lc.dao.CommodityDao;
+import cn.lc.dao.UserAddressDao;
 import cn.lc.dao.UserDao;
 import cn.lc.dao.UserOrderDao;
 import cn.lc.utils.DataUtil;
 import cn.lc.utils.StringUtils;
 
+@WebServlet("/doUserOrder")
 public class DoUserOrderServlet extends HttpServlet{
 
 	/**
@@ -70,7 +75,7 @@ public class DoUserOrderServlet extends HttpServlet{
             	UserOrder userOrder = result.getData_list().get(i);
             	
                 //根据商品ID，获取各个订单中的商品名称
-            	long commodity_id = userOrder.getCommodity_id();
+            	String commodity_id = userOrder.getCommodity_id();
             	CommodityDao commodityDao = new CommodityDao();
             	Commodity commodity = commodityDao.getCommodityById(commodity_id);
             	String commodity_name = "";
@@ -111,6 +116,19 @@ public class DoUserOrderServlet extends HttpServlet{
             request.setAttribute("order_no", order_no);
             request.setAttribute("create_date", create_date);
             request.getRequestDispatcher("/WEB-INF/userOrder/userOrder.jsp").forward(request, response);
+		} else if(tag.equals("edit")) {
+			long id = Long.valueOf(request.getParameter("id"));
+			UserOrderDao userOrderDao = new UserOrderDao();
+			UserAddressDao userAddressDao = new UserAddressDao();
+			UserOrder userOrder = userOrderDao.getUserOrderById(id);
+			if(userOrder.getReceipt_address_id() != 0) {
+				UserAddress userAddress = userAddressDao.getUserAddressById(id);
+				userOrder.setAddress_addres(userAddress.getAddress_addres());
+				userOrder.setAddress_name(userAddress.getAddress_name());
+				userOrder.setAddress_phone(userAddress.getAddress_phone());
+			}
+            request.setAttribute("result", userOrder);
+			request.getRequestDispatcher("/WEB-INF/userOrder/userOrderDetail.jsp").forward(request, response);
 		}
 		
 	}

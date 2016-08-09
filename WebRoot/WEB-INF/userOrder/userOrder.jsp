@@ -34,7 +34,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 
 	$(function(){
-		$("#News-Pagination").pagination($(result.total_record),{
+		$("#News-Pagination").pagination(${result.total_record},{
 	        items_per_page:${result.page_size}, // 每页显示多少条记录
 	        current_page:${result.current_page} - 1, // 当前显示第几页数据
 	        num_display_entries:4, // 分页显示的条目数
@@ -52,8 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    <span>位置：</span>
 	    <ul class="placeul">
 	    <li><a href="#">首页</a></li>
-	    <li><a href="#">数据表</a></li>
-	    <li><a href="#">基本内容</a></li>
+	    <li><a href="#">订单列表</a></li>
 	    </ul>
     </div>
     <div class="rightinfo">
@@ -98,14 +97,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td><c:out value="${userOrder.user_phone }"></c:out></td>
 							<td><c:out value="${userOrder.create_date }"></c:out></td>
 							<td><c:out value="${userOrder.end_date }"></c:out></td>
-							<td><c:out value="${userOrder.order_state }"></c:out></td>
+							<td>
+								<span>
+									<c:if test="${userOrder.order_state eq 0 }">
+										<label>订单提交</label>
+									</c:if>
+									<c:if test="${userOrder.order_state eq 1 }">
+										<label>待发货</label>
+									</c:if>	
+									<c:if test="${userOrder.order_state eq 2 }">
+										<label>已发货</label>
+									</c:if>	
+									<c:if test="${userOrder.order_state eq 3 }">
+										<label>已收货</label>
+									</c:if>									
+								</span>							
+							</td>
 							<td>
 								<span>
 									<c:if test="${userOrder.order_state eq 3 }">
 										<label class="gray">编辑</label>
 									</c:if>
 									<c:if test="${userOrder.order_state lt 3 }">
-										<a class="red" href="#">编辑</a>
+										<c:url value="/pt/doUserOrder" var="handler">
+											<c:param name="tag" value="edit"/>
+											<c:param name="id" value="${userOrder.id}"/>
+										</c:url>									
+										<a class="red" href=${handler} }>编辑</a>
 									</c:if>									
 								</span>
 							</td>						

@@ -149,6 +149,10 @@
     <servlet-name>DoUserOrderServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.DoUserOrderServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>DoUserOrderDetailServlet</servlet-name>
+    <servlet-class>cn.lc.pt.servlet.DoUserOrderDetailServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>UserLoginServlet</servlet-name>
     <url-pattern>/app/userlogin</url-pattern>
@@ -280,6 +284,10 @@
   <servlet-mapping>
     <servlet-name>DoUserOrderServlet</servlet-name>
     <url-pattern>/pt/doUserOrder</url-pattern>
+  </servlet-mapping> 
+  <servlet-mapping>
+    <servlet-name>DoUserOrderDetailServlet</servlet-name>
+    <url-pattern>/pt/doUserOrderDetail</url-pattern>
   </servlet-mapping> 
   <welcome-file-list>
     <welcome-file>login.jsp</welcome-file>

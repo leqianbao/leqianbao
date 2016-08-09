@@ -2,6 +2,7 @@ package cn.lc.pt.servlet;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
@@ -44,11 +45,15 @@ public class DoFileUploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8"); 
 		response.setContentType("text/html;charset=utf-8"); 
+        PrintWriter out = response.getWriter();
+	    //商品id
+	    String commodity_id = request.getParameter("commodity_id");
 		//   图片上传路径
-		String uploadPath =request.getSession().getServletContext().getRealPath("/")+"upload/images/";
+		String uploadPath =request.getSession().getServletContext().getRealPath("/")+"upload/images/"+commodity_id+"/";
 		//   图片网络相对路径
 		String imagePath=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
 		//   文件夹不存在就自动创建：
+		deleteDir(new File(uploadPath));
 	    if(!new File(uploadPath).isDirectory()){
 	    	new File(uploadPath).mkdirs();
 	    }
@@ -66,6 +71,9 @@ public class DoFileUploadServlet extends HttpServlet {
 	    	   FileItem file = (FileItem)i.next();
 	    	   //   获得文件名，这个文件名是用户上传时用户的绝对路径：
 	    	   String sourcefileName = file.getName();
+
+	 		   StringBuffer json = new StringBuffer();
+	           json.append('{');
 	    	   if(sourcefileName!=null
 	    			   &&(sourcefileName.endsWith(".jpg")
 	    			   			||sourcefileName.endsWith(".png")
@@ -100,17 +108,38 @@ public class DoFileUploadServlet extends HttpServlet {
 	    		   }
 	    		   File f1=new File(uploadPath+ destinationfileName);
 	    		   file.write(f1);
-	    		   request.setAttribute("commodity_img_url", imagePath+"upload/images/"+destinationfileName);
-	    		   request.setAttribute("commodity_real_url", "upload/images/"+destinationfileName);
-	    		   request.setAttribute("successMsg", "");
+	    		   String pathEnd = imagePath.split("http:")[1]+"upload/images/"+commodity_id+"/"+destinationfileName;
+	               json.append("uploadMsg:").append("图片上传成功！").append(",");
+	               json.append("commodity_img_url:").append(pathEnd);
 	    	   }else{
-	    		   request.setAttribute("errMsg", "上传文件出错，只能上传 *.jpg , *.png格式图片文件");
+	               json.append("uploadMsg:").append("上传文件出错，只能上传 *.jpg , *.png, *.jpeg格式图片文件！");
 	    	   }
+               json.append("}");
+               out.print(json.toString());
+               out.close();
 	    	}
 	    	//   跳转到上传成功提示页面
 	    }catch(Exception e) {
 	    	//   可以跳转出错页面
 	    }
 	}
+	
+	/**
+	 * 上传文件前删除之前目录下的图片文件以及目录
+	 * */
+	private static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            //递归删除目录中的子目录下
+            for (int i=0; i<children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        // 目录此时为空，可以删除
+        return dir.delete();
+    }
 
 }

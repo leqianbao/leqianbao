@@ -65,9 +65,6 @@ $(function(){
 	    <li><a href="doLogin">首页</a></li>
 	    <li>
 	    	<span>
-				<c:url value="/pt/doCommodity" var="refresh">
-					<c:param name="tag" value="query"/>
-				</c:url>
 	    		<a href="${refresh}">商品列表</a>
 	    	</span>
 	    </li>

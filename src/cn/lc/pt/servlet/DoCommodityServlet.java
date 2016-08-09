@@ -69,8 +69,15 @@ public class DoCommodityServlet extends HttpServlet {
 			String commodity_id = request.getParameter("commodity_id"); //商品id
 			Commodity result = new Commodity("","", 0, 0, "", "0", "0", "");
 			if(commodity_id != null && !(commodity_id.trim().equals(""))){
+				String imagePath = request.getScheme()+"://"+
+						request.getServerName()+":"+request.getServerPort()+
+							request.getContextPath()+"/";
 				// 调用service 获取查询结果
 				result = dao.getCommodityById(commodity_id);
+				String imgUrl = result.getCommodity_imgurl();
+				if(imgUrl != null && !(imgUrl.trim().equals(""))){
+					result.setCommodity_imgurl(imagePath + imgUrl);
+				}
 			}
             request.setAttribute("result", result);
 			request.getRequestDispatcher("/WEB-INF/intergral/commodityDetail.jsp").forward(request, response);
