@@ -56,6 +56,9 @@ public class REQ_BODY {
 	//积分支付
 	private long integral;
 	
+	//获取积分
+	private int integral_type;//0:收入，1：支出
+	
 
 	public long getIntegral() {
 		return integral;
@@ -273,6 +276,12 @@ public class REQ_BODY {
     public void setFeedback_content(String feedback_content) {
         this.feedback_content = feedback_content;
     }
+	public int getIntegral_type() {
+		return integral_type;
+	}
+	public void setIntegral_type(int integral_type) {
+		this.integral_type = integral_type;
+	}
 	
 
 

@@ -44,7 +44,7 @@ public class IntegralPayServlet extends HttpServlet {
 				.getUser_id());
 		if (integralBean.getUsr_intergral() - integral >= 0) {
 			boolean back = integralDao.payIntegral(reqBody.getUser_id(),
-					integral);
+					integralBean.getUsr_intergral() - integral);
 			if (back) {
 				map.put(Const.CODE_KEY, Const.CODE_SUCESS);
 				map.put(Const.MSG_KEY, Const.INTEGRAL_PAY_SUCESS);

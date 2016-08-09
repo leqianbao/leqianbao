@@ -17,6 +17,12 @@ import cn.lc.beans.IntegralBean;
 public class IntegralDao {
 	QueryRunner qR = new QueryRunner();
 
+	
+	/**
+	 * 获取当前的积分
+	 * @param userId 用户id
+	 * @return
+	 */
 	public IntegralBean getCurrentIntegral(String userId) {
 		Connection connection = null;
 		IntegralBean intergralBean = null;
@@ -37,6 +43,12 @@ public class IntegralDao {
 		return intergralBean;
 	}
 	
+	/**
+	 * 支付积分
+	 * @param userId 用户id
+	 * @param integral 
+	 * @return
+	 */
 	public boolean payIntegral(String userId,long integral){
 		boolean result = false;
 		Connection connection = null;
@@ -61,6 +73,12 @@ public class IntegralDao {
 		return result;
 	}
 	
+	/**
+	 * 根据用户id获取积分列表
+	 * @param userId 用户Id
+	 * @param getState 0：收入，1：支出
+	 * @return
+	 */
 	public List<IntegralBean> getIntegralList(String userId,int getState){
 		List<IntegralBean> integrals=null;
 		Connection connection=null;
@@ -77,6 +95,10 @@ public class IntegralDao {
 		}
 		return integrals;
 	}
+	
+//	public boolean rechargeIntegral(String userId){
+//		
+//	}
 	
 	
 }
