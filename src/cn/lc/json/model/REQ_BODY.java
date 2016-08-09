@@ -45,7 +45,55 @@ public class REQ_BODY {
 	//意见反馈
 	private String feedback_type;      //类型
 	private String feedback_content;   //内容
-    public String getCreated_by() {
+	
+	//地址管理  user_id
+	private int address_id;//地址id;
+	private int address_type;  //0：新增；1:修改；2:删除
+	private String address;
+	private String address_phone;
+	private String address_name;
+	
+	//积分支付
+	private long integral;
+	
+
+	public long getIntegral() {
+		return integral;
+	}
+	public void setIntegral(long integral) {
+		this.integral = integral;
+	}
+	public int getAddress_id() {
+		return address_id;
+	}
+	public void setAddress_id(int address_id) {
+		this.address_id = address_id;
+	}
+	public int getAddress_type() {
+		return address_type;
+	}
+	public void setAddress_type(int address_type) {
+		this.address_type = address_type;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getAddress_phone() {
+		return address_phone;
+	}
+	public void setAddress_phone(String address_phone) {
+		this.address_phone = address_phone;
+	}
+	public String getAddress_name() {
+		return address_name;
+	}
+	public void setAddress_name(String address_name) {
+		this.address_name = address_name;
+	}
+	public String getCreated_by() {
         return created_by;
     }
     public void setCreated_by(String created_by) {

@@ -26,6 +26,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="jsp/js/jquery-1.11.3.js"></script>
 	<script type="text/javascript" src="jsp/js/jquery.pagination.js"></script>
 	<script type="text/javascript" src="jsp/js/select-ui.min.js"></script>
+	<script type="text/javascript" src="jsp/js/ajaxfileupload.js"></script>
 	<style>
 		.forminfo li label{
 			width:100px
@@ -40,12 +41,73 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    border-bottom: solid 1px #ced9df;
 		    overflow-y : scroll;
 		}
+		.uploadBtn{
+			width: 50px;
+		    height: 28px;
+		    background-color: #3F97C9;
+		    font-size: 12px;
+		    color: #fff;
+		    cursor: pointer;
+		    border-radius : 5px;
+		}
 	</style>
 	<script>
+		var tapFlag = false;
 		function inputFile($this){
 			 $this = $($this);
-			 $('#input1').val($this.val());
+			 tapFlag = true;
+			 $('#commodity_img_url').html($this.val());
 		}
+		function ajaxFileUpload() {
+			if('${result.commodity_id}'){
+				
+			}else{
+				alert("请先点击【确认保存】按钮，确定商品信息已保存");
+				return;
+			}
+			if($('#commodity_img_url').html()){
+				
+			}else{
+				alert("请先点击【浏览】选择要上传的图片");
+				return;
+			}
+			if(tapFlag && $("#myfile").val()){
+				
+			}else{
+				alert("请再次选择，不要重复提交");
+				return;
+			}
+			$.ajaxFileUpload
+            (
+                {
+                    url: '<%=path %>/pt/doFileUpload?commodity_id='+'${result.commodity_id}', //用于文件上传的服务器端请求地址
+                    type: 'post',
+                    secureuri: false, //是否需要安全协议，一般设置为false
+                    fileElementId: 'myfile', //文件上传域的ID
+                    dataType: 'text', //返回值类型 一般设置为json
+                    success: function (data, status)  //服务器成功响应处理函数
+                    {
+                    	var dataStr = data.replace("{","").replace("}","");
+                    	var url = dataStr.split("commodity_img_url:")[1];
+           			 	$('#commodity_img_url').html("http:"+url);
+                    	var msg = dataStr.split("commodity_img_url:")[0].split("uploadMsg:")[1];
+                        $("#img1").attr("src", "http:"+url);
+                        if (typeof (msg) != 'undefined') {
+                            if (msg != '') {
+                                alert(msg);
+                            } else {
+                                alert(msg);
+                            }
+                        }
+                    },
+                    error: function (data, status, e)//服务器响应失败处理函数
+                    {
+                        alert(e);
+                    }
+                }
+            )
+            return false;
+        }
 	</script>
   </head>
   
@@ -56,7 +118,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    <li><a href="doLogin">首页</a></li>
 	    <li>
 	    	<span style="font-weight:100 !important">
-				<c:url value="/pt/doCommodityServlet" var="backMain">
+				<c:url value="/pt/doCommodity" var="backMain">
 					<c:param name="tag" value="query"/>
 				</c:url>
 	    		<a href="${backMain}">商品列表</a>
@@ -64,11 +126,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    </li>
 	    <li>
 	    	<span>
-				<c:url value="/pt/doCommodityServlet" var="refresh">
-					<c:param name="tag" value="detail"/>
-					<c:param name="commodify" value="${commodity_id}"/>
-				</c:url>
-	    		<a href="${refresh}">商品详情</a>
+	    		<a>商品详情</a>
 	    	</span>
 	    </li>
     </ul>
@@ -76,9 +134,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     <div class="formbody">
     	<div class="formtitle"><span>商品详细信息</span></div>
-	    <form action="<%=path %>/pt/doCommodityDetal"   id="stuForm"  method="post">
+	    <form action="<%=path %>/pt/doCommodityDetail"   id="stuForm"  method="post">
 	    	<input type="hidden" name="tag" value="add" />
-	    	<input type="hidden" name="commodity_id" value="result.commodity_id" />
+	    	<input type="hidden" name="commodity_id" value="${result.commodity_id}" />
 	    	<ul class="forminfo">
 	    		<li>
 	    			<label>商品名称</label>
@@ -108,21 +166,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    			<label>商品简介</label>
 	    			<textarea name="commodity_comment" class="textinput" rows="5" >${result.commodity_comment}</textarea>
 	    		</li>
+	    		<li>
+	    			<label>商品图片</label>
+		    		<input type="button" id="input1" class="uploadBtn" onclick="$('#myfile').click();" value="浏览"/>
+					<input type="button" value="上传图片" onclick="ajaxFileUpload()"/>
+					<input type="file" name="commodiy_file_url" id="myfile" onchange="inputFile(this)" style="display:none">
+					<br/><span id="commodity_img_url"></span>
+		    	</li>
+		    	<li>
+		    		<label>图片展示</label>
+		    		<img id="img1" style="width:150px;height:150px" src="${result.commodity_imgurl}">
+		    	</li>
 	        	<li><label>&nbsp;</label><input type="submit" class="btn" value="确认保存"/></li>
 	      	</ul>
-	    </form>
-	    <form action="<%=path %>/pt/doFileUpload" id="stuForm" method="post" enctype="multipart/form-data">
-	      <ul class="forminfo">
-	    	<li>
-	    		<label>商品图片</label>
-	    		<input type="text" id="input1" class="dfinput" onclick="$('#myfile').click();" placeholder="浏览">
-				<input type="submit" value="上传图片" />
-				<input type="file" name="commodiy_file_url" id="myfile" onchange="inputFile(this)" style="display:none">
-	    	</li>
-	    	<li>
-	    		<img id="commodity_url" src="${commodity_img_url}">
-	    	</li>
-	      </ul>
 	    </form>
      </div>
   </body>

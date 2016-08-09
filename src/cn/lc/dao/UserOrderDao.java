@@ -87,4 +87,51 @@ public class UserOrderDao {
 		}
 		return result;
 	}
+	
+	// @PT--获取订单详细信息
+	public UserOrder getUserOrderById(long id){
+		// 存放查询参数
+		Connection connection = null;
+		StringBuilder sql = new StringBuilder("SELECT * FROM lc_user_order_details where id=?");
+		UserOrder userOrder = null;
+		try {
+			connection = DBUtils.getConnection();
+			
+			userOrder = qR.query(connection, sql.toString(), new BeanListHandler<UserOrder>(UserOrder.class), id).get(0);
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		} finally {
+			DBUtils.releaseDB(null, null, connection);
+		}
+		return userOrder;
+	}
+	
+	// @PT--获取更新订单信息
+	public boolean UpdateUserOrderById(long id,String logistics_number,String order_state){
+		// 存放查询参数
+		Connection connection = null;
+		StringBuilder sql = new StringBuilder("UPDATE  lc_user_order_details SET logistics_number=?,order_state=? WHERE id=?");
+		boolean result = false;
+		try {
+			connection = DBUtils.getConnection();
+			DBUtils.beginTx(connection);
+			
+			int isSuccess = qR.update(connection, sql.toString(), logistics_number,order_state,id);
+			if(isSuccess==1){
+			DBUtils.commit(connection);
+			result = true;
+			} else{
+				DBUtils.rollback(connection);
+				result = false;
+			}
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		} finally {
+			DBUtils.releaseDB(null, null, connection);
+		}
+		return result;
+	}
+	
 }

@@ -1,6 +1,9 @@
 package cn.lc.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,9 +94,97 @@ public class CommodityDao {
    /**
     * 根据指定id更行商品
     * */
-    public Boolean updateCommodity(String id, String name, Integer pay, 
+	public Boolean updateCommodity(String id, String name, Integer pay, 
     		Integer num, String use_flag, String type, String comment){
-    	
-    	return true;
+    	int update_flag = 0;
+    	Connection connection = null;
+        
+        StringBuffer sql = new StringBuffer();
+        sql.append(" update lc_commodity_details set commodity_name = ?, ");
+        sql.append(" commodity_pay = ?, ");
+        sql.append(" commodity_num = ?, ");
+        sql.append(" commodity_use_flag = ?, ");
+        sql.append(" commodity_type = ?, ");
+        sql.append(" commodity_comment = ? ");
+        sql.append(" WHERE commodity_id = ? ");
+        try {
+            connection = DBUtils.getConnection();
+            DBUtils.beginTx(connection);
+            update_flag = qR.update(connection, sql.toString(), name, pay, num, use_flag, type, comment, id);
+        } catch (Exception e) {
+            DBUtils.rollback(connection);
+            e.printStackTrace();
+        } finally {
+            DBUtils.releaseDB(null, null, connection);
+        }
+        if(update_flag == 0){
+        	return false;
+        }else{
+        	return true;
+        }
     }
+	
+	/**
+	 * 保存商品图片
+	 * */
+	public Boolean setCommodityImg(String commodity_id, String url){
+		int setflag = 0;
+    	Connection connection = null;
+        
+        StringBuffer sql = new StringBuffer();
+        sql.append(" update lc_commodity_details set commodity_imgurl = ? ");
+        sql.append(" WHERE commodity_id = ? ");
+        try {
+            connection = DBUtils.getConnection();
+            DBUtils.beginTx(connection);
+            setflag = qR.update(connection, sql.toString(), url, commodity_id);
+        } catch (Exception e) {
+            DBUtils.rollback(connection);
+            e.printStackTrace();
+        } finally {
+            DBUtils.releaseDB(null, null, connection);
+        }
+        if(setflag == 0){
+        	return false;
+        }else{
+        	return true;
+        }
+	}
+	
+	/**
+	 * 新建商品
+	 * */
+	public boolean createCommodity(String id, String name, Integer pay, 
+    		Integer num, String use_flag, String type, String comment){
+    	Connection connection = null;
+    	PreparedStatement st = null;
+    	int insertNum = -1;
+    	
+        StringBuffer sql = new StringBuffer();
+        sql.append(" insert into lc_commodity_details (commodity_id, commodity_name");
+        sql.append(" , commodity_pay, commodity_num, commodity_type, commodity_use_flag, commodity_comment)");
+        sql.append(" values(?, ?, ?, ?, ?, ?, ?) ");
+        try {
+            connection = DBUtils.getConnection();
+            st = connection.prepareStatement(sql.toString());
+            st.setString(1, id);
+            st.setString(2, name);
+            st.setInt(3, pay);
+            st.setInt(4, num);
+            st.setString(5, type);
+            st.setString(6, use_flag);
+            st.setString(7, comment);
+            insertNum = st.executeUpdate();
+        } catch (Exception e) {
+            DBUtils.rollback(connection);
+            e.printStackTrace();
+        } finally {
+            DBUtils.releaseDB(null, null, connection);
+        }
+        if(insertNum == -1){
+        	return false;
+        }else{
+        	return true;
+        }
+	}
 }
