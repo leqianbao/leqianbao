@@ -5,9 +5,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import cn.lc.beans.IntegralBean;
@@ -58,4 +60,23 @@ public class IntegralDao {
 		}
 		return result;
 	}
+	
+	public List<IntegralBean> getIntegralList(String userId,int getState){
+		List<IntegralBean> integrals=null;
+		Connection connection=null;
+		try {
+			connection=DBUtils.getConnection();
+			String sql="SELECT * FROM lc_user_intergral WHERE user_id=? and get_state=?";
+			DBUtils.beginTx(connection);
+			integrals=qR.query(connection, sql,new BeanListHandler<IntegralBean>(IntegralBean.class),userId,getState);
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		}finally {
+			DBUtils.releaseDB(null, null, connection);
+		}
+		return integrals;
+	}
+	
+	
 }

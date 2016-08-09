@@ -22,5 +22,6 @@ public class Const {
 	
 	//IntegralPay 积分支付
 	public final static String INTEGRAL_PAY_SUCESS="积分支付成功";
-	public final static String INTEGRAL_PAY_ERROR="积分不足";
+	public final static String INTEGRAL_PAY_ERROR="积分支付失败";
+	public final static String INTEGRAL_PAY_ERROR_SHORT="积分不足";
 }
