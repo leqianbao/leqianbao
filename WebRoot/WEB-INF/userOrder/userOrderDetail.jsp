@@ -79,8 +79,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    <form action="<%=path %>/pt/doUserOrderDetail"   id="stuForm"  method="post">
 	    	<input type="hidden" name="tag" value="save" />
 	    	<input type="hidden" name="id" value="${result.id}" />
-	    	<input type="hidden" name="logistics_number" value="${result.logistics_number}" />
-	    	<input type="hidden" name="order_state" value="${result.order_state}" />
 	    	<ul class="forminfo">
 	    		<li>
 	    			<label>订单号</label>

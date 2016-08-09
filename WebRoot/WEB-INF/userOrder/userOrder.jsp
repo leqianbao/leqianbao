@@ -123,7 +123,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<c:param name="tag" value="edit"/>
 											<c:param name="id" value="${userOrder.id}"/>
 										</c:url>									
-										<a class="red" href=${handler} }>编辑</a>
+										<a class="red" href="${handler}">编辑</a>
 									</c:if>									
 								</span>
 							</td>						
