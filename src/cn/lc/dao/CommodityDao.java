@@ -25,20 +25,38 @@ public class CommodityDao {
         List<Commodity> list = null;
         
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT * FROM lc_commodity_details WHERE 1=1");
+        sql.append("SELECT * FROM lc_commodity_details WHERE 1=1 and delete_flag = '0' ");
+        StringBuffer sql2 = new StringBuffer();
+        sql2.append("SELECT * FROM lc_commodity_details WHERE 1=1 and delete_flag = '0' ");
         
         String commodity_id = searchMode.getCommodity_id();
         String commodity_use_flag = searchMode.getCommodity_use_flag();
+        String commodity_name = searchMode.getCommodity_name();
+        String Commodity_type = searchMode.getCommodity_type();
         
         //参数集合
         List<String> params = new ArrayList<String>(); 
         if(null!=commodity_id&&!"".equals(commodity_id.trim())){
         	sql.append(" and commodity_id = ? ");
+        	sql2.append(" and commodity_id = ? ");
         	params.add(commodity_id.trim());
         }
+        if(null!=commodity_name&&!"".equals(commodity_name.trim())){
+        	sql.append(" and commodity_name = ? ");
+        	sql2.append(" and commodity_name = ? ");
+        	params.add(commodity_name.trim());
+        }
+
         if(null!=commodity_use_flag&&!"".equals(commodity_use_flag.trim())){
         	sql.append(" and commodity_use_flag = ? ");
+        	sql2.append(" and commodity_use_flag = ? ");
         	params.add(commodity_use_flag.trim());
+        }
+
+        if(null!=Commodity_type&&!"".equals(Commodity_type.trim())){
+        	sql.append(" and Commodity_type = ? ");
+        	sql2.append(" and Commodity_type = ? ");
+        	params.add(Commodity_type.trim());
         }
         
         //创建参数字符串数组
@@ -52,7 +70,7 @@ public class CommodityDao {
             connection = DBUtils.getConnection();
             DBUtils.beginTx(connection);
             // 获取总记录数
-            totalRecord =(Integer)qR.query(connection,sql.toString(),new BeanListHandler<Commodity>(Commodity.class), paramStr).size();
+            totalRecord =(Integer)qR.query(connection,sql2.toString(),new BeanListHandler<Commodity>(Commodity.class), paramStr).size();
             list = qR.query(connection, sql.toString(), new BeanListHandler<Commodity>(Commodity.class), paramStr);
             long totalPage = totalRecord / pageRows;
             if(totalRecord % pageRows !=0){
@@ -70,6 +88,28 @@ public class CommodityDao {
     }
     
     /**
+     * 获取所有的商品信息
+     * */
+    public List<Commodity> getAllCommodity(){
+    	List<Commodity> commodityList = new ArrayList<Commodity>();
+        Connection connection = null;
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT commodity_id, commodity_name, commodity_pay, commodity_imgurl");
+        sql.append(" FROM lc_commodity_details WHERE delete_flag = '0' and commodity_use_flag = '0'");
+        try {
+            connection = DBUtils.getConnection();
+            DBUtils.beginTx(connection);
+            // 获取总记录数
+            commodityList = qR.query(connection, sql.toString(), new BeanListHandler<Commodity>(Commodity.class));
+        } catch (Exception e) {
+            DBUtils.rollback(connection);
+            e.printStackTrace();
+        } finally {
+            DBUtils.releaseDB(null, null, connection);
+        }
+    	return commodityList;
+    }
+    /**
      * 根据指定id查询商品信息
      * */
     public Commodity getCommodityById(String commodity_id){
@@ -77,7 +117,7 @@ public class CommodityDao {
         Commodity commodity = new Commodity();
         
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT * FROM lc_commodity_details WHERE id = ?");
+        sql.append("SELECT * FROM lc_commodity_details WHERE commodity_id = ? and delete_flag = '0'");
         try {
             connection = DBUtils.getConnection();
             DBUtils.beginTx(connection);
@@ -98,6 +138,7 @@ public class CommodityDao {
     		Integer num, String use_flag, String type, String comment){
     	int update_flag = 0;
     	Connection connection = null;
+    	PreparedStatement st = null;
         
         StringBuffer sql = new StringBuffer();
         sql.append(" update lc_commodity_details set commodity_name = ?, ");
@@ -106,11 +147,18 @@ public class CommodityDao {
         sql.append(" commodity_use_flag = ?, ");
         sql.append(" commodity_type = ?, ");
         sql.append(" commodity_comment = ? ");
-        sql.append(" WHERE commodity_id = ? ");
+        sql.append(" WHERE commodity_id = ? and delete_flag = '0'");
         try {
             connection = DBUtils.getConnection();
-            DBUtils.beginTx(connection);
-            update_flag = qR.update(connection, sql.toString(), name, pay, num, use_flag, type, comment, id);
+            st = connection.prepareStatement(sql.toString());
+            st.setString(1, name);
+            st.setInt(2, pay);
+            st.setInt(3, num);
+            st.setString(4, use_flag);
+            st.setString(5, type);
+            st.setString(6, comment);
+            st.setString(7, id);
+            update_flag = st.executeUpdate();
         } catch (Exception e) {
             DBUtils.rollback(connection);
             e.printStackTrace();
@@ -130,14 +178,17 @@ public class CommodityDao {
 	public Boolean setCommodityImg(String commodity_id, String url){
 		int setflag = 0;
     	Connection connection = null;
+    	PreparedStatement st = null;
         
         StringBuffer sql = new StringBuffer();
         sql.append(" update lc_commodity_details set commodity_imgurl = ? ");
-        sql.append(" WHERE commodity_id = ? ");
+        sql.append(" WHERE commodity_id = ? and delete_flag = '0'");
         try {
             connection = DBUtils.getConnection();
-            DBUtils.beginTx(connection);
-            setflag = qR.update(connection, sql.toString(), url, commodity_id);
+            st = connection.prepareStatement(sql.toString());
+            st.setString(1, url);
+            st.setString(2, commodity_id);
+            setflag = st.executeUpdate();
         } catch (Exception e) {
             DBUtils.rollback(connection);
             e.printStackTrace();
@@ -186,5 +237,30 @@ public class CommodityDao {
         }else{
         	return true;
         }
+	}
+	
+	/**
+	 * 删除商品
+	 * */
+	public int deleteCommodityById(String commodity_id){
+		int delflag = 0;
+    	Connection connection = null;
+    	PreparedStatement st = null;
+        
+        StringBuffer sql = new StringBuffer();
+        sql.append(" update lc_commodity_details set delete_flag = '1'");
+        sql.append(" WHERE commodity_id = ? ");
+        try {
+            connection = DBUtils.getConnection();
+            st = connection.prepareStatement(sql.toString());
+            st.setString(1, commodity_id);
+            delflag = st.executeUpdate();
+        } catch (Exception e) {
+            DBUtils.rollback(connection);
+            e.printStackTrace();
+        } finally {
+            DBUtils.releaseDB(null, null, connection);
+        }
+        return delflag;
 	}
 }

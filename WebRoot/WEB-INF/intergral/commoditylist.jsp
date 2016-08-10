@@ -30,8 +30,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 // 点击分页按钮以后触发的动作
  function handlePaginationClick(new_page_index, pagination_container) {
-    $("#stuForm").attr("action", "<%=path %>/pt/doFetchCash?tag=query&pageNum=" + (new_page_index+1));
-    $("#stuForm").submit();
+    $("#comForm").attr("action", "<%=path %>/pt/doCommodity?tag=query&pageNum=" + (new_page_index+1));
+    $("#comForm").submit();
     return false; 
 }
 
@@ -55,7 +55,11 @@ $(function(){
 		});
 	});
 </script>
-
+<style>
+	dl, dt, dd, span{
+		display:table-cell;
+	}
+</style>
   </head>
   
   <body>
@@ -74,20 +78,34 @@ $(function(){
     <div class="rightinfo">
     
     <div class="querydiv">
-    <form action="<%=path %>/pt/doCommodity"   id="stuForm"  method="post">
+    <form action="<%=path %>/pt/doCommodity"   id="comForm"  method="post">
 		<input type="hidden" name="tag" value="query" />
 	 	<ul class="seachform">
 		    <li>
 		    	<label>商品ID </label>
 		    	<input name="commodity_id" type="text"  value="${commodity_id }" class="scinput" />
 		    </li>
+		    <li>
+		    	<label>商品名称 </label>
+		    	<input name="commodity_name" type="text"  value="${commodity_name }" class="scinput" />
+		    </li>
 			<li>
 				<label>出售状态</label>  
 			    <div class="vocation">
 				    <select class="select3" name="commodity_status" >
 					    <option value="">请选择</option>
-					    <option value="1" >出售</option>
-					    <option value="0" >停售</option>
+					    <option value="0" >出售</option>
+					    <option value="1" >停售</option>
+				    </select>
+			    </div>
+		    </li>
+		    <li>
+				<label>商品类型</label>  
+			    <div class="vocation">
+				    <select class="select3" name="commodity_type" >
+					    <option value="">请选择</option>
+					    <option value="0" >实物商品</option>
+					    <option value="1" >虚拟商品</option>
 				    </select>
 			    </div>
 		    </li>
@@ -130,8 +148,8 @@ $(function(){
 					<td><c:out value="${commodity.commodity_pay }"></c:out></td>
 					<td><c:out value="${commodity.commodity_num}" ></c:out></td> 
 					<td>
-						<c:if test="${commodity.commodity_use_flag eq 0}"><span class="red">停售</span></c:if>
-						<c:if test="${commodity.commodity_use_flag eq 1}"><span>出售</span></c:if> 
+						<c:if test="${commodity.commodity_use_flag eq 0}"><span>出售中</span></c:if>
+						<c:if test="${commodity.commodity_use_flag eq 1}"><span class="red">停售</span></c:if> 
 					</td>
 					<td>
 						<c:if test="${commodity.commodity_type eq 0}"><span>实物商品</span></c:if>
@@ -144,6 +162,13 @@ $(function(){
 								<c:param name="commodity_id" value="${commodity.commodity_id}"/>
 							</c:url>
 							<a href="${handler}">查看/编辑</a>
+						</span>
+						<span>
+							<c:url value="/pt/doCommodity" var="delete">
+								<c:param name="tag" value="del"/>
+								<c:param name="commodity_id" value="${commodity.commodity_id}"/>
+							</c:url>
+							<a href="${delete}">删除</a>
 						</span>
 					</td>
 				</tr>
