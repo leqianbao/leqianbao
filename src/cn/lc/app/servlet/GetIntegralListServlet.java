@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.lc.beans.IntegralBean;
+import cn.lc.beans.IntegralRecord;
 import cn.lc.dao.IntegralDao;
+import cn.lc.dao.IntegralRecordDao;
 import cn.lc.json.model.REQ_BODY;
 import cn.lc.json.model.Root;
 import cn.lc.utils.DataUtil;
@@ -29,14 +31,14 @@ public class GetIntegralListServlet extends HttpServlet{
 		response.setContentType("text/html");
 
 		Map<String, String> map = null;
-		IntegralDao integralDao=new IntegralDao();
+		IntegralRecordDao integralDao=new IntegralRecordDao();
 		String date = DataUtil.readDateFromRequest(request.getInputStream());
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
-		int type=reqBody.getIntegral_type();
-		List<IntegralBean> integrals=integralDao.getIntegralList(reqBody.getUser_id(), type);
-		
-		
+		int state=reqBody.getIntegral_state();
+		int pageNum=reqBody.getPageNum();
+		int pageSize=reqBody.getPageNum();
+		List<IntegralRecord> integrals=integralDao.getRecordList(reqBody.getUser_id(), 0, state, pageNum, pageSize);
 		
 	}
 

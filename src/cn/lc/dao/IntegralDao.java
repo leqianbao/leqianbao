@@ -17,10 +17,11 @@ import cn.lc.beans.IntegralBean;
 public class IntegralDao {
 	QueryRunner qR = new QueryRunner();
 
-	
 	/**
 	 * 获取当前的积分
-	 * @param userId 用户id
+	 * 
+	 * @param userId
+	 *            用户id
 	 * @return
 	 */
 	public IntegralBean getCurrentIntegral(String userId) {
@@ -30,9 +31,8 @@ public class IntegralDao {
 			connection = DBUtils.getConnection();
 			String sql = "SELECT user_integral FROM lc_user_intergral WHERE user_id=?";
 			DBUtils.beginTx(connection);
-			intergralBean = qR
-					.query(connection, sql, new BeanHandler<IntegralBean>(
-							IntegralBean.class), userId);
+			intergralBean = qR.query(connection, sql,
+					new BeanHandler<IntegralBean>(IntegralBean.class), userId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			DBUtils.rollback(connection);
@@ -42,22 +42,34 @@ public class IntegralDao {
 		}
 		return intergralBean;
 	}
-	
+
 	/**
 	 * 支付积分
-	 * @param userId 用户id
-	 * @param integral 
+	 * 
+	 * @param userId
+	 *            用户id
+	 * @param integral
 	 * @return
 	 */
-	public boolean payIntegral(String userId,long integral){
+	public boolean payIntegral(String userId, long integral,String comment) {
 		boolean result = false;
 		Connection connection = null;
+		IntegralBean intergralBean = null;
 		try {
 			connection = DBUtils.getConnection();
-			String sql = "UPDATE lc_user_intergral SET user_integral = ? , update_date = ? WHERE user_id = ?";
+			String getIntegral = "SELECT user_integral FROM lc_user_integral WHERE user_id=?";
+			String updateIntegral = "UPDATE lc_user_intergral SET user_integral = ? , update_date = ? WHERE user_id = ?";
+			String addRecord = "INSERT INTO lc_user_intergral VALUES(?,?,?,?,?)";
 			DBUtils.beginTx(connection);
-			int row = qR.update(connection, sql, integral,new Date(),userId);
+			// 获取当前用户的积分
+			intergralBean = qR.query(connection, getIntegral,
+					new BeanHandler<IntegralBean>(IntegralBean.class), userId);
+			int row = qR.update(connection, updateIntegral,
+					intergralBean.getUsr_intergral() - integral, new Date(),
+					userId);
 			if (row > 0) {
+				qR.update(connection, addRecord, userId, integral, new Date(),
+						comment, 1);
 				DBUtils.commit(connection);
 				result = true;
 			} else {
@@ -72,36 +84,51 @@ public class IntegralDao {
 		}
 		return result;
 	}
-	
+
+
 	/**
-	 * 根据用户id获取积分列表
-	 * @param userId 用户Id
-	 * @param getState 0：全部 1：收入 2：支出
+	 * 积分充值
+	 * 
+	 * @param userId
+	 *            用户id
+	 * @param integral
+	 *            充值的积分
 	 * @return
 	 */
-	public List<IntegralBean> getIntegralList(String userId,int getState){
-		List<IntegralBean> integrals=null;
-		Connection connection=null;
+	public boolean rechargeIntegral(String userId, long integral, String comment) {
+		boolean result = false;
+		Connection connection = null;
 		try {
-			connection=DBUtils.getConnection();
-			String sql="SELECT * FROM lc_user_intergral WHERE user_id=? and get_state=?";
+			connection = DBUtils.getConnection();
+			// 获取当前积分
+			String getIntegral = "SELECT user_integral FROM lc_user_integral WHERE user_id=?";
+			// 更新当前积分
+			String updateIntegral = "UPDATE lc_user_intergral SET user_integral = ? , update_date = ? WHERE user_id = ?";
+			// 添加积分记录
+			String addRecord = "INSERT INTO lc_user_intergral VALUES(?,?,?,?,?)";
 			DBUtils.beginTx(connection);
-			integrals=qR.query(connection, sql,new BeanListHandler<IntegralBean>(IntegralBean.class),userId,getState);
+			IntegralBean intergralBean = null;
+			intergralBean = qR.query(connection, getIntegral,
+					new BeanHandler<IntegralBean>(IntegralBean.class), userId);
+			int row = qR.update(connection, updateIntegral,
+					intergralBean.getUsr_intergral() + integral, new Date(),
+					userId);
+			if (row > 0) {
+				qR.update(connection, addRecord, userId, integral, new Date(),
+						comment, 1);
+				DBUtils.commit(connection);
+				result = true;
+			} else {
+				DBUtils.rollback(connection);
+				result = false;
+			}
 		} catch (Exception e) {
 			DBUtils.rollback(connection);
 			e.printStackTrace();
-		}finally {
+		} finally {
 			DBUtils.releaseDB(null, null, connection);
 		}
-		return integrals;
+		return result;
 	}
-	
-	public boolean rechargeIntegral(String userId){
-		
-	}
-	
-	
-	
-	
-	
+
 }
