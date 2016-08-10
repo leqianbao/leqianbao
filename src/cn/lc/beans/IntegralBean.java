@@ -1,29 +1,31 @@
 package cn.lc.beans;
 
+import java.sql.Timestamp;
+
 public class IntegralBean {
-	private String user_id;
-	private long usr_intergral;
-	private long update_date;
+	private int user_id;
+	private int user_integral;
+	private Timestamp update_date;
 	
 	
 	
 	
-	public String getUser_id() {
+	public int getUser_id() {
 		return user_id;
 	}
-	public void setUser_id(String user_id) {
+	public void setUser_id(int user_id) {
 		this.user_id = user_id;
 	}
-	public long getUsr_intergral() {
-		return usr_intergral;
+	public int getUser_integral() {
+		return user_integral;
 	}
-	public void setUsr_intergral(long usr_intergral) {
-		this.usr_intergral = usr_intergral;
+	public void setUser_integral(int user_integral) {
+		this.user_integral = user_integral;
 	}
-	public long getUpdate_date() {
+	public Timestamp getUpdate_date() {
 		return update_date;
 	}
-	public void setUpdate_date(long update_date) {
+	public void setUpdate_date(Timestamp update_date) {
 		this.update_date = update_date;
 	}
 	

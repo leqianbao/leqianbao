@@ -53,10 +53,33 @@ public class REQ_BODY {
 	private String address_phone;
 	private String address_name;
 	
+	private String order_commodity_id;  //下单商品ID
+	private String order_commodity_num;   //下单商品数量
+	private String order_address_id;    //下单收货地址
+	
+	
 	//积分支付
 	private long integral;
 	
 
+	public String getOrder_commodity_id() {
+		return order_commodity_id;
+	}
+	public void setOrder_commodity_id(String order_commodity_id) {
+		this.order_commodity_id = order_commodity_id;
+	}
+	public String getOrder_commodity_num() {
+		return order_commodity_num;
+	}
+	public void setOrder_commodity_num(String order_commodity_num) {
+		this.order_commodity_num = order_commodity_num;
+	}
+	public String getOrder_address_id() {
+		return order_address_id;
+	}
+	public void setOrder_address_id(String order_address_id) {
+		this.order_address_id = order_address_id;
+	}
 	public long getIntegral() {
 		return integral;
 	}

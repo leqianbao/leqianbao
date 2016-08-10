@@ -135,7 +135,7 @@ public class CommodityDao {
      * */
     public Commodity getCommodity(String commodity_id){
     	Connection connection = null;
-        Commodity commodity = new Commodity();
+        Commodity commodity = null;
         
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT * FROM lc_commodity_details WHERE commodity_id = ?");

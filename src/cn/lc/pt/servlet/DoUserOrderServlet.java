@@ -122,7 +122,8 @@ public class DoUserOrderServlet extends HttpServlet{
 			UserAddressDao userAddressDao = new UserAddressDao();
 			UserOrder userOrder = userOrderDao.getUserOrderById(id);
 			if(userOrder.getReceipt_address_id() != 0) {
-				UserAddress userAddress = userAddressDao.getUserAddressById(id);
+				long addressId = userOrder.getReceipt_address_id();
+				UserAddress userAddress = userAddressDao.getUserAddressById(addressId);
 				userOrder.setAddress_addres(userAddress.getAddress_addres());
 				userOrder.setAddress_name(userAddress.getAddress_name());
 				userOrder.setAddress_phone(userAddress.getAddress_phone());

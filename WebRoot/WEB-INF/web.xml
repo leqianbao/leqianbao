@@ -18,6 +18,10 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   <servlet>
+    <servlet-name>GoodsOrderServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.GoodsOrderServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>UserLoginServlet</servlet-name>
     <servlet-class>cn.lc.app.servlet.UserLoginServlet</servlet-class>
   </servlet>
@@ -153,6 +157,10 @@
     <servlet-name>DoUserOrderDetailServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.DoUserOrderDetailServlet</servlet-class>
   </servlet>
+   <servlet-mapping>
+    <servlet-name>GoodsOrderServlet</servlet-name>
+    <url-pattern>/app/goodsorder</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>UserLoginServlet</servlet-name>
     <url-pattern>/app/userlogin</url-pattern>
