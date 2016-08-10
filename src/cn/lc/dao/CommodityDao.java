@@ -130,7 +130,27 @@ public class CommodityDao {
         }
         return commodity;
     }
-    
+    /**
+     * 根据指定id查询商品信息
+     * */
+    public Commodity getCommodity(String commodity_id){
+    	Connection connection = null;
+        Commodity commodity = new Commodity();
+        
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT * FROM lc_commodity_details WHERE commodity_id = ?");
+        try {
+            connection = DBUtils.getConnection();
+            DBUtils.beginTx(connection);
+            commodity = qR.query(connection, sql.toString(), new BeanListHandler<Commodity>(Commodity.class), commodity_id).get(0);
+        } catch (Exception e) {
+            DBUtils.rollback(connection);
+            e.printStackTrace();
+        } finally {
+            DBUtils.releaseDB(null, null, connection);
+        }
+        return commodity;
+    }
    /**
     * 根据指定id更行商品
     * */

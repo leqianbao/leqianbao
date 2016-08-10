@@ -87,7 +87,7 @@ public class DoUserOrderDetailServlet extends HttpServlet{
                 //根据商品ID，获取各个订单中的商品名称
             	String commodity_id = userOrder.getCommodity_id();
             	CommodityDao commodityDao = new CommodityDao();
-            	Commodity commodity = commodityDao.getCommodityById(commodity_id);
+            	Commodity commodity = commodityDao.getCommodity(commodity_id);
             	String commodity_name = "";
             	if(commodity != null) {
             		commodity_name = commodity.getCommodity_name();
