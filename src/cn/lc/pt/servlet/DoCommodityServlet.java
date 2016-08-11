@@ -1,6 +1,7 @@
 package cn.lc.pt.servlet;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -76,7 +77,7 @@ public class DoCommodityServlet extends HttpServlet {
 			Commodity result = new Commodity("","", 0, 0, "", "0", "0", "");
 			if(commodity_id != null && !(commodity_id.trim().equals(""))){
 				String imagePath = request.getScheme()+"://"+
-						request.getServerName()+":"+request.getServerPort()+
+						InetAddress.getLocalHost().getHostAddress()+":"+request.getServerPort()+
 							request.getContextPath()+"/";
 				// 调用service 获取查询结果
 				result = dao.getCommodityById(commodity_id);

@@ -2,7 +2,9 @@ package cn.lc.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
@@ -24,7 +26,7 @@ public class CommodityDao {
         List<Commodity> allList = null;
         
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT * FROM lc_commodity_details WHERE 1=1 and delete_flag = '0' ");
+        sql.append("select * from (SELECT * FROM lc_commodity_details WHERE 1=1 and delete_flag = '0' ");
         StringBuffer sql2 = new StringBuffer();
         sql2.append("SELECT * FROM lc_commodity_details WHERE 1=1 and delete_flag = '0' ");
         
@@ -57,6 +59,7 @@ public class CommodityDao {
         	sql2.append(" and Commodity_type = ? ");
         	params.add(Commodity_type.trim());
         }
+        sql.append(" order by create_date desc ) a ");
         
         //创建参数字符串数组
         String[] paramStr = params.toArray(new String[params.size()]); 
@@ -94,19 +97,23 @@ public class CommodityDao {
     /**
      * 获取所有的商品信息
      * */
-    public Pager<Commodity> getAppPageCommodity(Integer pageNum, Integer pageSize){
+    public Pager<Commodity> getAppPageCommodity(Integer pageNum, Integer pageSize, String first_search_date){
     	Pager<Commodity> commodityPage = new Pager<Commodity>(0,0,0,0,null);
         List<Commodity> commodityList = new ArrayList<Commodity>();
         List<Commodity> commodityAllList = new ArrayList<Commodity>();
     	
         Connection connection = null;
         StringBuffer sql2 = new StringBuffer();
-        sql2.append("SELECT commodity_id, commodity_name, commodity_pay, commodity_imgurl");
-        sql2.append(" FROM lc_commodity_details WHERE delete_flag = '0' and commodity_use_flag = '0'");
+        sql2.append("SELECT commodity_id, commodity_name, commodity_pay, commodity_imgurl, commodity_type, ");
+        sql2.append(" commodity_comment, create_date, update_date ");
+        sql2.append(" FROM lc_commodity_details WHERE delete_flag = '0' and commodity_use_flag = '0' ");
+        sql2.append(" and create_date < ?");
         
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT commodity_id, commodity_name, commodity_pay, commodity_imgurl");
-        sql.append(" FROM lc_commodity_details WHERE delete_flag = '0' and commodity_use_flag = '0'");
+        sql.append("select * from (SELECT commodity_id, commodity_name, commodity_pay, commodity_imgurl, commodity_type, ");
+        sql.append(" commodity_comment, create_date, update_date ");
+        sql.append(" FROM lc_commodity_details WHERE delete_flag = '0' and commodity_use_flag = '0' ");
+        sql.append(" and create_date < ? order by create_date desc) a ");
         long fromIndex  = pageSize * (pageNum -1); 
         sql.append(" limit " + fromIndex + ", " + pageSize);
         long totalRecord  = 0;
@@ -114,13 +121,13 @@ public class CommodityDao {
             connection = DBUtils.getConnection();
             DBUtils.beginTx(connection);
             // 获取总记录数
-            commodityAllList = qR.query(connection, sql.toString(), new BeanListHandler<Commodity>(Commodity.class));;
+            commodityAllList = qR.query(connection, sql2.toString(), new BeanListHandler<Commodity>(Commodity.class), first_search_date);
             if(commodityAllList == null){
             	totalRecord = 0;
             }else{
             	totalRecord = commodityAllList.size();
             }
-            commodityList = qR.query(connection, sql.toString(), new BeanListHandler<Commodity>(Commodity.class));
+            commodityList = qR.query(connection, sql.toString(), new BeanListHandler<Commodity>(Commodity.class), first_search_date);
             // 组装pager对象
             long totalPage = totalRecord / pageSize;
             if(totalRecord % pageSize !=0){
@@ -183,6 +190,9 @@ public class CommodityDao {
 	public Boolean updateCommodity(String id, String name, Integer pay, 
     		Integer num, String use_flag, String type, String comment){
     	int update_flag = 0;
+		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");   
+		String timeStr = sDateFormat.format(new Date());  
+    	String update_date = timeStr;
     	Connection connection = null;
     	PreparedStatement st = null;
         
@@ -192,7 +202,8 @@ public class CommodityDao {
         sql.append(" commodity_num = ?, ");
         sql.append(" commodity_use_flag = ?, ");
         sql.append(" commodity_type = ?, ");
-        sql.append(" commodity_comment = ? ");
+        sql.append(" commodity_comment = ?, ");
+        sql.append(" update_date = ? ");
         sql.append(" WHERE commodity_id = ? and delete_flag = '0'");
         try {
             connection = DBUtils.getConnection();
@@ -203,7 +214,8 @@ public class CommodityDao {
             st.setString(4, use_flag);
             st.setString(5, type);
             st.setString(6, comment);
-            st.setString(7, id);
+            st.setString(7, update_date);
+            st.setString(8, id);
             update_flag = st.executeUpdate();
         } catch (Exception e) {
             DBUtils.rollback(connection);
@@ -225,15 +237,19 @@ public class CommodityDao {
 		int setflag = 0;
     	Connection connection = null;
     	PreparedStatement st = null;
+		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");   
+		String timeStr = sDateFormat.format(new Date());  
+    	String update_date = timeStr;
         
         StringBuffer sql = new StringBuffer();
-        sql.append(" update lc_commodity_details set commodity_imgurl = ? ");
+        sql.append(" update lc_commodity_details set commodity_imgurl = ?, update_date = ? ");
         sql.append(" WHERE commodity_id = ? and delete_flag = '0'");
         try {
             connection = DBUtils.getConnection();
             st = connection.prepareStatement(sql.toString());
             st.setString(1, url);
-            st.setString(2, commodity_id);
+            st.setString(2, update_date);
+            st.setString(3, commodity_id);
             setflag = st.executeUpdate();
         } catch (Exception e) {
             DBUtils.rollback(connection);
@@ -256,11 +272,14 @@ public class CommodityDao {
     	Connection connection = null;
     	PreparedStatement st = null;
     	int insertNum = -1;
+		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");   
+		String timeStr = sDateFormat.format(new Date());  
+    	String create_date = timeStr;
     	
         StringBuffer sql = new StringBuffer();
         sql.append(" insert into lc_commodity_details (commodity_id, commodity_name");
-        sql.append(" , commodity_pay, commodity_num, commodity_type, commodity_use_flag, commodity_comment)");
-        sql.append(" values(?, ?, ?, ?, ?, ?, ?) ");
+        sql.append(" , commodity_pay, commodity_num, commodity_type, commodity_use_flag, commodity_comment, create_date)");
+        sql.append(" values(?, ?, ?, ?, ?, ?, ?, ?) ");
         try {
             connection = DBUtils.getConnection();
             st = connection.prepareStatement(sql.toString());
@@ -271,6 +290,7 @@ public class CommodityDao {
             st.setString(5, type);
             st.setString(6, use_flag);
             st.setString(7, comment);
+            st.setString(8, create_date);
             insertNum = st.executeUpdate();
         } catch (Exception e) {
             DBUtils.rollback(connection);

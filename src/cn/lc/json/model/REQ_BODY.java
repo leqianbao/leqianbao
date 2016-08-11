@@ -61,7 +61,9 @@ public class REQ_BODY {
 	//积分支付
 	private long integral;
 	
-
+	//查询第一页时间
+	private String search_date;
+	
 	public String getOrder_commodity_id() {
 		return order_commodity_id;
 	}
@@ -296,6 +298,12 @@ public class REQ_BODY {
     public void setFeedback_content(String feedback_content) {
         this.feedback_content = feedback_content;
     }
+	public String getSearch_date() {
+		return search_date;
+	}
+	public void setsearch_date(String search_date) {
+		this.search_date = search_date;
+	}
 	
 
 
