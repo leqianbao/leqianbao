@@ -85,16 +85,19 @@ public class AddressManagerServlet extends HttpServlet {
 			map.put(Const.MSG_KEY, Const.ADDRESS_NAME_ERROR);
 			return map;
 		}
+		
 		if (TextUtils.isEmpty(request.getAddress_phone())) {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ADDRESS_PHONE_ERROR);
 			return map;
 		}
+		
 		if (TextUtils.isEmpty(request.getAddress())) {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ADDRESS_ADDRESS_ERROR);
 			return map;
 		}
+		
 		boolean back = addressDao.addAddress(request.getUser_id(),
 				request.getAddress(), request.getUser_phone(),
 				request.getUser_name());
