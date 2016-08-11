@@ -9,11 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cn.lc.beans.Commodity;
 import cn.lc.dao.CommodityDao;
 
 /**
- * Servlet implementation class DoCommodityDetail
+ * class DoCommodityDetail
  */
 @WebServlet("/doCommodityDetail")
 public class DoCommodityDetailServlet extends HttpServlet {
@@ -62,15 +61,22 @@ public class DoCommodityDetailServlet extends HttpServlet {
 			if(commodity_id != null && !(commodity_id.trim().equals(""))){
 				update = dao.updateCommodity(commodity_id, name, pay,
 							num, use_flag, type, comment);
+
+				if(update){
+					String path = request.getContextPath();
+		            String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		            response.sendRedirect(basePath+"/pt/doCommodity?tag=edit&commodity_id="+commodity_id);
+				}
 			}else if(commodity_id == null || commodity_id.trim().equals("")){
 				commodity_id = getCommodityId();
 				update = dao.createCommodity(commodity_id, name, pay,
 						num, use_flag, type, comment);
-			}
-			if(update){
-				String path = request.getContextPath();
-	            String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-	            response.sendRedirect(basePath+"/pt/doCommodity?tag=edit");
+
+				if(update){
+					String path = request.getContextPath();
+		            String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		            response.sendRedirect(basePath+"/pt/doCommodity?tag=edit");
+				}
 			}
 		}
 	}

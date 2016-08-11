@@ -3,6 +3,7 @@ package cn.lc.pt.servlet;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
@@ -54,7 +55,7 @@ public class DoFileUploadServlet extends HttpServlet {
 		//   图片上传路径
 		String uploadPath =request.getSession().getServletContext().getRealPath("/")+"upload/images/"+commodity_id+"/";
 		//   图片网络相对路径
-		String imagePath=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
+		String imagePath=request.getScheme()+"://"+InetAddress.getLocalHost().getHostAddress()+":"+request.getServerPort()+request.getContextPath()+"/";
 		//   文件夹不存在就自动创建：
 		deleteDir(new File(uploadPath));
 	    if(!new File(uploadPath).isDirectory()){

@@ -11,6 +11,8 @@ public class Commodity {
     private String commodity_use_flag; //商品出售状态
     private String commodity_comment; //商品简介
     private String delete_flag;//停用标记
+    private String create_date;//创建时间
+    private String update_date;//更新时间
     
     public Commodity(){
     	
@@ -81,6 +83,30 @@ public class Commodity {
 	}
 	public void setdDelete_flag(String delete_flag) {
 		this.delete_flag = delete_flag;
+	}
+
+	public String getDelete_flag() {
+		return delete_flag;
+	}
+
+	public void setDelete_flag(String delete_flag) {
+		this.delete_flag = delete_flag;
+	}
+
+	public String getCreate_date() {
+		return create_date;
+	}
+
+	public void setCreate_date(String create_date) {
+		this.create_date = create_date;
+	}
+
+	public String getUpdate_date() {
+		return update_date;
+	}
+
+	public void setUpdate_date(String update_date) {
+		this.update_date = update_date;
 	}
 
 }
