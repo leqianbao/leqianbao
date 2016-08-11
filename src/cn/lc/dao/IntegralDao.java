@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,32 @@ import cn.lc.beans.UserOrder;
 
 public class IntegralDao {
 	QueryRunner qR = new QueryRunner();
+	
+	
+	/**
+	 * 当用户没有数据时，插入一条积分为0的数据
+	 * 
+	 * @param userId
+	 *            用户id
+	 * @return
+	 */
+	public void initIntegral(int userId) {
+		Connection connection = null;
+		try {
+			connection = DBUtils.getConnection();
+			String sql = "INSERT INTO user_integral(user_id,user_integral,update_date) VALUES(?,?,?)";
+			DBUtils.beginTx(connection);
+			qR.update(connection, sql, userId,0,new Timestamp(System.currentTimeMillis()));
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		} finally {
+			DBUtils.releaseDB(null, null, connection);
+		}
+		return;
+	}
+	
+	
 
 	/**
 	 * 获取当前的积分
@@ -25,15 +52,19 @@ public class IntegralDao {
 	 *            用户id
 	 * @return
 	 */
-	public IntegralBean getCurrentIntegral(String userId) {
+	public IntegralBean getCurrentIntegral(int userId) {
 		Connection connection = null;
 		IntegralBean intergralBean = null;
 		try {
 			connection = DBUtils.getConnection();
 			String sql = "SELECT user_integral FROM lc_user_intergral WHERE user_id=?";
+			String initSql="INSERT INTO user_integral(user_id,user_integral,update_date) VALUES(?,?,?)";
 			DBUtils.beginTx(connection);
 			intergralBean = qR.query(connection, sql,
 					new BeanHandler<IntegralBean>(IntegralBean.class), userId);
+			if(intergralBean==null){
+				
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			DBUtils.rollback(connection);
@@ -52,7 +83,7 @@ public class IntegralDao {
 	 * @param integral
 	 * @return
 	 */
-	public boolean payIntegral(String userId, int integral,String comment) {
+	public boolean payIntegral(int userId, int integral,String comment) {
 		boolean result = false;
 		Connection connection = null;
 		IntegralBean intergralBean = null;
@@ -66,10 +97,10 @@ public class IntegralDao {
 			intergralBean = qR.query(connection, getIntegral,
 					new BeanHandler<IntegralBean>(IntegralBean.class), userId);
 			int row = qR.update(connection, updateIntegral,
-					intergralBean.getUser_integral() - integral, new Date(),
+					intergralBean.getUser_integral() - integral, new Timestamp(System.currentTimeMillis()),
 					userId);
 			if (row > 0) {
-				qR.update(connection, addRecord, userId, integral, new Date(),
+				qR.update(connection, addRecord, userId, integral, new Timestamp(System.currentTimeMillis()),
 						comment, 1);
 				DBUtils.commit(connection);
 				result = true;
@@ -96,7 +127,7 @@ public class IntegralDao {
 	 *            充值的积分
 	 * @return
 	 */
-	public boolean rechargeIntegral(String userId, int integral, String comment) {
+	public boolean rechargeIntegral(int userId, int integral, String comment) {
 		boolean result = false;
 		Connection connection = null;
 		try {

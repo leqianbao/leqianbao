@@ -34,7 +34,7 @@ public class AddressDao {
 
 		try {
 			connection = DBUtils.getConnection();
-			String sql = "INSERT INTO lc_user_address VALUES(?,?,?,?)";
+			String sql = "INSERT INTO  lc_user_address(user_id,address_address,address_phone,address_name) VALUES(?,?,?,?)";
 			DBUtils.beginTx(connection);
 			int row = qR.update(connection, sql, userId, address, phone, name);
 			if (row > 0) {

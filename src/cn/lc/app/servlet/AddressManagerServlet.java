@@ -51,11 +51,11 @@ public class AddressManagerServlet extends HttpServlet {
 		case 0:// 新增
 			map = addAddress(reqBody);
 			break;
-		case 1:// 修改
-			map = deleteAddress(reqBody.getAddress_id());
+		case 1:// 修改	
+			map = updateAddress(reqBody);
 			break;
 		case 2:// 删除
-			map = updateAddress(reqBody);
+			map = deleteAddress(reqBody.getAddress_id());
 			break;
 		}
 		PrintWriter writer = response.getWriter();
@@ -99,8 +99,8 @@ public class AddressManagerServlet extends HttpServlet {
 		}
 		
 		boolean back = addressDao.addAddress(request.getUser_id(),
-				request.getAddress(), request.getUser_phone(),
-				request.getUser_name());
+				request.getAddress(), request.getAddress_phone(),
+				request.getAddress_name());
 		if (back) {
 			map.put(Const.CODE_KEY, Const.CODE_SUCESS);
 			map.put(Const.MSG_KEY, Const.ADDRESS_ADD_SUCESS);
