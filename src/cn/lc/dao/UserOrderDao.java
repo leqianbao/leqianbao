@@ -87,7 +87,45 @@ public class UserOrderDao {
 		}
 		return result;
 	}
-	
+	// @APP--分页查询
+	public Pager<UserOrder> getUserOrderPagerByUserId(int userId, int pageNum, int pageSize) {
+		Pager<UserOrder> result = null;
+		// 存放查询参数
+		Connection connection = null;
+		StringBuilder sql = new StringBuilder("SELECT * FROM lc_user_order_details where user_id = ?");
+		StringBuilder countSql = new StringBuilder(
+				"SELECT  count(id) as totalRecord FROM lc_user_order_details WHERE user_id = ?");
+		// 存放查询参数
+		List<Object> paramList = new ArrayList<Object>();
+
+		long totalRecord = 0;
+		// 起始索引
+		long fromIndex = pageSize * (pageNum - 1);
+		// 使用limit关键字，实现分页
+		sql.append(" order by create_date desc   limit " + fromIndex + ", " + pageSize);
+		List<UserOrder> msgList = new ArrayList<UserOrder>();
+		try {
+			connection = DBUtils.getConnection();
+			DBUtils.beginTx(connection);
+			// 获取总记录数
+			totalRecord = (Long) (Number) qR.query(connection, countSql.toString(), scalarHandler, userId);
+			// 获取查询的消息记录
+			msgList = qR.query(connection, sql.toString(), new BeanListHandler<UserOrder>(UserOrder.class), userId);
+			// 获取总页数
+			long totalPage = totalRecord / pageSize;
+			if (totalRecord % pageSize != 0) {
+				totalPage++;
+			}
+			// 组装pager对象
+			result = new Pager<UserOrder>(pageSize, pageNum, totalRecord, totalPage, msgList);
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		} finally {
+			DBUtils.releaseDB(null, null, connection);
+		}
+		return result;
+	}
 	// @PT--获取订单详细信息
 	public UserOrder getUserOrderById(long id){
 		// 存放查询参数
@@ -149,6 +187,31 @@ public class UserOrderDao {
 			if(isSuccess==1){
 				DBUtils.commit(connection);
 				result = true;
+			} else{
+				DBUtils.rollback(connection);
+				result = false;
+			}
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		} finally{
+			DBUtils.releaseDB(null, null, connection);
+		}
+		return result;
+	}
+	//@APP--修改订单状态
+	public boolean modifyOrderState (UserOrder userOrder){
+		boolean  result = false;
+		Connection connection = null;
+		try {
+			String sql ="";
+			connection = DBUtils.getConnection();
+			sql = "UPDATE  lc_user_order_details SET end_date=?,order_state=? WHERE id=?";
+			DBUtils.beginTx(connection);
+			int isSuccess = qR.update(connection,sql,userOrder.getEnd_date(),userOrder.getOrder_state(),userOrder.getId().intValue());
+			if(isSuccess==1){
+			DBUtils.commit(connection);
+			result = true;
 			} else{
 				DBUtils.rollback(connection);
 				result = false;

@@ -18,8 +18,16 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   <servlet>
+    <servlet-name>ConfirmReceiptServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.ConfirmReceiptServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>GoodsOrderServlet</servlet-name>
     <servlet-class>cn.lc.app.servlet.GoodsOrderServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>GetOrderListServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.GetOrderListServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>UserLoginServlet</servlet-name>
@@ -161,9 +169,17 @@
     <servlet-name>DoUserOrderDetailServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.DoUserOrderDetailServlet</servlet-class>
   </servlet>
-   <servlet-mapping>
+  <servlet-mapping>
     <servlet-name>GoodsOrderServlet</servlet-name>
     <url-pattern>/app/goodsorder</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetOrderListServlet</servlet-name>
+    <url-pattern>/app/getorderlist</url-pattern>
+  </servlet-mapping>  
+    <servlet-mapping>
+    <servlet-name>ConfirmReceiptServlet</servlet-name>
+    <url-pattern>/app/confirmreceipt</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>UserLoginServlet</servlet-name>

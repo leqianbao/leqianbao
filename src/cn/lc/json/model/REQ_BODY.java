@@ -56,12 +56,26 @@ public class REQ_BODY {
 	private String order_commodity_id;  //下单商品ID
 	private String order_commodity_num;   //下单商品数量
 	private String order_address_id;    //下单收货地址
+	private String user_order_id;     //用户订单ID
+	private String order_state;		//订单状态
 	
 	
 	//积分支付
 	private long integral;
 	
 
+	public String getUser_order_id() {
+		return user_order_id;
+	}
+	public void setUser_order_id(String user_order_id) {
+		this.user_order_id = user_order_id;
+	}
+	public String getOrder_state() {
+		return order_state;
+	}
+	public void setOrder_state(String order_state) {
+		this.order_state = order_state;
+	}
 	public String getOrder_commodity_id() {
 		return order_commodity_id;
 	}
