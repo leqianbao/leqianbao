@@ -102,6 +102,10 @@
     <servlet-class>cn.lc.app.servlet.FetchCashListServlet</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>CommodityListServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.CommodityListServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>GetCodeServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.GetCodeServlet</servlet-class>
   </servlet>
@@ -240,6 +244,10 @@
   <servlet-mapping>
     <servlet-name>FetchCashListServlet</servlet-name>
     <url-pattern>/app/fetchcashlist</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CommodityListServlet</servlet-name>
+    <url-pattern>/app/commodityListServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>GetCodeServlet</servlet-name>

@@ -2,8 +2,6 @@ package cn.lc.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +21,7 @@ public class CommodityDao {
 
         Connection connection = null;
         List<Commodity> list = null;
+        List<Commodity> allList = null;
         
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT * FROM lc_commodity_details WHERE 1=1 and delete_flag = '0' ");
@@ -70,7 +69,12 @@ public class CommodityDao {
             connection = DBUtils.getConnection();
             DBUtils.beginTx(connection);
             // 获取总记录数
-            totalRecord =(Integer)qR.query(connection,sql2.toString(),new BeanListHandler<Commodity>(Commodity.class), paramStr).size();
+            allList = qR.query(connection,sql2.toString(),new BeanListHandler<Commodity>(Commodity.class), paramStr);
+            if(allList == null){
+            	totalRecord = 0;
+            }else{
+            	totalRecord = allList.size();
+            }
             list = qR.query(connection, sql.toString(), new BeanListHandler<Commodity>(Commodity.class), paramStr);
             long totalPage = totalRecord / pageRows;
             if(totalRecord % pageRows !=0){
@@ -90,24 +94,46 @@ public class CommodityDao {
     /**
      * 获取所有的商品信息
      * */
-    public List<Commodity> getAllCommodity(){
-    	List<Commodity> commodityList = new ArrayList<Commodity>();
+    public Pager<Commodity> getAppPageCommodity(Integer pageNum, Integer pageSize){
+    	Pager<Commodity> commodityPage = new Pager<Commodity>(0,0,0,0,null);
+        List<Commodity> commodityList = new ArrayList<Commodity>();
+        List<Commodity> commodityAllList = new ArrayList<Commodity>();
+    	
         Connection connection = null;
+        StringBuffer sql2 = new StringBuffer();
+        sql2.append("SELECT commodity_id, commodity_name, commodity_pay, commodity_imgurl");
+        sql2.append(" FROM lc_commodity_details WHERE delete_flag = '0' and commodity_use_flag = '0'");
+        
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT commodity_id, commodity_name, commodity_pay, commodity_imgurl");
         sql.append(" FROM lc_commodity_details WHERE delete_flag = '0' and commodity_use_flag = '0'");
+        long fromIndex  = pageSize * (pageNum -1); 
+        sql.append(" limit " + fromIndex + ", " + pageSize);
+        long totalRecord  = 0;
         try {
             connection = DBUtils.getConnection();
             DBUtils.beginTx(connection);
             // 获取总记录数
+            commodityAllList = qR.query(connection, sql.toString(), new BeanListHandler<Commodity>(Commodity.class));;
+            if(commodityAllList == null){
+            	totalRecord = 0;
+            }else{
+            	totalRecord = commodityAllList.size();
+            }
             commodityList = qR.query(connection, sql.toString(), new BeanListHandler<Commodity>(Commodity.class));
+            // 组装pager对象
+            long totalPage = totalRecord / pageSize;
+            if(totalRecord % pageSize !=0){
+                totalPage++;
+            }
+            commodityPage = new Pager<Commodity>(pageSize, pageNum, totalRecord, totalPage, commodityList);
         } catch (Exception e) {
             DBUtils.rollback(connection);
             e.printStackTrace();
         } finally {
             DBUtils.releaseDB(null, null, connection);
         }
-    	return commodityList;
+    	return commodityPage;
     }
     /**
      * 根据指定id查询商品信息
