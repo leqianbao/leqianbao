@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -72,5 +74,14 @@ public class DataUtil {
         Matcher matcher = pattern.matcher(string);
         return matcher.matches();
     }
-
+    public static String generateOrderNo(int user_id){
+    	Date date = new Date();
+    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+    	String time = simpleDateFormat.format(date);
+    	String userId = String.valueOf(user_id);
+    	if(userId.length() <= 8) {
+    		userId = String.format("%08d", user_id);
+    	}
+    	return userId + time;
+    }
 }

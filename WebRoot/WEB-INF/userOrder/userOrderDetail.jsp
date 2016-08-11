@@ -79,24 +79,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    <form action="<%=path %>/pt/doUserOrderDetail"   id="stuForm"  method="post">
 	    	<input type="hidden" name="tag" value="save" />
 	    	<input type="hidden" name="id" value="${result.id}" />
-	    	<input type="hidden" name="logistics_number" value="${result.logistics_number}" />
-	    	<input type="hidden" name="order_state" value="${result.order_state}" />
 	    	<ul class="forminfo">
 	    		<li>
 	    			<label>订单号</label>
-	    			<input name="order_no" disabled="disabled" value="${result.order_no}" type="text" class="dfinput" />
+	    			<input class="disable-input" name="order_no" disabled="disabled" value="${result.order_no}" type="text"/>
 	    		</li>
 	    		<li>
 	    			<label>创建时间</label>
-	    			<input name="create_date" disabled="disabled" value="${result.create_date}" type="text" class="dfinput" />
+	    			<input class="disable-input" name="create_date" disabled="disabled" value="${result.create_date}" type="text"/>
 	    		</li>
 	    		<li>
 	    			<label>物流单号</label>
-	    			<c:if test="${result.logistics_number != ''}">
-	    				<input name="logistics_number" value="${result.logistics_number}" type="text" class="dfinput"/>
+	    			<c:if test="${result.logistics_number == '' || result.logistics_number == null }">
+	    				<input class="dfinput" name="logistics_number" value="${result.logistics_number}" type="text"/>
 	    			</c:if>
-	    			<c:if test="${result.logistics_number == ''}">
-	    				<input name="logistics_number" value="${result.logistics_number}" disabled="disabled" type="text" class="dfinput" />
+	    			<c:if test="${result.logistics_number != '' && result.logistics_number != null }">
+	    				<input class="disable-input" name="logistics_number" value="${result.logistics_number}" disabled="disabled" type="text" />
 	    			</c:if>	    			
 	    			<i>请务必准确核实</i>
 	    		</li>
@@ -109,17 +107,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    		</li>
 	    		<li>
 	    			<label>收货人</label>
-	    			<input name="address_name" disabled="disabled" value="${result.address_name}" type="text" class="dfinput" />
+	    			<input class="disable-input" name="address_name" disabled="disabled" value="${result.address_name}" type="text"/>
 	    		</li>
 	    		<li>
 	    			<label>联系方式</label>
-	    			<input name="address_phone" disabled="disabled" value="${result.address_phone}" type="text" class="dfinput" />
+	    			<input class="disable-input" name="address_phone" disabled="disabled" value="${result.address_phone}" type="text"/>
 	    		</li>
 	    		<li>
 	    			<label>收货地址</label>
-	    			<input name="address_addres" disabled="disabled" value="${result.address_addres}" type="text" class="dfinput" />
+	    			<input class="disable-input" name="address_addres" disabled="disabled" value="${result.address_addres}" type="text"/>
 	    		</li>	    		
-	        	<li><label>&nbsp;</label><input type="submit" class="btn" value="确认保存"/></li>
+	        	<li><label>&nbsp;</label>
+	    			<c:if test="${tag == 'edit'}">
+	        			<input type="submit" class="btn" value="确认保存"/>
+	    			</c:if>	
+	    			<c:if test="${tag == 'check'}">
+	        			<input class="disable-btn" value="确认保存"/>
+	    			</c:if>	  	    			        		
+	        	</li>
 	      	</ul>
 	    </form>
      </div>

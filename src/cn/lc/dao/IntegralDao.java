@@ -13,6 +13,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import cn.lc.beans.IntegralBean;
+import cn.lc.beans.UserOrder;
 
 public class IntegralDao {
 	QueryRunner qR = new QueryRunner();
@@ -51,7 +52,7 @@ public class IntegralDao {
 	 * @param integral
 	 * @return
 	 */
-	public boolean payIntegral(String userId, long integral,String comment) {
+	public boolean payIntegral(String userId, int integral,String comment) {
 		boolean result = false;
 		Connection connection = null;
 		IntegralBean intergralBean = null;
@@ -65,7 +66,7 @@ public class IntegralDao {
 			intergralBean = qR.query(connection, getIntegral,
 					new BeanHandler<IntegralBean>(IntegralBean.class), userId);
 			int row = qR.update(connection, updateIntegral,
-					intergralBean.getUsr_intergral() - integral, new Date(),
+					intergralBean.getUser_integral() - integral, new Date(),
 					userId);
 			if (row > 0) {
 				qR.update(connection, addRecord, userId, integral, new Date(),
@@ -95,7 +96,7 @@ public class IntegralDao {
 	 *            充值的积分
 	 * @return
 	 */
-	public boolean rechargeIntegral(String userId, long integral, String comment) {
+	public boolean rechargeIntegral(String userId, int integral, String comment) {
 		boolean result = false;
 		Connection connection = null;
 		try {
@@ -111,7 +112,7 @@ public class IntegralDao {
 			intergralBean = qR.query(connection, getIntegral,
 					new BeanHandler<IntegralBean>(IntegralBean.class), userId);
 			int row = qR.update(connection, updateIntegral,
-					intergralBean.getUsr_intergral() + integral, new Date(),
+					intergralBean.getUser_integral() + integral, new Date(),
 					userId);
 			if (row > 0) {
 				qR.update(connection, addRecord, userId, integral, new Date(),
@@ -131,4 +132,47 @@ public class IntegralDao {
 		return result;
 	}
 
+	
+	//@app--根据用户ID获取相应的积分信息
+	public IntegralBean getUserIntergralById(int userId){
+		Connection connection = null;
+		IntegralBean integralBean = null;
+		try {
+			connection = DBUtils.getConnection();
+			String sql = "SELECT * FROM lc_user_intergral WHERE user_id = ?";
+			DBUtils.beginTx(connection);
+			integralBean = qR.query(connection,sql,new BeanHandler<IntegralBean>(IntegralBean.class),userId);
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		} finally{
+			DBUtils.releaseDB(null, null, connection);
+		}
+    	return integralBean;
+	}
+	//@APP--插入积分数据
+	public boolean insertUserIntegral(IntegralBean integralBean){
+		boolean  result = false;
+		Connection connection = null;
+		try {
+			connection = DBUtils.getConnection();
+			String sql = "INSERT INTO lc_user_intergral (user_id,user_integral,update_date) VALUES (?,?,?)";
+			DBUtils.beginTx(connection);
+			int isSuccess = qR.update(connection,sql,integralBean.getUser_id(),
+					integralBean.getUser_integral(),integralBean.getUpdate_date());
+			if(isSuccess==1){
+				DBUtils.commit(connection);
+				result = true;
+			} else{
+				DBUtils.rollback(connection);
+				result = false;
+			}
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		} finally{
+			DBUtils.releaseDB(null, null, connection);
+		}
+		return result;
+	}
 }

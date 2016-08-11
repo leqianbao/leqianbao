@@ -52,6 +52,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 	</style>
 	<script>
+		$(document).ready(function(e) {
+			if(!'${result.commodity_id}'){
+				$(".placeul").children().eq(2).find("span").find("a").html("新增商品");
+				$(".placeul").children().eq(1).remove();
+			}
+		});
 		var tapFlag = false;
 		function inputFile($this){
 			 $this = $($this);
@@ -108,6 +114,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             )
             return false;
         }
+		function checkValue(){
+			var r = new RegExp("^\\d+$");
+			var r2 = new RegExp("^[0-9]*[1-9][0-9]*$");
+			if((!(r.test($("#pay_num").val())) 
+					&& !(r2.test($("#pay_num").val())))
+						|| ($("#pay_num").val() > 2147483647)){
+				alert("请输入正确的价格！");
+				return false;
+			}
+			if((!(r.test($("#com_num").val())) 
+					&& !(r2.test($("#com_num").val())))
+						|| ($("#com_num").val() > 2147483647)){
+				alert("请输入正确的数量！");
+				return false;
+			}
+			return true;
+		}
 	</script>
   </head>
   
@@ -134,22 +157,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     <div class="formbody">
     	<div class="formtitle"><span>商品详细信息</span></div>
-	    <form action="<%=path %>/pt/doCommodityDetail"   id="stuForm"  method="post">
-	    	<input type="hidden" name="tag" value="add" />
+	    <form action="<%=path %>/pt/doCommodityDetail" id="stuForm" method="post" onsubmit="return checkValue()">
+	    	<input type="hidden" name="tag" value="add"/>
 	    	<input type="hidden" name="commodity_id" value="${result.commodity_id}" />
 	    	<ul class="forminfo">
 	    		<li>
 	    			<label>商品名称</label>
-	    			<input name="commodity_name" value="${result.commodity_name}" type="text" class="dfinput" />
+	    			<input name="commodity_name" value="${result.commodity_name}" maxlength="50" type="text" class="dfinput" />
 	    		</li>
 	    		<li>
 	    			<label>商品价格（积分）</label>
-	    			<input name="commodity_pay" value="${result.commodity_pay}" type="text" class="dfinput" />
+	    			<input id="pay_num" name="commodity_pay" value="${result.commodity_pay}" maxlength="10" type="text" class="dfinput" />
 	    			<i>积分价格为正整数</i>
 	    		</li>
 	    		<li>
 	    			<label>商品数量</label>
-	    			<input name="commodity_num" value="${result.commodity_num}" type="text" class="dfinput" />
+	    			<input id="com_num" name="commodity_num" value="${result.commodity_num}" maxlength="10" type="text" class="dfinput" />
 	    			<i>商品数量为正整数</i>
 	    		</li>
 	    		<li>

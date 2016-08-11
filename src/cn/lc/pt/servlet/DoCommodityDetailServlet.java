@@ -70,7 +70,7 @@ public class DoCommodityDetailServlet extends HttpServlet {
 			if(update){
 				String path = request.getContextPath();
 	            String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-	            response.sendRedirect(basePath+"/pt/doCommodity?tag=edit&commodity_id="+commodity_id);
+	            response.sendRedirect(basePath+"/pt/doCommodity?tag=edit");
 			}
 		}
 	}

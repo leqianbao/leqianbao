@@ -133,5 +133,32 @@ public class UserOrderDao {
 		}
 		return result;
 	}
-	
+	//@APP--插入积分数据
+	public boolean insertUserOrder(UserOrder userOrder){
+		boolean  result = false;
+		Connection connection = null;
+		try {
+			connection = DBUtils.getConnection();
+			String sql = "INSERT INTO lc_user_order_details (user_id,order_no,commodity_id,commodity_num,create_date,end_date,order_state,logistics_number,receipt_address_id) VALUES (?,?,?,?,?,?,?,?,?)";
+			DBUtils.beginTx(connection);
+			int isSuccess = qR.update(connection,sql,userOrder.getUser_id(),
+					userOrder.getOrder_no(),userOrder.getCommodity_id(),
+					userOrder.getCommodity_num(),userOrder.getCreate_date(),
+					userOrder.getEnd_date(),userOrder.getOrder_state(),
+					userOrder.getLogistics_number(),userOrder.getReceipt_address_id());
+			if(isSuccess==1){
+				DBUtils.commit(connection);
+				result = true;
+			} else{
+				DBUtils.rollback(connection);
+				result = false;
+			}
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		} finally{
+			DBUtils.releaseDB(null, null, connection);
+		}
+		return result;
+	}
 }

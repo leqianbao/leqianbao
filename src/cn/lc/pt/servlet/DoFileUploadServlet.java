@@ -17,6 +17,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import cn.lc.dao.CommodityDao;
+
 /**
  * Servlet implementation class DoFileUpload
  */
@@ -45,6 +47,7 @@ public class DoFileUploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8"); 
 		response.setContentType("text/html;charset=utf-8"); 
+		CommodityDao dao = new CommodityDao();
         PrintWriter out = response.getWriter();
 	    //商品id
 	    String commodity_id = request.getParameter("commodity_id");
@@ -108,8 +111,13 @@ public class DoFileUploadServlet extends HttpServlet {
 	    		   }
 	    		   File f1=new File(uploadPath+ destinationfileName);
 	    		   file.write(f1);
+	    		   boolean setImg = dao.setCommodityImg(commodity_id, "upload/images/"+commodity_id+"/"+destinationfileName);
 	    		   String pathEnd = imagePath.split("http:")[1]+"upload/images/"+commodity_id+"/"+destinationfileName;
-	               json.append("uploadMsg:").append("图片上传成功！").append(",");
+	    		   if(setImg){
+		               json.append("uploadMsg:").append("图片上传成功！").append(",");
+	    		   }else{
+	    			   json.append("uploadMsg:").append("图片上传失败！").append(",");
+	    		   }
 	               json.append("commodity_img_url:").append(pathEnd);
 	    	   }else{
 	               json.append("uploadMsg:").append("上传文件出错，只能上传 *.jpg , *.png, *.jpeg格式图片文件！");

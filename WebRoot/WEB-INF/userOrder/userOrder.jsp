@@ -116,14 +116,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td>
 								<span>
 									<c:if test="${userOrder.order_state eq 3 }">
-										<label class="gray">编辑</label>
+										<c:url value="/pt/doUserOrder" var="handler">
+											<c:param name="tag" value="check"/>
+											<c:param name="id" value="${userOrder.id}"/>
+										</c:url>				
+										<a class="gray" href="${handler}">查看</a>
 									</c:if>
 									<c:if test="${userOrder.order_state lt 3 }">
 										<c:url value="/pt/doUserOrder" var="handler">
 											<c:param name="tag" value="edit"/>
 											<c:param name="id" value="${userOrder.id}"/>
 										</c:url>									
-										<a class="red" href=${handler} }>编辑</a>
+										<a class="red" href="${handler}">编辑</a>
 									</c:if>									
 								</span>
 							</td>						

@@ -10,6 +10,7 @@ public class Commodity {
     private String commodity_type; //商品出售状态
     private String commodity_use_flag; //商品出售状态
     private String commodity_comment; //商品简介
+    private String delete_flag;//停用标记
     
     public Commodity(){
     	
@@ -74,6 +75,12 @@ public class Commodity {
 	}
 	public void setCommodity_comment(String commodity_comment) {
 		this.commodity_comment = commodity_comment;
+	}
+	public String getdDelete_flag() {
+		return delete_flag;
+	}
+	public void setdDelete_flag(String delete_flag) {
+		this.delete_flag = delete_flag;
 	}
 
 }

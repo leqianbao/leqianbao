@@ -77,7 +77,7 @@ public class DoUserOrderServlet extends HttpServlet{
                 //根据商品ID，获取各个订单中的商品名称
             	String commodity_id = userOrder.getCommodity_id();
             	CommodityDao commodityDao = new CommodityDao();
-            	Commodity commodity = commodityDao.getCommodityById(commodity_id);
+            	Commodity commodity = commodityDao.getCommodity(commodity_id);
             	String commodity_name = "";
             	if(commodity != null) {
             		commodity_name = commodity.getCommodity_name();
@@ -116,18 +116,20 @@ public class DoUserOrderServlet extends HttpServlet{
             request.setAttribute("order_no", order_no);
             request.setAttribute("create_date", create_date);
             request.getRequestDispatcher("/WEB-INF/userOrder/userOrder.jsp").forward(request, response);
-		} else if(tag.equals("edit")) {
+		} else if(tag.equals("edit") || tag.equals("check")) {
 			long id = Long.valueOf(request.getParameter("id"));
 			UserOrderDao userOrderDao = new UserOrderDao();
 			UserAddressDao userAddressDao = new UserAddressDao();
 			UserOrder userOrder = userOrderDao.getUserOrderById(id);
 			if(userOrder.getReceipt_address_id() != 0) {
-				UserAddress userAddress = userAddressDao.getUserAddressById(id);
+				long addressId = userOrder.getReceipt_address_id();
+				UserAddress userAddress = userAddressDao.getUserAddressById(addressId);
 				userOrder.setAddress_addres(userAddress.getAddress_addres());
 				userOrder.setAddress_name(userAddress.getAddress_name());
 				userOrder.setAddress_phone(userAddress.getAddress_phone());
 			}
             request.setAttribute("result", userOrder);
+            request.setAttribute("tag", tag);
 			request.getRequestDispatcher("/WEB-INF/userOrder/userOrderDetail.jsp").forward(request, response);
 		}
 		
