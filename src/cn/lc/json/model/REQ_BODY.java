@@ -61,7 +61,25 @@ public class REQ_BODY {
 	
 	
 	//积分支付
-	private long integral;
+	private int integral;
+	private String comment;
+	
+	public int getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+	public int getPageNum() {
+		return pageNum;
+	}
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
+	//获取积分列表
+	private int integral_state;//0:全部；1:收入，2：支出
+	private int pageSize;
+	private int pageNum;
 	
 
 	public String getUser_order_id() {
@@ -94,10 +112,10 @@ public class REQ_BODY {
 	public void setOrder_address_id(String order_address_id) {
 		this.order_address_id = order_address_id;
 	}
-	public long getIntegral() {
+	public int getIntegral() {
 		return integral;
 	}
-	public void setIntegral(long integral) {
+	public void setIntegral(int integral) {
 		this.integral = integral;
 	}
 	public int getAddress_id() {
@@ -310,6 +328,18 @@ public class REQ_BODY {
     public void setFeedback_content(String feedback_content) {
         this.feedback_content = feedback_content;
     }
+	public int getIntegral_state() {
+		return integral_state;
+	}
+	public void setIntegral_state(int state) {
+		this.integral_state = state;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 	
 
 

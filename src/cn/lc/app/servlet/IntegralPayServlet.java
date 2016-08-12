@@ -39,13 +39,19 @@ public class IntegralPayServlet extends HttpServlet {
 		String date = DataUtil.readDateFromRequest(request.getInputStream());
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
-		long integral = reqBody.getIntegral();
-		IntegralBean integralBean = integralDao.getCurrentIntegral(
-					reqBody.getUser_id());
-		if (integralBean.getUsr_intergral() - integral >= 0) {
-			boolean back = integralDao.payIntegral(reqBody.getUser_id(),
-					integral);
+
+		int integral = reqBody.getIntegral();
+		String comment=reqBody.getComment();
+		IntegralBean integralBean = integralDao.getCurrentIntegral(Integer.parseInt(reqBody
+				.getUser_id()));
+		
+		if (integralBean.getUser_integral() - integral >= 0) {
+			boolean back = integralDao.payIntegral(Integer.parseInt(reqBody
+					.getUser_id()),
+					integral,comment);
+			
 			if (back) {
+				
 				map.put(Const.CODE_KEY, Const.CODE_SUCESS);
 				map.put(Const.MSG_KEY, Const.INTEGRAL_PAY_SUCESS);
 			} else {

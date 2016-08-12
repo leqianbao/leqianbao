@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.util.TextUtils;
 
 import cn.lc.dao.AddressDao;
+import cn.lc.json.model.REP_BODY;
 import cn.lc.json.model.REQ_BODY;
 import cn.lc.json.model.Root;
 import cn.lc.utils.Const;
@@ -49,15 +51,18 @@ public class AddressManagerServlet extends HttpServlet {
 		case 0:// 新增
 			map = addAddress(reqBody);
 			break;
-		case 1:// 修改
-			map = deleteAddress(reqBody.getAddress_id());
+		case 1:// 修改	
+			map = updateAddress(reqBody);
 			break;
 		case 2:// 删除
-			map = updateAddress(reqBody);
+			map = deleteAddress(reqBody.getAddress_id());
 			break;
 		}
 		PrintWriter writer = response.getWriter();
-		writer.write(DataUtil.addReqBody(map));
+		REP_BODY<Boolean> body=new REP_BODY<>();
+		body.RSPCOD=map.get(Const.CODE_KEY);
+		body.RSPMSG=map.get(Const.MSG_KEY);
+		writer.write(JSON.toJSONString(body));
 		writer.flush();
 		writer.close();
 	}
@@ -75,24 +80,27 @@ public class AddressManagerServlet extends HttpServlet {
 	private Map<String, String> addAddress(REQ_BODY request) {
 		Map<String, String> map = new HashMap<>();
 		AddressDao addressDao = new AddressDao();
-		if (StringUtils.isEmpty(request.getAddress_name())) {
+		if (TextUtils.isEmpty(request.getAddress_name())) {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ADDRESS_NAME_ERROR);
 			return map;
 		}
-		if (StringUtils.isEmpty(request.getAddress_phone())) {
+		
+		if (TextUtils.isEmpty(request.getAddress_phone())) {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ADDRESS_PHONE_ERROR);
 			return map;
 		}
-		if (StringUtils.isEmpty(request.getAddress())) {
+		
+		if (TextUtils.isEmpty(request.getAddress())) {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ADDRESS_ADDRESS_ERROR);
 			return map;
 		}
+		
 		boolean back = addressDao.addAddress(request.getUser_id(),
-				request.getAddress(), request.getUser_phone(),
-				request.getUser_name());
+				request.getAddress(), request.getAddress_phone(),
+				request.getAddress_name());
 		if (back) {
 			map.put(Const.CODE_KEY, Const.CODE_SUCESS);
 			map.put(Const.MSG_KEY, Const.ADDRESS_ADD_SUCESS);

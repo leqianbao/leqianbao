@@ -105,6 +105,19 @@
     <servlet-name>FetchCashServlet</servlet-name>
     <servlet-class>cn.lc.app.servlet.FetchCashServlet</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>AddressManagerServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.AddressManagerServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>IntegralPayServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.IntegralPayServlet</servlet-class>
+  </servlet>
+  
+  
+  
   <servlet>
     <servlet-name>FetchCashListServlet</servlet-name>
     <servlet-class>cn.lc.app.servlet.FetchCashListServlet</servlet-class>
@@ -121,6 +134,7 @@
     <servlet-name>DoLoginServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.DoLoginServlet</servlet-class>
   </servlet>
+  
   <servlet>
     <servlet-name>DoLogoutServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.DoLogoutServlet</servlet-class>
@@ -169,7 +183,13 @@
     <servlet-name>DoUserOrderDetailServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.DoUserOrderDetailServlet</servlet-class>
   </servlet>
-  <servlet-mapping>
+  
+  
+  
+  
+  
+  
+   <servlet-mapping>
     <servlet-name>GoodsOrderServlet</servlet-name>
     <url-pattern>/app/goodsorder</url-pattern>
   </servlet-mapping>
@@ -261,6 +281,18 @@
     <servlet-name>FetchCashListServlet</servlet-name>
     <url-pattern>/app/fetchcashlist</url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>AddressManagerServlet</servlet-name>
+    <url-pattern>/app/managerAddress</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>IntegralPayServlet</servlet-name>
+    <url-pattern>/app/payIntegral</url-pattern>
+  </servlet-mapping>
+  
+  
+  
   <servlet-mapping>
     <servlet-name>CommodityListServlet</servlet-name>
     <url-pattern>/app/commodityListServlet</url-pattern>
@@ -321,6 +353,7 @@
     <servlet-name>DoUserOrderDetailServlet</servlet-name>
     <url-pattern>/pt/doUserOrderDetail</url-pattern>
   </servlet-mapping> 
+  
   <welcome-file-list>
     <welcome-file>login.jsp</welcome-file>
   </welcome-file-list>
