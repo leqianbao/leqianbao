@@ -245,6 +245,19 @@ $(function(){
 			 </c:forEach> 
 	    </ul>
     </dd> 
+    <dd>
+    	<div class="title"><span><img src="jsp/images/leftico04.png" /></span>积分汇率管理</div>
+	    <ul class="menuson">
+	    	 <c:forEach items="${sessionScope.rightList}" var="right">
+				<c:if test="${right=='AA'}">
+					 <c:url value="/pt/doIntegralRate" var="queryRate">
+						<c:param name="tag" value="query"/>
+					</c:url>
+	         		<li><cite></cite><a href="${queryRate}" target="rightFrame">积分汇率</a><i></i></li>
+	        	</c:if>
+			 </c:forEach> 
+	    </ul>
+    </dd> 
      
     <%-- <dd><div class="title"><span><img src="jsp/images/leftico04.png" /></span>统计报表</div>
     <ul class="menuson">

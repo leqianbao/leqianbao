@@ -169,6 +169,10 @@
     <servlet-name>DoUserOrderDetailServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.DoUserOrderDetailServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>DoIntegralRateServlet</servlet-name>
+    <servlet-class>cn.lc.pt.servlet.DoIntegralRateServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>GoodsOrderServlet</servlet-name>
     <url-pattern>/app/goodsorder</url-pattern>
@@ -316,11 +320,15 @@
   <servlet-mapping>
     <servlet-name>DoUserOrderServlet</servlet-name>
     <url-pattern>/pt/doUserOrder</url-pattern>
-  </servlet-mapping> 
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>DoUserOrderDetailServlet</servlet-name>
     <url-pattern>/pt/doUserOrderDetail</url-pattern>
-  </servlet-mapping> 
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DoIntegralRateServlet</servlet-name>
+    <url-pattern>/pt/doIntegralRate</url-pattern>
+  </servlet-mapping>
   <welcome-file-list>
     <welcome-file>login.jsp</welcome-file>
   </welcome-file-list>
