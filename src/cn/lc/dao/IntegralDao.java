@@ -18,7 +18,7 @@ import cn.lc.beans.UserOrder;
 public class IntegralDao {
 	QueryRunner qR = new QueryRunner();
 
-	public IntegralBean getCurrentIntegral(String userId) {
+	public IntegralBean getCurrentIntegral(int userId) {
 		Connection connection = null;
 		IntegralBean intergralBean = null;
 		try {
