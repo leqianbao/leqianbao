@@ -112,8 +112,23 @@
   </servlet>
   
   <servlet>
-    <servlet-name>IntegralPayServlet</servlet-name>
-    <servlet-class>cn.lc.app.servlet.IntegralPayServlet</servlet-class>
+    <servlet-name>PayIntegralServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.PayIntegralServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>GetAddressListServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.GetAddressListServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>GetIntegralListServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.GetIntegralListServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>RechargeIntegralServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.RechargeIntegralServlet</servlet-class>
   </servlet>
   
   
@@ -286,10 +301,28 @@
     <servlet-name>AddressManagerServlet</servlet-name>
     <url-pattern>/app/managerAddress</url-pattern>
   </servlet-mapping>
+  
   <servlet-mapping>
-    <servlet-name>IntegralPayServlet</servlet-name>
+    <servlet-name>GetAddressListServlet</servlet-name>
+    <url-pattern>/app/getAddressList</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>PayIntegralServlet</servlet-name>
     <url-pattern>/app/payIntegral</url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>GetIntegralListServlet</servlet-name>
+    <url-pattern>/app/getIntegralList</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>RechargeIntegralServlet</servlet-name>
+    <url-pattern>/app/rechargeIntegral</url-pattern>
+  </servlet-mapping>
+  
+  
   
   
   

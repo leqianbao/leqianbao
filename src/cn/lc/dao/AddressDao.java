@@ -95,7 +95,7 @@ public class AddressDao {
 	 *            用户id
 	 * @return
 	 */
-	public List<AddressBean> getAddressList(String userId) {
+	public List<AddressBean> getAddressList(int userId) {
 		List<AddressBean> list = null;
 		Connection connection = null;
 		try {

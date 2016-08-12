@@ -1,20 +1,14 @@
 package cn.lc.dao;
 
-import java.math.BigInteger;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
-import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import cn.lc.beans.IntegralBean;
-import cn.lc.beans.UserOrder;
+import cn.lc.utils.DateUtil;
 
 public class IntegralDao {
 	QueryRunner qR = new QueryRunner();
@@ -29,11 +23,19 @@ public class IntegralDao {
 	 */
 	public void initIntegral(int userId) {
 		Connection connection = null;
+		IntegralBean intergralBean = null;
 		try {
 			connection = DBUtils.getConnection();
-			String sql = "INSERT INTO user_integral(user_id,user_integral,update_date) VALUES(?,?,?)";
+			String sql = "SELECT user_integral FROM lc_user_integral WHERE user_id=?";
+			String initSql = "INSERT INTO lc_user_integral(user_id,user_integral,update_date) VALUES(?,?,?)";
 			DBUtils.beginTx(connection);
-			qR.update(connection, sql, userId,0,new Timestamp(System.currentTimeMillis()));
+			intergralBean = qR.query(connection, sql,
+					new BeanHandler<IntegralBean>(IntegralBean.class), userId);
+			if(intergralBean==null){
+				qR.update(connection, initSql, userId,0,DateUtil.getCurrentTimestamp());
+			}
+			DBUtils.commit(connection);
+			
 		} catch (Exception e) {
 			DBUtils.rollback(connection);
 			e.printStackTrace();
@@ -57,14 +59,11 @@ public class IntegralDao {
 		IntegralBean intergralBean = null;
 		try {
 			connection = DBUtils.getConnection();
-			String sql = "SELECT user_integral FROM lc_user_intergral WHERE user_id=?";
-			String initSql="INSERT INTO user_integral(user_id,user_integral,update_date) VALUES(?,?,?)";
+			String sql = "SELECT user_integral FROM lc_user_integral WHERE user_id=?";
 			DBUtils.beginTx(connection);
 			intergralBean = qR.query(connection, sql,
 					new BeanHandler<IntegralBean>(IntegralBean.class), userId);
-			if(intergralBean==null){
-				
-			}
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			DBUtils.rollback(connection);
@@ -88,20 +87,22 @@ public class IntegralDao {
 		Connection connection = null;
 		IntegralBean intergralBean = null;
 		try {
+			
 			connection = DBUtils.getConnection();
 			String getIntegral = "SELECT user_integral FROM lc_user_integral WHERE user_id=?";
-			String updateIntegral = "UPDATE lc_user_intergral SET user_integral = ? , update_date = ? WHERE user_id = ?";
-			String addRecord = "INSERT INTO lc_user_intergral VALUES(?,?,?,?,?)";
+			String updateIntegral = "UPDATE lc_user_integral SET user_integral = ? , update_date = ? WHERE user_id = ?";
+			String addRecord = "INSERT INTO lc_user_integral_record(user_id,integral,create_time,comment,state) VALUES(?,?,?,?,?)";
+			initIntegral(userId);
 			DBUtils.beginTx(connection);
 			// 获取当前用户的积分
 			intergralBean = qR.query(connection, getIntegral,
 					new BeanHandler<IntegralBean>(IntegralBean.class), userId);
 			int row = qR.update(connection, updateIntegral,
-					intergralBean.getUser_integral() - integral, new Timestamp(System.currentTimeMillis()),
+					intergralBean.getUser_integral() - integral, DateUtil.getCurrentTimestamp(),
 					userId);
 			if (row > 0) {
-				qR.update(connection, addRecord, userId, integral, new Timestamp(System.currentTimeMillis()),
-						comment, 1);
+				qR.update(connection, addRecord, userId, integral, DateUtil.getCurrentTimestamp(),
+						comment, 2);
 				DBUtils.commit(connection);
 				result = true;
 			} else {
@@ -135,20 +136,21 @@ public class IntegralDao {
 			// 获取当前积分
 			String getIntegral = "SELECT user_integral FROM lc_user_integral WHERE user_id=?";
 			// 更新当前积分
-			String updateIntegral = "UPDATE lc_user_intergral SET user_integral = ? , update_date = ? WHERE user_id = ?";
+			String updateIntegral = "UPDATE lc_user_integral SET user_integral = ? , update_date = ? WHERE user_id = ?";
 			// 添加积分记录
-			String addRecord = "INSERT INTO lc_user_intergral VALUES(?,?,?,?,?)";
+			String addRecord = "INSERT INTO lc_user_integral_record(user_id,integral,create_time,comment,state) VALUES(?,?,?,?,?)";
+			initIntegral(userId);
 			DBUtils.beginTx(connection);
 			IntegralBean intergralBean = null;
 			intergralBean = qR.query(connection, getIntegral,
 					new BeanHandler<IntegralBean>(IntegralBean.class), userId);
 			int row = qR.update(connection, updateIntegral,
-					intergralBean.getUser_integral() + integral, new Date(),
+					intergralBean.getUser_integral() + integral, new Timestamp(System.currentTimeMillis()),
 					userId);
 			if (row > 0) {
-				qR.update(connection, addRecord, userId, integral, new Date(),
+				qR.update(connection, addRecord, userId, integral, new Timestamp(System.currentTimeMillis()),
 						comment, 1);
-				DBUtils.commit(connection);
+				DBUtils.commit(connection);	
 				result = true;
 			} else {
 				DBUtils.rollback(connection);
@@ -170,7 +172,7 @@ public class IntegralDao {
 		IntegralBean integralBean = null;
 		try {
 			connection = DBUtils.getConnection();
-			String sql = "SELECT * FROM lc_user_intergral WHERE user_id = ?";
+			String sql = "SELECT * FROM lc_user_integral WHERE user_id = ?";
 			DBUtils.beginTx(connection);
 			integralBean = qR.query(connection,sql,new BeanHandler<IntegralBean>(IntegralBean.class),userId);
 		} catch (Exception e) {
@@ -187,7 +189,7 @@ public class IntegralDao {
 		Connection connection = null;
 		try {
 			connection = DBUtils.getConnection();
-			String sql = "INSERT INTO lc_user_intergral (user_id,user_integral,update_date) VALUES (?,?,?)";
+			String sql = "INSERT INTO lc_user_integral (user_id,user_integral,update_date) VALUES (?,?,?)";
 			DBUtils.beginTx(connection);
 			int isSuccess = qR.update(connection,sql,integralBean.getUser_id(),
 					integralBean.getUser_integral(),integralBean.getUpdate_date());

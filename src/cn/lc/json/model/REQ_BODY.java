@@ -48,7 +48,7 @@ public class REQ_BODY {
 	
 	//地址管理  user_id
 	private int address_id;//地址id;
-	private int address_type;  //0：新增；1:修改；2:删除
+	private int address_type;  //1：新增；2:修改；3:删除
 	private String address;
 	private String address_phone;
 	private String address_name;
@@ -64,6 +64,11 @@ public class REQ_BODY {
 	private int integral;
 	private String comment;
 	
+	//获取积分列表
+		private int state;//0:全部；1:收入，2：支出
+		private int pageSize;
+		private int pageNum;
+	
 	public int getPageSize() {
 		return pageSize;
 	}
@@ -76,10 +81,7 @@ public class REQ_BODY {
 	public void setPageNum(int pageNum) {
 		this.pageNum = pageNum;
 	}
-	//获取积分列表
-	private int integral_state;//0:全部；1:收入，2：支出
-	private int pageSize;
-	private int pageNum;
+	
 	
 
 	public String getUser_order_id() {
@@ -328,11 +330,11 @@ public class REQ_BODY {
     public void setFeedback_content(String feedback_content) {
         this.feedback_content = feedback_content;
     }
-	public int getIntegral_state() {
-		return integral_state;
+	public int getState() {
+		return state;
 	}
-	public void setIntegral_state(int state) {
-		this.integral_state = state;
+	public void setState(int state) {
+		this.state = state;
 	}
 	public String getComment() {
 		return comment;

@@ -19,11 +19,11 @@ import cn.lc.utils.DataUtil;
 
 import com.alibaba.fastjson.JSON;
 
-public class IntegralPayServlet extends HttpServlet {
+public class PayIntegralServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1617875298953965031L;
 
-	public IntegralPayServlet() {
+	public PayIntegralServlet() {
 		super();
 	}
 
@@ -49,9 +49,7 @@ public class IntegralPayServlet extends HttpServlet {
 			boolean back = integralDao.payIntegral(Integer.parseInt(reqBody
 					.getUser_id()),
 					integral,comment);
-			
 			if (back) {
-				
 				map.put(Const.CODE_KEY, Const.CODE_SUCESS);
 				map.put(Const.MSG_KEY, Const.INTEGRAL_PAY_SUCESS);
 			} else {

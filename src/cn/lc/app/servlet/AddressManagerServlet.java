@@ -30,38 +30,53 @@ public class AddressManagerServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		super.doGet(req, resp);
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 
-		Map<String, String> map = null;
+		Map<String, String> map = new HashMap<>();
 		String date = DataUtil.readDateFromRequest(request.getInputStream());
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
 		int type = reqBody.getAddress_type();
 		switch (type) {
-		case 0:// 新增
+		case 1:// 新增
 			map = addAddress(reqBody);
 			break;
-		case 1:// 修改	
-			map = updateAddress(reqBody);
+		case 2:// 修改
+			if (checkForm(reqBody)) {
+				map = updateAddress(reqBody);
+			}else{
+				map.put(Const.CODE_KEY, Const.CODE_ERROR);
+				map.put(Const.MSG_KEY, Const.PARAM_ERROR);
+			}
 			break;
-		case 2:// 删除
-			map = deleteAddress(reqBody.getAddress_id());
+		case 3:// 删除
+			if (checkForm(reqBody)) {
+				map = deleteAddress(reqBody.getAddress_id());
+			}else{
+				map.put(Const.CODE_KEY, Const.CODE_ERROR);
+				map.put(Const.MSG_KEY, Const.PARAM_ERROR);
+			}
+			break;
+		default:
+			map.put(Const.CODE_KEY, Const.CODE_ERROR);
+			map.put(Const.MSG_KEY, Const.PARAM_ERROR);
 			break;
 		}
 		PrintWriter writer = response.getWriter();
-		REP_BODY<Boolean> body=new REP_BODY<>();
-		body.RSPCOD=map.get(Const.CODE_KEY);
-		body.RSPMSG=map.get(Const.MSG_KEY);
+		REP_BODY<Boolean> body = new REP_BODY<>();
+		body.setRSPCOD(map.get(Const.CODE_KEY));
+		;
+		body.setRSPMSG(map.get(Const.MSG_KEY));
+		;
 		writer.write(JSON.toJSONString(body));
 		writer.flush();
 		writer.close();
@@ -85,21 +100,20 @@ public class AddressManagerServlet extends HttpServlet {
 			map.put(Const.MSG_KEY, Const.ADDRESS_NAME_ERROR);
 			return map;
 		}
-		
+
 		if (TextUtils.isEmpty(request.getAddress_phone())) {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ADDRESS_PHONE_ERROR);
 			return map;
 		}
-		
+
 		if (TextUtils.isEmpty(request.getAddress())) {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ADDRESS_ADDRESS_ERROR);
 			return map;
 		}
-		
-		boolean back = addressDao.addAddress(request.getUser_id(),
-				request.getAddress(), request.getAddress_phone(),
+
+		boolean back = addressDao.addAddress(request.getUser_id(), request.getAddress(), request.getAddress_phone(),
 				request.getAddress_name());
 		if (back) {
 			map.put(Const.CODE_KEY, Const.CODE_SUCESS);
@@ -117,10 +131,10 @@ public class AddressManagerServlet extends HttpServlet {
 		boolean back = addressDao.deleteAddress(id);
 		if (back) {
 			map.put(Const.CODE_KEY, Const.CODE_SUCESS);
-			map.put(Const.MSG_KEY, Const.ADDRESS_ADD_SUCESS);
+			map.put(Const.MSG_KEY, Const.ADDRESS_DELETE_SUCESS);
 		} else {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
-			map.put(Const.MSG_KEY, Const.ADDRESS_ADD_ERROR);
+			map.put(Const.MSG_KEY, Const.ADDRESS_DELETE_ERROR);
 		}
 		return map;
 	}
@@ -128,17 +142,24 @@ public class AddressManagerServlet extends HttpServlet {
 	private Map<String, String> updateAddress(REQ_BODY request) {
 		Map<String, String> map = new HashMap<>();
 		AddressDao addressDao = new AddressDao();
-		boolean back = addressDao.updateAddress(request.getAddress_id(),
-				request.getAddress(), request.getAddress_phone(),
-				request.getAddress_name());
+		boolean back = addressDao.updateAddress(request.getAddress_id(), request.getAddress(),
+				request.getAddress_phone(), request.getAddress_name());
 		if (back) {
 			map.put(Const.CODE_KEY, Const.CODE_SUCESS);
-			map.put(Const.MSG_KEY, Const.ADDRESS_ADD_SUCESS);
+			map.put(Const.MSG_KEY, Const.ADDRESS_NOTIFY_SUCESS);
 		} else {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
-			map.put(Const.MSG_KEY, Const.ADDRESS_ADD_ERROR);
+			map.put(Const.MSG_KEY, Const.ADDRESS_NOTIFY_ERROR);
 		}
 		return map;
+	}
+
+	public boolean checkForm(REQ_BODY request) {
+		int addressId = request.getAddress_id();
+		if (addressId == 0) {
+			return false;
+		}
+		return true;
 	}
 
 }
