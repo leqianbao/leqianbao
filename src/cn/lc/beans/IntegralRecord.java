@@ -1,14 +1,23 @@
 package cn.lc.beans;
 
+import java.sql.Timestamp;
+
 public class IntegralRecord {
 	private int id;
 	private String user_id;
 	private int integral;
-	private long create_time;
+	private Timestamp create_time;
 	private String comment;
-	private int state;
+	private int record_state;
+	private String user_name;
 	
 	
+	public String getUser_name() {
+		return user_name;
+	}
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
 	public int getId() {
 		return id;
 	}
@@ -27,10 +36,10 @@ public class IntegralRecord {
 	public void setIntegral(int integral) {
 		this.integral = integral;
 	}
-	public long getCreate_time() {
+	public Timestamp getCreate_time() {
 		return create_time;
 	}
-	public void setCreate_time(long create_time) {
+	public void setCreate_time(Timestamp create_time) {
 		this.create_time = create_time;
 	}
 	public String getComment() {
@@ -40,9 +49,9 @@ public class IntegralRecord {
 		this.comment = comment;
 	}
 	public int getState() {
-		return state;
+		return record_state;
 	}
 	public void setState(int state) {
-		this.state = state;
+		this.record_state = state;
 	}
 }

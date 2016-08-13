@@ -198,6 +198,10 @@
     <servlet-name>DoUserOrderDetailServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.DoUserOrderDetailServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>DoIntegralListServlet</servlet-name>
+    <servlet-class>cn.lc.pt.servlet.DoIntegralListServlet</servlet-class>
+  </servlet>
   
   
   
@@ -386,6 +390,11 @@
     <servlet-name>DoUserOrderDetailServlet</servlet-name>
     <url-pattern>/pt/doUserOrderDetail</url-pattern>
   </servlet-mapping> 
+  
+  <servlet-mapping>
+    <servlet-name>DoIntegralListServlet</servlet-name>
+    <url-pattern>/pt/DoIntegralList</url-pattern>
+  </servlet-mapping>
   
   <welcome-file-list>
     <welcome-file>login.jsp</welcome-file>

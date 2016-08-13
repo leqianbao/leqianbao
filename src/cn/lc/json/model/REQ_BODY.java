@@ -65,7 +65,7 @@ public class REQ_BODY {
 	private String comment;
 	
 	//获取积分列表
-		private int state;//0:全部；1:收入，2：支出
+		private int record_state;//0:全部；1:收入，2：支出
 		private int pageSize;
 		private int pageNum;
 	
@@ -331,10 +331,10 @@ public class REQ_BODY {
         this.feedback_content = feedback_content;
     }
 	public int getState() {
-		return state;
+		return record_state;
 	}
 	public void setState(int state) {
-		this.state = state;
+		this.record_state = state;
 	}
 	public String getComment() {
 		return comment;
