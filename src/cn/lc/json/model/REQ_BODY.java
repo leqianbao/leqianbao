@@ -48,7 +48,7 @@ public class REQ_BODY {
 	
 	//地址管理  user_id
 	private int address_id;//地址id;
-	private int address_type;  //0：新增；1:修改；2:删除
+	private int address_type;  //1：新增；2:修改；3:删除
 	private String address;
 	private String address_phone;
 	private String address_name;
@@ -61,9 +61,30 @@ public class REQ_BODY {
 	
 	
 	//积分支付
-	private long integral;
+	private int integral;
+	private String comment;
 	
-
+	//获取积分列表
+		private int record_state;//0:全部；1:收入，2：支出
+		private int pageSize;
+		private int pageNum;
+	
+	public int getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+	public int getPageNum() {
+		return pageNum;
+	}
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
+	
+	//查询第一页时间
+	private String search_date;
+	
 	public String getUser_order_id() {
 		return user_order_id;
 	}
@@ -94,10 +115,10 @@ public class REQ_BODY {
 	public void setOrder_address_id(String order_address_id) {
 		this.order_address_id = order_address_id;
 	}
-	public long getIntegral() {
+	public int getIntegral() {
 		return integral;
 	}
-	public void setIntegral(long integral) {
+	public void setIntegral(int integral) {
 		this.integral = integral;
 	}
 	public int getAddress_id() {
@@ -310,6 +331,24 @@ public class REQ_BODY {
     public void setFeedback_content(String feedback_content) {
         this.feedback_content = feedback_content;
     }
+	public int getState() {
+		return record_state;
+	}
+	public void setState(int state) {
+		this.record_state = state;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public String getSearch_date() {
+		return search_date;
+	}
+	public void setsearch_date(String search_date) {
+		this.search_date = search_date;
+	}
 	
 
 

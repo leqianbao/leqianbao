@@ -1,6 +1,7 @@
 package cn.lc.dao;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
@@ -33,7 +34,7 @@ public class AddressDao {
 
 		try {
 			connection = DBUtils.getConnection();
-			String sql = "INSERT INTO lc_user_address VALUES(?,?,?,?)";
+			String sql = "INSERT INTO  lc_user_address(user_id,address_address,address_phone,address_name) VALUES(?,?,?,?)";
 			DBUtils.beginTx(connection);
 			int row = qR.update(connection, sql, userId, address, phone, name);
 			if (row > 0) {
@@ -94,7 +95,7 @@ public class AddressDao {
 	 *            用户id
 	 * @return
 	 */
-	public List<AddressBean> getAddressList(String userId) {
+	public List<AddressBean> getAddressList(int userId) {
 		List<AddressBean> list = null;
 		Connection connection = null;
 		try {
@@ -116,23 +117,27 @@ public class AddressDao {
 			String name) {
 		boolean result = false;
 		Connection connection = null;
+		List<Object> params=new ArrayList<>();
 		StringBuilder sql=new StringBuilder();
 		sql.append("UPDATE lc_user_address SET ");
 		if(!StringUtils.isEmpty(address)){
-			sql.append("address_address = ?,");
+			sql.append("address_address = ?");
+			params.add(address);
 		}
 		if(!StringUtils.isEmpty(phone)){
-			sql.append("address_phone = ?,");
+			sql.append(",address_phone = ?");
+			params.add(phone);
 		}
 		if(!StringUtils.isEmpty(name)){
-			sql.append("address_name = ?,");
+			sql.append(",address_name = ?");
+			params.add(name);
 		}
-		sql.deleteCharAt(sql.lastIndexOf(","));
 		sql.append("where id = ?");
+		params.add(id);
 		try {
 			connection = DBUtils.getConnection();
 			DBUtils.beginTx(connection);
-			int row = qR.update(connection, sql.toString(), address,phone,name,id);
+			int row = qR.update(connection, sql.toString(),params.toArray());
 			if (row > 0) {
 				DBUtils.commit(connection);
 				result = true;

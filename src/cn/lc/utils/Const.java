@@ -7,6 +7,7 @@ public class Const {
 	public final static String CODE_KEY="RSPCOD";
 	
 	public final static String SYSTEM_ERROR="系统错误";
+	public final static String PARAM_ERROR="传参错误";
 	
 	
 	//address manager
@@ -19,9 +20,18 @@ public class Const {
 	public final static String ADDRESS_NOTIFY_ERROR="信息修改失败";
 	public final static String ADDRESS_DELETE_SUCESS="信息删除成功";
 	public final static String ADDRESS_DELETE_ERROR="信息删除失败";
+	public final static String ADDRESS_LIST_SUCESS="获取列表成功";
+	
 	
 	//IntegralPay 积分支付
 	public final static String INTEGRAL_PAY_SUCESS="积分支付成功";
 	public final static String INTEGRAL_PAY_ERROR="积分支付失败";
 	public final static String INTEGRAL_PAY_ERROR_SHORT="积分不足";
+	//IntegralRecord 积分充值
+	public final static String INTEGRAL_RECORD_SUCESS="积分充值成功";
+	public final static String INTEGRAL_RECORD_ERROR="积分充值失败";
+	
+	//IntegralList 积分列表
+	public final static String INTEGRAL_LIST_SUCESS="获取积分成功";
+	public final static String INTEGRAL_LIST_ERROR="积分积分列表失败";
 }

@@ -105,6 +105,34 @@
     <servlet-name>FetchCashServlet</servlet-name>
     <servlet-class>cn.lc.app.servlet.FetchCashServlet</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>AddressManagerServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.AddressManagerServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>PayIntegralServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.PayIntegralServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>GetAddressListServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.GetAddressListServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>GetIntegralListServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.GetIntegralListServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>RechargeIntegralServlet</servlet-name>
+    <servlet-class>cn.lc.app.servlet.RechargeIntegralServlet</servlet-class>
+  </servlet>
+  
+  
+  
   <servlet>
     <servlet-name>FetchCashListServlet</servlet-name>
     <servlet-class>cn.lc.app.servlet.FetchCashListServlet</servlet-class>
@@ -121,6 +149,7 @@
     <servlet-name>DoLoginServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.DoLoginServlet</servlet-class>
   </servlet>
+  
   <servlet>
     <servlet-name>DoLogoutServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.DoLogoutServlet</servlet-class>
@@ -169,6 +198,16 @@
     <servlet-name>DoUserOrderDetailServlet</servlet-name>
     <servlet-class>cn.lc.pt.servlet.DoUserOrderDetailServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>DoIntegralListServlet</servlet-name>
+    <servlet-class>cn.lc.pt.servlet.DoIntegralListServlet</servlet-class>
+  </servlet>
+   <servlet>
+    <servlet-name>DoIntegralRateServlet</servlet-name>
+    <servlet-class>cn.lc.pt.servlet.DoIntegralRateServlet</servlet-class>
+  </servlet>
+  
+  
   <servlet-mapping>
     <servlet-name>GoodsOrderServlet</servlet-name>
     <url-pattern>/app/goodsorder</url-pattern>
@@ -261,6 +300,36 @@
     <servlet-name>FetchCashListServlet</servlet-name>
     <url-pattern>/app/fetchcashlist</url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>AddressManagerServlet</servlet-name>
+    <url-pattern>/app/managerAddress</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>GetAddressListServlet</servlet-name>
+    <url-pattern>/app/getAddressList</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>PayIntegralServlet</servlet-name>
+    <url-pattern>/app/payIntegral</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>GetIntegralListServlet</servlet-name>
+    <url-pattern>/app/getIntegralList</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>RechargeIntegralServlet</servlet-name>
+    <url-pattern>/app/rechargeIntegral</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
+  
   <servlet-mapping>
     <servlet-name>CommodityListServlet</servlet-name>
     <url-pattern>/app/commodityListServlet</url-pattern>
@@ -316,11 +385,21 @@
   <servlet-mapping>
     <servlet-name>DoUserOrderServlet</servlet-name>
     <url-pattern>/pt/doUserOrder</url-pattern>
-  </servlet-mapping> 
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>DoUserOrderDetailServlet</servlet-name>
     <url-pattern>/pt/doUserOrderDetail</url-pattern>
   </servlet-mapping> 
+  
+  <servlet-mapping>
+    <servlet-name>DoIntegralListServlet</servlet-name>
+    <url-pattern>/pt/DoIntegralList</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>DoIntegralRateServlet</servlet-name>
+    <url-pattern>/pt/doIntegralRate</url-pattern>
+  </servlet-mapping>
   <welcome-file-list>
     <welcome-file>login.jsp</welcome-file>
   </welcome-file-list>
