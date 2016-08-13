@@ -82,8 +82,9 @@ public class REQ_BODY {
 		this.pageNum = pageNum;
 	}
 	
+	//查询第一页时间
+	private String search_date;
 	
-
 	public String getUser_order_id() {
 		return user_order_id;
 	}
@@ -341,6 +342,12 @@ public class REQ_BODY {
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	public String getSearch_date() {
+		return search_date;
+	}
+	public void setsearch_date(String search_date) {
+		this.search_date = search_date;
 	}
 	
 

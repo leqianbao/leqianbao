@@ -39,7 +39,6 @@ public class PayIntegralServlet extends HttpServlet {
 		String date = DataUtil.readDateFromRequest(request.getInputStream());
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
-
 		int integral = reqBody.getIntegral();
 		String comment=reqBody.getComment();
 		IntegralBean integralBean = integralDao.getCurrentIntegral(Integer.parseInt(reqBody
