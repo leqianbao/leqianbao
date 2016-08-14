@@ -42,7 +42,7 @@ public class GetIntegralListServlet extends HttpServlet{
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
 		if(checkForm(reqBody)){
-			int state=reqBody.getState();
+			int state=reqBody.getRecord_state();
 			int pageNum=reqBody.getPageNum();
 			int pageSize=reqBody.getPageSize();
 			String userId=reqBody.getUser_id();
@@ -65,7 +65,7 @@ public class GetIntegralListServlet extends HttpServlet{
 	}
 	
 	public boolean checkForm(REQ_BODY request){
-		int state=request.getState();
+		int state=request.getRecord_state();
 		String userId=request.getUser_id();
 		int pageNum=request.getPageNum();
 		int pageSize=request.getPageSize();

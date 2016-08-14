@@ -65,7 +65,7 @@ public class IntegralRecordDao {
 	 *            状态 0：全部，1：收入，2：支出
 	 * @return
 	 */
-	public Pager<IntegralRecord> getRecordList(String userPhone, String state, String date, String pageNum,
+	public Pager<IntegralRecord> getRecordList(String userPhone, String state, String create_date, String pageNum,
 			int pageSize) {
 		List<IntegralRecord> integralRecords = null;
 		List<IntegralRecord> integralRecordsAll = null;
@@ -85,8 +85,17 @@ public class IntegralRecordDao {
 			if (!TextUtils.isEmpty(userPhone)) {
 				UserDao userDao = new UserDao();
 				int userId = userDao.getUserId(userPhone);
-				sql.append(" and lc_user_integral_record.user_id=?");
-				params.add(userId);
+				if (userId != 0) {
+					sql.append(" and lc_user_integral_record.user_id=?");
+					params.add(userId);
+				}
+
+			}
+
+			if (!TextUtils.isEmpty(create_date)) {
+				// create_date = create_date.replaceAll("-", "");
+				sql.append(" and create_time like ? ");
+				params.add("%" + create_date + "%");
 			}
 			if (TextUtils.isEmpty(pageNum)) {
 				pageNum = "1";

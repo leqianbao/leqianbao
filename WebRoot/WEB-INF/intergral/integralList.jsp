@@ -27,7 +27,9 @@
 	<script type="text/javascript" src="jsp/js/jquery-1.11.3.js"></script>
 	<script type="text/javascript" src="jsp/js/jquery.pagination.js"></script>
 	<script type="text/javascript" src="jsp/js/select-ui.min.js"></script>
+	<script type="text/javascript" src="jsp/js/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript">
+	
 
 <script type="text/javascript">
 	// 点击分页按钮以后触发的动作
@@ -77,10 +79,9 @@ $(function(){
 						<label>用户手机号</label>
 						<input name="user_phone" type="text" value="${user_phone }" class="scinput" />
 					</li>
-					<li>
-						<label>日期 </label>
-						<input name="create_date" type="text" value="${create_date }" class="scinput" />
-					</li>
+					
+						<li><label>创建时间 </label><input id="create_date" name="create_date" type="text"  value="${create_date }" readonly="readonly" class="scinput Wdate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"/></li>
+					
 					<li>
 						<label>积分状态 </label>
 						<div class="vocation">
@@ -120,12 +121,12 @@ $(function(){
 							<td><c:if test="${record.record_state eq 0}">
 									<span>全部</span>
 								</c:if> <c:if test="${record.record_state eq 1}">
-									<span class="red">收入</span>
+									<span class="">收入</span>
 								</c:if> <c:if test="${record.record_state eq 2}">
-									<span class="red">支出</span>
+									<span class="">支出</span>
 								</c:if></td>
 							<td><c:out value="${record.comment }"></c:out></td>
-							<td><c:out value="${record.create_time }"></c:out></td>
+							<td><c:out value="${record.create_time}"></c:out></td>
 							<td></td>
 						</tr>
 					</c:forEach>

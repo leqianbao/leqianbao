@@ -48,10 +48,10 @@ public class IntegralRecord {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	public int getState() {
+	public int getRecord_state() {
 		return record_state;
 	}
-	public void setState(int record_state) {
+	public void setRecord_state(int record_state) {
 		this.record_state = record_state;
 	}
 }
