@@ -25,7 +25,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				var r = new RegExp("^[1-9]*[1-9][0-9]*$");
 				if((!(r.test($("#rate_num").val())))
 							|| ($("#rate_num").val() > 2147483647)){
-					alert("请输入正确的汇率数值！");
+					alert("请输入正确的RMB消费积分汇率数值！");
+					return false;
+				}
+				if((!(r.test($("#rate_num2").val())))
+						|| ($("#rate_num2").val() > 2147483647)){
+					alert("请输入正确的提现积分汇率数值！");
+					return false;
+				}
+				if((!(r.test($("#rate_num3").val())))
+						|| ($("#rate_num3").val() > 2147483647)){
+					alert("请输入正确的购买理财积分汇率数值！");
+					return false;
+				}
+				if((!(r.test($("#rate_num4").val())))
+						|| ($("#rate_num4").val() > 2147483647)){
+					alert("请输入正确的购买商品积分汇率数值！");
 					return false;
 				}
 				return true;
@@ -53,9 +68,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	      		<input type="hidden" name="id" value="${id}" />
 	    		<ul class="forminfo">
 				    <li>
-				    	<label>汇率</label>
+				    	<label>RMB消费积分汇率</label>
 				    	<input id="rate_num" name="integral_rate" type="text" class="dfinput" value="${integral_rate}"/>
-				    	<i>每一块钱对应多少积分（正整数）</i>
+				    	<i>每一块钱可以当做多少积分来使用（正整数）</i>
+				    </li>
+				    <li>
+				    	<label>提现积分汇率</label>
+				    	<input id="rate_num2" name="integral_rate_t" type="text" class="dfinput" value="${integral_rate_t}"/>
+				    	<i>每提现多少钱对应获得多少积分（正整数）</i>
+				    </li>
+				    
+				    <li>
+				    	<label>购买理财积分汇率</label>
+				    	<input id="rate_num3" name="integral_rate_gl" type="text" class="dfinput" value="${integral_rate_gl}"/>
+				    	<i>每购买理财消费多少钱对应获得多少积分（正整数）</i>
+				    </li>
+				    
+				    <li>
+				    	<label>购买商品积分汇率</label>
+				    	<input id="rate_num4" name="integral_rate_gs" type="text" class="dfinput" value="${integral_rate_gs}"/>
+				    	<i>每购买商品消费多少钱对应获得多少积分（正整数）</i>
 				    </li>
 				    <li><label>&nbsp;</label><input type="submit" class="btn" value="确认保存"/></li>
 	    		</ul>
