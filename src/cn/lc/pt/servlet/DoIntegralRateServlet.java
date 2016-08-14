@@ -40,6 +40,9 @@ public class DoIntegralRateServlet extends HttpServlet {
 			IntegralRateBean integralRateBean = dao.getInegralRate();
 			//取得积分汇率数值
 			request.setAttribute("integral_rate", integralRateBean.getIntegral_rate());
+			request.setAttribute("integral_rate_t", integralRateBean.getIntegral_rate_t());
+			request.setAttribute("integral_rate_gl", integralRateBean.getIntegral_rate_gl());
+			request.setAttribute("integral_rate_gs", integralRateBean.getIntegral_rate_gs());
 			//取得积分汇率主键id
 			request.setAttribute("id", integralRateBean.getId());
 			//跳转到积分汇率编辑画面
@@ -47,10 +50,13 @@ public class DoIntegralRateServlet extends HttpServlet {
 		}else if(tag.equals("update")){//更新
 			//取得画面传过来的修改后的积分汇率数值
 			int update_rate = Integer.parseInt(request.getParameter("integral_rate"));
+			int update_rate_t = Integer.parseInt(request.getParameter("integral_rate_t"));
+			int update_rate_gl = Integer.parseInt(request.getParameter("integral_rate_gl"));
+			int update_rate_gs = Integer.parseInt(request.getParameter("integral_rate_gs"));
 			//取得画面传回来的积分汇率主键id
 			int rate_id = Integer.parseInt(request.getParameter("id"));
 			//更新积分汇率到数据库
-			boolean updateFlag = dao.updateIntegralRate(rate_id, update_rate);
+			boolean updateFlag = dao.updateIntegralRate(rate_id, update_rate, update_rate_t, update_rate_gl, update_rate_gs);
 			//成功之后刷新页面数据
 			if(updateFlag){
 				String path = request.getContextPath();

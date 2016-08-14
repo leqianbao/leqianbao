@@ -33,19 +33,22 @@ public class IntegralRateDao {
 	/**
 	 * 更新积分汇率
 	 * */
-	public boolean updateIntegralRate(int id, int integral_rate){
+	public boolean updateIntegralRate(int id, int integral_rate, int integral_rate_t, int integral_rate_gl, int integral_rate_gs){
 		int update_flag = 0;
     	Connection connection = null;
     	PreparedStatement st = null;
         
         StringBuffer sql = new StringBuffer();
-        sql.append(" update lc_integral_rate set integral_rate = ? ");
+        sql.append(" update lc_integral_rate set integral_rate = ?, integral_rate_t = ?, integral_rate_gl = ?, integral_rate_gs = ? ");
         sql.append(" WHERE id = ?");
         try {
             connection = DBUtils.getConnection();
             st = connection.prepareStatement(sql.toString());
             st.setInt(1, integral_rate);
-            st.setInt(2, id);
+            st.setInt(2, integral_rate_t);
+            st.setInt(3, integral_rate_gl);
+            st.setInt(4, integral_rate_gs);
+            st.setInt(5, id);
             update_flag = st.executeUpdate();
         } catch (Exception e) {
             DBUtils.rollback(connection);
