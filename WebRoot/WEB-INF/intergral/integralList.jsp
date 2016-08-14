@@ -51,6 +51,14 @@ $(function(){
 	
 }); 
 	</script>
+	
+	<script type="text/javascript">
+	$(document).ready(function(e) {
+		$(".select3").uedSelect({
+			width : 100
+		});
+	});
+</script>
 </head>
 <body>
 	<div class="place">
@@ -66,7 +74,7 @@ $(function(){
 				<input type="hidden" name="tag" value="query" />
 				<ul class="seachform">
 					<li>
-						<label>用户名</label>
+						<label>用户手机号</label>
 						<input name="user_phone" type="text" value="${user_phone }" class="scinput" />
 					</li>
 					<li>
@@ -76,7 +84,7 @@ $(function(){
 					<li>
 						<label>积分状态 </label>
 						<div class="vocation">
-							<select class="select3" name="state">
+							<select class="select3" name="record_state">
 								<option value="0">全部</option>
 								<option value="1">收入</option>
 								<option value="2">支出</option>
@@ -97,7 +105,7 @@ $(function(){
 			<table class="tablelist">
 				<thead>
 					<tr>
-						<th>用户手机号</th>
+						<th>用户名</th>
 						<th>积分</th>
 						<th>状态</th>
 						<th>详情</th>
@@ -109,11 +117,11 @@ $(function(){
 						<tr>
 							<td><c:out value="${record.user_name }"></c:out></td>
 							<td><c:out value="${record.integral }"></c:out></td>
-							<td><c:if test="${record.state eq 0}">
+							<td><c:if test="${record.record_state eq 0}">
 									<span>全部</span>
-								</c:if> <c:if test="${record.state eq 1}">
+								</c:if> <c:if test="${record.record_state eq 1}">
 									<span class="red">收入</span>
-								</c:if> <c:if test="${record.state eq 2}">
+								</c:if> <c:if test="${record.record_state eq 2}">
 									<span class="red">支出</span>
 								</c:if></td>
 							<td><c:out value="${record.comment }"></c:out></td>

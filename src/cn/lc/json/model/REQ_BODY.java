@@ -334,8 +334,8 @@ public class REQ_BODY {
 	public int getState() {
 		return record_state;
 	}
-	public void setState(int state) {
-		this.record_state = state;
+	public void setState(int record_state) {
+		this.record_state = record_state;
 	}
 	public String getComment() {
 		return comment;

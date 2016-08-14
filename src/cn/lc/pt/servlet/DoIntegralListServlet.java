@@ -35,7 +35,7 @@ public class DoIntegralListServlet extends HttpServlet{
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
-		String state = request.getParameter("state"); //状态：0：全部，1：收入，2：支出
+		String state = request.getParameter("record_state"); //状态：0：全部，1：收入，2：支出
 		String userPhone = request.getParameter("user_phone"); //用户手机号
 		String create_date = request.getParameter("create_date"); //创建时间
 		String pageNum = request.getParameter("page_num"); //页数
@@ -43,7 +43,7 @@ public class DoIntegralListServlet extends HttpServlet{
 		IntegralRecordDao integralDao=new IntegralRecordDao();
 		Pager<IntegralRecord> integralRecords=integralDao.getRecordList(userPhone, state, create_date, pageNum, 10);
 		request.setAttribute("result", integralRecords);
-		request.setAttribute("state", state);
+		request.setAttribute("record_state", state);
         request.setAttribute("user_phone", userPhone);
         request.setAttribute("create_date", create_date);
 		request.getRequestDispatcher("/WEB-INF/intergral/integralList.jsp").forward(request, response);

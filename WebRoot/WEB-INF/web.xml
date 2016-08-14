@@ -332,7 +332,7 @@
   
   <servlet-mapping>
     <servlet-name>CommodityListServlet</servlet-name>
-    <url-pattern>/app/commodityListServlet</url-pattern>
+    <url-pattern>/app/commodityList</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>GetCodeServlet</servlet-name>

@@ -91,7 +91,7 @@ public class IntegralDao {
 			connection = DBUtils.getConnection();
 			String getIntegral = "SELECT user_integral FROM lc_user_integral WHERE user_id=?";
 			String updateIntegral = "UPDATE lc_user_integral SET user_integral = ? , update_date = ? WHERE user_id = ?";
-			String addRecord = "INSERT INTO lc_user_integral_record(user_id,integral,create_time,comment,state) VALUES(?,?,?,?,?)";
+			String addRecord = "INSERT INTO lc_user_integral_record(user_id,integral,create_time,comment,record_state) VALUES(?,?,?,?,?)";
 			initIntegral(userId);
 			DBUtils.beginTx(connection);
 			// 获取当前用户的积分
@@ -138,7 +138,7 @@ public class IntegralDao {
 			// 更新当前积分
 			String updateIntegral = "UPDATE lc_user_integral SET user_integral = ? , update_date = ? WHERE user_id = ?";
 			// 添加积分记录
-			String addRecord = "INSERT INTO lc_user_integral_record(user_id,integral,create_time,comment,state) VALUES(?,?,?,?,?)";
+			String addRecord = "INSERT INTO lc_user_integral_record(user_id,integral,create_time,comment,record_state) VALUES(?,?,?,?,?)";
 			initIntegral(userId);
 			DBUtils.beginTx(connection);
 			IntegralBean intergralBean = null;

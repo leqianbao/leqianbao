@@ -75,9 +75,9 @@ public class IntegralRecordDao {
 
 		try {
 			connection = DBUtils.getConnection();
-			String allList = "SELECT lc_user.user_name,integral,create_time,comment,record_state FROM lc_user_integral_record ,lc_user WHERE lc_user_integral_record.user_id=lc_user.user_id";
+			String allList = "SELECT lc_user.user_name,integral,create_time,comment,lc_user_integral_record.record_state FROM lc_user_integral_record ,lc_user WHERE lc_user_integral_record.user_id=lc_user.user_id";
 			StringBuilder sql = new StringBuilder(
-					"SELECT lc_user.user_name,integral,create_time,comment,record_state FROM lc_user_integral_record ,lc_user WHERE lc_user_integral_record.user_id=lc_user.user_id");
+					"SELECT lc_user.user_name,integral,create_time,comment,lc_user_integral_record.record_state FROM lc_user_integral_record ,lc_user WHERE lc_user_integral_record.user_id=lc_user.user_id");
 			if (!TextUtils.isEmpty(state) && Integer.parseInt(state) != 0) {
 				sql.append(" and record_state=?");
 				params.add(state);
