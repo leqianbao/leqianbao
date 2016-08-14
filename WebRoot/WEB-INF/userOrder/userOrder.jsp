@@ -24,6 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="jsp/js/jquery-1.11.3.js"></script>
 	<script type="text/javascript" src="jsp/js/jquery.pagination.js"></script>
 	<script type="text/javascript" src="jsp/js/select-ui.min.js"></script>
+    <script type="text/javascript" src="jsp/js/My97DatePicker/WdatePicker.js"></script>
 	
 	<script type="text/javascript">
 	// 点击分页按钮以后触发的动作
@@ -62,7 +63,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 	<ul class="seachform">
 				    <li><label>用户手机号</label><input name="user_phone" type="text"  value="${user_phone }" class="scinput" /></li>
 				    <li><label>订单号 </label><input name="order_no" type="text"  value="${order_no }" class="scinput" /></li>
-				    <li><label>创建时间 </label><input name="create_date" type="text"  value="${create_date }" class="scinput" /></li>
+				    <li><label>创建时间 </label><input id="create_date" name="create_date" type="text"  value="${create_date }" readonly="readonly" class="scinput Wdate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"/></li>
 				 	<li><label>&nbsp;</label><input type="submit" class="scbtn" value="查询"/></li>
 			    </ul>
 			</form>	

@@ -308,5 +308,5 @@ h2{font-weight:normal;}
 .seachform{ height:42px;}
 .seachform li{float:left; margin-right:15px;}
 .seachform li label{padding-right:10px; float:left; line-height:32px;}
-.scinput{width:150px; height:32px; line-height:32px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
+.scinput{width:150px !important; height:32px !important; line-height:32px !important; border-top:solid 1px #a7b5bc !important; border-left:solid 1px #a7b5bc !important; border-right:solid 1px #ced9df !important; border-bottom:solid 1px #ced9df !important; background:url(../images/inputbg.gif) repeat-x; text-indent:10px !important;}
 .scbtn{width:85px;height:35px; background:url(../images/btnbg.png) no-repeat center; font-size:14px;font-weight:bold;color:#fff; cursor:pointer;border-radius:3px; behavior:url(js/pie.htc);}
