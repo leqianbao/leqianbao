@@ -46,6 +46,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				return true;
 			}
 		</script>
+		<style>
+			.forminfo li label{
+				width: 110px;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="place">
