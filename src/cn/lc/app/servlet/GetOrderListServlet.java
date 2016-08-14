@@ -57,7 +57,7 @@ public class GetOrderListServlet extends HttpServlet{
 			String json=JSON.toJSONString(map);
 	        sbf.append("{\"REP_BODY\":");
 	        sbf.append(json.subSequence(0, json.length()-1));
-	        sbf.append(",\"fetchcash_list\":");
+	        sbf.append(",\"user_order_list\":");
 	        sbf.append(jsonString);
 	        sbf.append("}}");
 		}else{
