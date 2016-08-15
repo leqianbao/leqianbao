@@ -16,7 +16,9 @@ import org.apache.http.util.TextUtils;
 import com.alibaba.fastjson.JSON;
 
 import cn.lc.beans.AddressBean;
+import cn.lc.beans.IntegralRateBean;
 import cn.lc.dao.IntegralDao;
+import cn.lc.dao.IntegralRateDao;
 import cn.lc.json.model.REP_BODY;
 import cn.lc.json.model.REQ_BODY;
 import cn.lc.json.model.Root;
@@ -35,19 +37,35 @@ public class RechargeIntegralServlet extends HttpServlet{
 		REP_BODY<List<AddressBean>> body=new REP_BODY<>();
 		PrintWriter writer = response.getWriter();
 		Map<String, String> map = new HashMap<>();
-		
+		int integral=0;
+		int rate=0;
 		IntegralDao integralDao=new IntegralDao();
 		String date = DataUtil.readDateFromRequest(request.getInputStream());
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
-		int integral=reqBody.getIntegral();
+		float money=reqBody.getMoney();
+		int rechargeType=reqBody.getRecharge_type();
+		
 		String userId=reqBody.getUser_id();
 		String comment=reqBody.getComment();
+		IntegralRateDao integralRateDao=new IntegralRateDao();
+		IntegralRateBean integralRate=integralRateDao.getInegralRate();
+		switch(rechargeType){
+		case 1:
+			rate=integralRate.getIntegral_rate_t();
+			break;
+		case 2:
+			rate=integralRate.getIntegral_rate_gl();
+			break;
+		case 3:
+			rate=integralRate.getIntegral_rate_gs();
+			break;
+		}
+		integral=getIntegral(rate,money);
 		if(TextUtils.isEmpty(reqBody.getUser_id())){
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.PARAM_ERROR);
-		}
-		else{
+		}else{
 			boolean result=integralDao.rechargeIntegral(Integer.parseInt(userId), integral, comment);
 			if(result){
 				map.put(Const.CODE_KEY, Const.CODE_SUCESS);
@@ -62,6 +80,11 @@ public class RechargeIntegralServlet extends HttpServlet{
 		writer.write(JSON.toJSONString(body));
 		writer.flush();
 		writer.close();
+	}
+	
+	
+	public int getIntegral(int rate,float money){
+		return ((int)money)/100*rate;
 	}
 	
 	public boolean checkForm(REQ_BODY request){

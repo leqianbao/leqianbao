@@ -39,6 +39,7 @@ public class DoIntegralRateServlet extends HttpServlet {
 			//取得积分汇率bean
 			IntegralRateBean integralRateBean = dao.getInegralRate();
 			//取得积分汇率数值
+			
 			request.setAttribute("integral_rate", integralRateBean.getIntegral_rate());
 			request.setAttribute("integral_rate_t", integralRateBean.getIntegral_rate_t());
 			request.setAttribute("integral_rate_gl", integralRateBean.getIntegral_rate_gl());

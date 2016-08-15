@@ -71,6 +71,34 @@ public class REQ_BODY {
 	private int recharge_type;
 	private int pay_type;
 
+	public float getMoney() {
+		return money;
+	}
+
+	public void setMoney(float money) {
+		this.money = money;
+	}
+
+	public int getRecharge_type() {
+		return recharge_type;
+	}
+
+	public void setRecharge_type(int recharge_type) {
+		this.recharge_type = recharge_type;
+	}
+
+	public int getPay_type() {
+		return pay_type;
+	}
+
+	public void setPay_type(int pay_type) {
+		this.pay_type = pay_type;
+	}
+
+	public void setSearch_date(String search_date) {
+		this.search_date = search_date;
+	}
+
 	public int getPageSize() {
 		return pageSize;
 	}

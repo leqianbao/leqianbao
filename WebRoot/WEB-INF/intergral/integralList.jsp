@@ -126,7 +126,7 @@ $(function(){
 									<span class="">支出</span>
 								</c:if></td>
 							<td><c:out value="${record.comment }"></c:out></td>
-							<td><c:out value="${record.create_time}"></c:out></td>
+							<td><c:out value="${record.create_time.toString().substring(0,19)}"></c:out></td>
 							<td></td>
 						</tr>
 					</c:forEach>

@@ -42,6 +42,7 @@ public class DoIntegralListServlet extends HttpServlet{
 		
 		IntegralRecordDao integralDao=new IntegralRecordDao();
 		Pager<IntegralRecord> integralRecords=integralDao.getRecordList(userPhone, state, create_date, pageNum, 10);
+		
 		request.setAttribute("result", integralRecords);
 		request.setAttribute("record_state", state);
         request.setAttribute("user_phone", userPhone);
