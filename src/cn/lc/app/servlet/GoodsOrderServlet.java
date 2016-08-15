@@ -54,6 +54,7 @@ public class GoodsOrderServlet extends HttpServlet{
 		String user_id = reqBody.getUser_id();
         String order_num = reqBody.getOrder_commodity_num();
         String addressId = reqBody.getOrder_address_id();
+		String comment=reqBody.getComment();
         
 		StringBuffer sbf = new StringBuffer();
 		Map<String ,String> map = new HashMap<String ,String>(); 
@@ -92,7 +93,8 @@ public class GoodsOrderServlet extends HttpServlet{
         	integralDao.insertUserIntegral(integral);
         }
         int user_integral = integral.getUser_integral();
-        if(commodity_pay * Integer.parseInt(order_num) > user_integral) {
+		int difference = user_integral - commodity_pay * Integer.parseInt(order_num);
+		if(difference < 0) {
 			map.put("RSPCOD","444444");
 			map.put("RSPMSG","对不起，您的积分不够，下单失败");
 			PrintWriter writer = response.getWriter();
@@ -100,8 +102,27 @@ public class GoodsOrderServlet extends HttpServlet{
 			writer.flush();
 			writer.close();	
 			return;
+		}
+		
+		boolean back = integralDao.payIntegral(Integer.parseInt(user_id),user_integral,comment);
+//        if(commodity_pay * Integer.parseInt(order_num) > user_integral) {
+//			map.put("RSPCOD","444444");
+//			map.put("RSPMSG","对不起，您的积分不够，下单失败");
+//			PrintWriter writer = response.getWriter();
+//		    writer.write(DataUtil.addReqBody(map));
+//			writer.flush();
+//			writer.close();	
+//			return;
+//        }
+        if(back) {
+			map.put("RSPCOD","555555");
+			map.put("RSPMSG","积分扣除失败!");
+			PrintWriter writer = response.getWriter();
+		    writer.write(DataUtil.addReqBody(map));
+			writer.flush();
+			writer.close();	
+			return;
         }
-        
         //生成一个订单对象
     	UserOrder userOrder = new UserOrder();
     	userOrder.setUser_id(Integer.parseInt(user_id));
