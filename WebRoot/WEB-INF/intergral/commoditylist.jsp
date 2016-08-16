@@ -126,7 +126,7 @@ $(function(){
 		        <th>序号</th>
 		        <th>商品ID</th>
 		        <th>商品名称</th>
-		        <th>商品价格</th>
+		        <th>商品积分价格</th>
 		        <th>商品数量</th>
 		        <th>商品状态</th>
 		        <th>商品类型</th>

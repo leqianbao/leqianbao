@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="jsp/js/ajaxfileupload.js"></script>
 	<style>
 		.forminfo li label{
-			width:100px
+			width:160px
 		}
 		.textinput{
 			width: 345px;
@@ -117,10 +117,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function checkValue(){
 			var r = new RegExp("^\\d+$");
 			var r2 = new RegExp("^[0-9]*[1-9][0-9]*$");
+			var regex = /^([1-9]\d{0,15}|0)(\.\d{1,4})?$/;
 			if((!(r.test($("#pay_num").val())) 
 					&& !(r2.test($("#pay_num").val())))
 						|| ($("#pay_num").val() > 2147483647)){
 				alert("请输入正确的价格！");
+				return false;
+			}
+			if(!(regex.test($("#pay_money").val()))){
+				alert("请输入正确的现金价格！");
+				return false;
+			}
+			if((!(r.test($("#pay_blend_integral").val())) 
+					&& !(r2.test($("#pay_blend_integral").val())))
+						|| ($("#pay_blend_integral").val() > 2147483647)){
+				alert("请输入正确的混合消费积分价格！");
+				return false;
+			}
+			if(!(regex.test($("#pay_blend_money").val()))){
+				alert("请输入正确的混合消费现金价格！");
 				return false;
 			}
 			if((!(r.test($("#com_num").val())) 
@@ -169,6 +184,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    			<label>商品价格（积分）</label>
 	    			<input id="pay_num" name="commodity_pay" value="${result.commodity_pay}" maxlength="10" type="text" class="dfinput" />
 	    			<i>积分价格为正整数</i>
+	    		</li>
+	    		
+	    		<li>
+	    			<label>商品价格（现金）</label>
+	    			<input id="pay_money" name="commodity_money" value="${result.commodity_money}" maxlength="15" type="text" class="dfinput" />
+	    			<i>请填写争取的价格</i>
+	    		</li>
+	    		
+	    		<li>
+	    			<label>商品价格（混合付款：积分）</label>
+	    			<input id="pay_blend_integral" name="commodity_blend_integral" value="${result.commodity_blend_integral}" maxlength="10" type="text" class="dfinput" />
+	    			<i>积分价格为正整数</i>
+	    		</li>
+	    		<li>
+	    			<label>商品价格（混合付款：现金）</label>
+	    			<input id="pay_blend_money" name="commodity_blend_money" value="${result.commodity_blend_money}" maxlength="15" type="text" class="dfinput" />
+	    			<i>请填写真确的价格</i>
 	    		</li>
 	    		<li>
 	    			<label>商品数量</label>

@@ -1,11 +1,16 @@
 package cn.lc.beans;
 
+import java.math.BigDecimal;
+
 public class Commodity {
 	
 	private String commodity_id;
     private String commodity_name;      //商品名称
     private Integer commodity_num;   //商品数量
     private Integer commodity_pay;  //商品价格
+    private BigDecimal commodity_money;  //商品价格（现金）
+    private Integer commodity_blend_integral;  //商品价格（混合：积分）
+    private BigDecimal commodity_blend_money;  //商品价格（混合：现金）
     private String commodity_imgurl;   //商品图片路径
     private String commodity_type; //商品出售状态
     private String commodity_use_flag; //商品出售状态
@@ -19,11 +24,15 @@ public class Commodity {
     }
     
     public Commodity(String commodity_id, String commodity_name, Integer commodity_num, Integer commodity_pay,
+    			BigDecimal commodity_money, Integer commodity_blend_integral, BigDecimal commodity_blend_money,
     			String commodity_imgurl, String commodity_type, String commodity_use_flag, String commodity_comment){
     	this.commodity_id = commodity_id;
     	this.commodity_name = commodity_name;
     	this.commodity_num = commodity_num;
     	this.commodity_pay = commodity_pay;
+    	this.commodity_money = commodity_money;
+    	this.commodity_blend_integral = commodity_blend_integral;
+    	this.commodity_blend_money = commodity_blend_money;
     	this.commodity_imgurl = commodity_imgurl;
     	this.commodity_type = commodity_type;
     	this.commodity_use_flag = commodity_use_flag;
@@ -107,6 +116,30 @@ public class Commodity {
 
 	public void setUpdate_date(String update_date) {
 		this.update_date = update_date;
+	}
+
+	public BigDecimal getCommodity_money() {
+		return commodity_money;
+	}
+
+	public void setCommodity_money(BigDecimal commodity_money) {
+		this.commodity_money = commodity_money;
+	}
+
+	public Integer getCommodity_blend_integral() {
+		return commodity_blend_integral;
+	}
+
+	public void setCommodity_blend_integral(Integer commodity_blend_integral) {
+		this.commodity_blend_integral = commodity_blend_integral;
+	}
+
+	public BigDecimal getCommodity_blend_money() {
+		return commodity_blend_money;
+	}
+
+	public void setCommodity_blend_money(BigDecimal commodity_blend_money) {
+		this.commodity_blend_money = commodity_blend_money;
 	}
 
 }

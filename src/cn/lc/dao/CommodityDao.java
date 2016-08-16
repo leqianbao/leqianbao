@@ -110,7 +110,7 @@ public class CommodityDao {
         sql2.append(" and create_date < ?");
         
         StringBuffer sql = new StringBuffer();
-        sql.append("select * from (SELECT commodity_id, commodity_name, commodity_pay, commodity_imgurl, commodity_type, ");
+        sql.append("select * from (SELECT commodity_id, commodity_name, commodity_pay, commodity_money,commodity_blend_integral,commodity_blend_money,commodity_imgurl, commodity_type, ");
         sql.append(" commodity_comment, create_date, update_date ");
         sql.append(" FROM lc_commodity_details WHERE delete_flag = '0' and commodity_use_flag = '0' ");
         sql.append(" and create_date < ? order by create_date desc) a ");
@@ -187,7 +187,8 @@ public class CommodityDao {
    /**
     * 根据指定id更行商品
     * */
-	public Boolean updateCommodity(String id, String name, Integer pay, 
+	public Boolean updateCommodity(String id, String name, Integer pay, String money,
+			Integer blend_integral, String blend_money,
     		Integer num, String use_flag, String type, String comment){
     	int update_flag = 0;
 		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");   
@@ -199,6 +200,9 @@ public class CommodityDao {
         StringBuffer sql = new StringBuffer();
         sql.append(" update lc_commodity_details set commodity_name = ?, ");
         sql.append(" commodity_pay = ?, ");
+        sql.append(" commodity_money = ?, ");
+        sql.append(" commodity_blend_integral = ?, ");
+        sql.append(" commodity_blend_money = ?, ");
         sql.append(" commodity_num = ?, ");
         sql.append(" commodity_use_flag = ?, ");
         sql.append(" commodity_type = ?, ");
@@ -210,12 +214,15 @@ public class CommodityDao {
             st = connection.prepareStatement(sql.toString());
             st.setString(1, name);
             st.setInt(2, pay);
-            st.setInt(3, num);
-            st.setString(4, use_flag);
-            st.setString(5, type);
-            st.setString(6, comment);
-            st.setString(7, update_date);
-            st.setString(8, id);
+            st.setString(3, money);
+            st.setInt(4, blend_integral);
+            st.setString(5, blend_money);
+            st.setInt(6, num);
+            st.setString(7, use_flag);
+            st.setString(8, type);
+            st.setString(9, comment);
+            st.setString(10, update_date);
+            st.setString(11, id);
             update_flag = st.executeUpdate();
         } catch (Exception e) {
             DBUtils.rollback(connection);
@@ -267,7 +274,8 @@ public class CommodityDao {
 	/**
 	 * 新建商品
 	 * */
-	public boolean createCommodity(String id, String name, Integer pay, 
+	public boolean createCommodity(String id, String name, Integer pay, String money,
+			Integer blend_integral, String blend_money,
     		Integer num, String use_flag, String type, String comment){
     	Connection connection = null;
     	PreparedStatement st = null;
@@ -278,19 +286,22 @@ public class CommodityDao {
     	
         StringBuffer sql = new StringBuffer();
         sql.append(" insert into lc_commodity_details (commodity_id, commodity_name");
-        sql.append(" , commodity_pay, commodity_num, commodity_type, commodity_use_flag, commodity_comment, create_date)");
-        sql.append(" values(?, ?, ?, ?, ?, ?, ?, ?) ");
+        sql.append(" , commodity_pay, commodity_money, commodity_blend_integral, commodity_blend_money, commodity_num, commodity_type, commodity_use_flag, commodity_comment, create_date)");
+        sql.append(" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
         try {
             connection = DBUtils.getConnection();
             st = connection.prepareStatement(sql.toString());
             st.setString(1, id);
             st.setString(2, name);
             st.setInt(3, pay);
-            st.setInt(4, num);
-            st.setString(5, type);
-            st.setString(6, use_flag);
-            st.setString(7, comment);
-            st.setString(8, create_date);
+            st.setString(4, money);
+            st.setInt(5, blend_integral);
+            st.setString(6, blend_money);
+            st.setInt(7, num);
+            st.setString(8, type);
+            st.setString(9, use_flag);
+            st.setString(10, comment);
+            st.setString(11, create_date);
             insertNum = st.executeUpdate();
         } catch (Exception e) {
             DBUtils.rollback(connection);

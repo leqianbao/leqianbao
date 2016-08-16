@@ -47,6 +47,12 @@ public class DoCommodityDetailServlet extends HttpServlet {
 		String name = request.getParameter("commodity_name");
 		//商品价格
 		Integer pay = Integer.parseInt(request.getParameter("commodity_pay"));
+		//商品价格
+		String money = request.getParameter("commodity_money");
+		//商品价格
+		Integer blend_integral = Integer.parseInt(request.getParameter("commodity_blend_integral"));
+		//商品价格
+		String blend_money = request.getParameter("commodity_blend_money");
 		//商品数量
 		Integer num = Integer.parseInt(request.getParameter("commodity_num"));
 		//商品出售状态
@@ -59,7 +65,7 @@ public class DoCommodityDetailServlet extends HttpServlet {
 		Boolean update = true;
 		if(tag.equals("add")){
 			if(commodity_id != null && !(commodity_id.trim().equals(""))){
-				update = dao.updateCommodity(commodity_id, name, pay,
+				update = dao.updateCommodity(commodity_id, name, pay,money,blend_integral,blend_money,
 							num, use_flag, type, comment);
 
 				if(update){
@@ -69,7 +75,7 @@ public class DoCommodityDetailServlet extends HttpServlet {
 				}
 			}else if(commodity_id == null || commodity_id.trim().equals("")){
 				commodity_id = getCommodityId();
-				update = dao.createCommodity(commodity_id, name, pay,
+				update = dao.createCommodity(commodity_id, name, pay,money,blend_integral,blend_money,
 						num, use_flag, type, comment);
 
 				if(update){

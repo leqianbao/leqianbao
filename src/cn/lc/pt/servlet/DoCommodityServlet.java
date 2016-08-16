@@ -1,6 +1,7 @@
 package cn.lc.pt.servlet;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.InetAddress;
 
 import javax.servlet.ServletException;
@@ -74,7 +75,7 @@ public class DoCommodityServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/intergral/commoditylist.jsp").forward(request, response);
 		}else if(tag.equals("edit")){
 			String commodity_id = request.getParameter("commodity_id"); //商品id
-			Commodity result = new Commodity("","", 0, 0, "", "0", "0", "");
+			Commodity result = new Commodity("","", 0, 0, new BigDecimal(0), 0, new BigDecimal(0), "", "0", "0", "");
 			if(commodity_id != null && !(commodity_id.trim().equals(""))){
 				String imagePath = request.getScheme()+"://"+
 						InetAddress.getLocalHost().getHostAddress()+":"+request.getServerPort()+
