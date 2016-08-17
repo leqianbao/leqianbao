@@ -87,6 +87,7 @@ $(document).ready(function(e) {
     </div>
     </li>
  	<li><label>&nbsp;</label><input type="submit" class="scbtn" value="查询"/></li>
+ 	<li><label>&nbsp;</label><input type="submit" class="scbtn" value="刷新"/></li>
     </ul>
 </form>
     </div>
