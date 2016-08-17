@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
 
+import cn.lc.beans.Commodity;
+import cn.lc.beans.UserOrder;
+import cn.lc.dao.CommodityDao;
 import cn.lc.dao.UserOrderDao;
 import cn.lc.json.model.REQ_BODY;
 import cn.lc.json.model.Root;
@@ -36,7 +39,10 @@ public class CancelOrderServlet extends HttpServlet{
 		REQ_BODY reqBody = root.getREQ_BODY();
 		String orderId=reqBody.getUser_order_id();
 		UserOrderDao userOrderDao=new UserOrderDao();
-		boolean back=userOrderDao.cancelOrder(Integer.parseInt(orderId));
+		
+		UserOrder userOrder =new UserOrderDao().getUserOrderById(Long.valueOf(orderId));
+		Commodity commodity = new CommodityDao().getCommodity(userOrder.getCommodity_id());
+		boolean back=userOrderDao.cancelOrder(Integer.parseInt(orderId),commodity,userOrder);
 		if(back){
 			map.put(Const.CODE_KEY, Const.CODE_SUCCESS);
 			map.put(Const.MSG_KEY, Const.ORDER_CANCEL_SUCCESS);
@@ -44,7 +50,6 @@ public class CancelOrderServlet extends HttpServlet{
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ORDER_CANCEL_ERROR);
 		}
-	
 		PrintWriter writer = response.getWriter();
 	    writer.write(DataUtil.addReqBody(map));
 		writer.flush();

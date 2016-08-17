@@ -12,6 +12,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.http.util.TextUtils;
 
+import cn.lc.beans.Commodity;
 import cn.lc.beans.Pager;
 import cn.lc.beans.User;
 import cn.lc.beans.UserOrder;
@@ -173,18 +174,20 @@ public class UserOrderDao {
 		return result;
 	}
 	//@APP--插入积分数据
-	public boolean insertUserOrder(UserOrder userOrder){
+	public boolean insertUserOrder(UserOrder userOrder,int commodityNum){
 		boolean  result = false;
 		Connection connection = null;
 		try {
 			connection = DBUtils.getConnection();
 			String sql = "INSERT INTO lc_user_order_details (user_id,order_no,commodity_id,commodity_num,create_date,end_date,order_state,logistics_number,receipt_address_id) VALUES (?,?,?,?,?,?,?,?,?)";
+			String commodity="UPDATE lc_commodity_details set commodity_num = ? WHERE commodity_id = ?";
 			DBUtils.beginTx(connection);
 			int isSuccess = qR.update(connection,sql,userOrder.getUser_id(),
 					userOrder.getOrder_no(),userOrder.getCommodity_id(),
 					userOrder.getCommodity_num(),userOrder.getCreate_date(),
 					userOrder.getEnd_date(),userOrder.getOrder_state(),
 					userOrder.getLogistics_number(),userOrder.getReceipt_address_id());
+			qR.update(connection, commodity, commodityNum-userOrder.getCommodity_num(),userOrder.getCommodity_id());
 			if(isSuccess==1){
 				DBUtils.commit(connection);
 				result = true;
@@ -233,15 +236,17 @@ public class UserOrderDao {
 	 * @param orderId
 	 * @return
 	 */
-	public boolean cancelOrder(int orderId){
+	public boolean cancelOrder(int orderId,Commodity commodity,UserOrder userOrder){
 		boolean result=false;
 		Connection connection = null;
 		try {
 			String sql ="";
 			connection = DBUtils.getConnection();
 			sql = "DELETE FROM  lc_user_order_details WHERE id=?";
+			String commoditySql="UPDATE lc_commodity_details set commodity_num = ? WHERE commodity_id = ?";
 			DBUtils.beginTx(connection);
 			int isSuccess = qR.update(connection,sql,orderId);
+			qR.update(connection,commoditySql,commodity.getCommodity_num()+userOrder.getCommodity_num(),commodity.getCommodity_id());
 			if(isSuccess==1){
 			DBUtils.commit(connection);
 			result = true;

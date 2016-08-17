@@ -340,4 +340,5 @@ public class CommodityDao {
         }
         return delflag;
 	}
+	
 }

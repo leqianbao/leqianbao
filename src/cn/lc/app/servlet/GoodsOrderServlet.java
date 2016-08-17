@@ -96,7 +96,7 @@ public class GoodsOrderServlet extends HttpServlet{
     	userOrder.setOrder_state("0");
     	userOrder.setLogistics_number("");
     	userOrder.setReceipt_address_id(Long.valueOf(addressId));
-        boolean result = new UserOrderDao().insertUserOrder(userOrder);
+        boolean result = new UserOrderDao().insertUserOrder(userOrder,commodity_num);
 		if(result){
 			map.put("RSPCOD","000000");
 			map.put("RSPMSG","下单成功!");
