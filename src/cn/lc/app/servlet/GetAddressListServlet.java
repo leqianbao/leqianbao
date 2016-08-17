@@ -43,8 +43,8 @@ public class GetAddressListServlet extends HttpServlet{
 			map.put(Const.MSG_KEY, Const.PARAM_ERROR);
 		}else{
 			List<AddressBean> addressBeans=addressDao.getAddressList(Integer.parseInt(reqBody.getUser_id()));
-			map.put(Const.CODE_KEY, Const.CODE_SUCESS);
-			map.put(Const.MSG_KEY, Const.ADDRESS_LIST_SUCESS);
+			map.put(Const.CODE_KEY, Const.CODE_SUCCESS);
+			map.put(Const.MSG_KEY, Const.ADDRESS_LIST_SUCCESS);
 			body.setData(addressBeans);
 		}
 		body.setRSPCOD(map.get(Const.CODE_KEY));

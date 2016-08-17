@@ -307,4 +307,28 @@ public class UserDao {
 		}
     	return users;
     }
+    
+    public boolean addChildUser(int root,int userId){
+    	boolean  result = false;
+		Connection connection = null;
+		try {
+			connection = DBUtils.getConnection();
+			String sql = "UPDATE lc_user SET root=? WHERE user_id=?";
+			DBUtils.beginTx(connection);
+			int isSuccess = qR.update(connection,sql,root,userId);
+			if(isSuccess==1){
+			DBUtils.commit(connection);
+			result = true;
+			} else{
+				DBUtils.rollback(connection);
+				result = false;
+			}
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		} finally{
+			DBUtils.releaseDB(null, null, connection);
+		}
+		return result;
+    }
 }

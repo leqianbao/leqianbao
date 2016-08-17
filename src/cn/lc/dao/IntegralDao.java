@@ -1,5 +1,6 @@
 package cn.lc.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -82,7 +83,7 @@ public class IntegralDao {
 	 * @param integral
 	 * @return
 	 */
-	public boolean payIntegral(int userId, int integral,String comment) {
+	public boolean payIntegral(int userId, int integral,String comment,BigDecimal money) {
 		boolean result = false;
 		Connection connection = null;
 		IntegralBean intergralBean = null;
@@ -91,7 +92,7 @@ public class IntegralDao {
 			connection = DBUtils.getConnection();
 			String getIntegral = "SELECT user_integral FROM lc_user_integral WHERE user_id=?";
 			String updateIntegral = "UPDATE lc_user_integral SET user_integral = ? , update_date = ? WHERE user_id = ?";
-			String addRecord = "INSERT INTO lc_user_integral_record(user_id,integral,create_time,comment,record_state) VALUES(?,?,?,?,?)";
+			String addRecord = "INSERT INTO lc_user_integral_record(user_id,integral,create_time,comment,record_state,money) VALUES(?,?,?,?,?,?)";
 			initIntegral(userId);
 			DBUtils.beginTx(connection);
 			// 获取当前用户的积分
@@ -102,7 +103,7 @@ public class IntegralDao {
 					userId);
 			if (row > 0) {
 				qR.update(connection, addRecord, userId, integral, DateUtil.getCurrentTimestamp(),
-						comment, 2);
+						comment, 2,money);
 				DBUtils.commit(connection);
 				result = true;
 			} else {

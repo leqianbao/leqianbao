@@ -29,18 +29,19 @@ public class InterestDao {
 		try {
 			connection = DBUtils.getConnection();
 			DBUtils.beginTx(connection);
-			if(qR.query(connection,sql,scalarHandler,uid,"A")!=null){
-				result = qR.query(connection,sql,scalarHandler,uid,"A").toString();	
+			if (qR.query(connection, sql, scalarHandler, uid, "A") != null) {
+				result = qR.query(connection, sql, scalarHandler, uid, "A").toString();
 			}
-			
-			//result =((Number) qR.query(connection,sql,scalarHandler,uid,"A")).toString();
+
+			// result =((Number)
+			// qR.query(connection,sql,scalarHandler,uid,"A")).toString();
 			DBUtils.commit(connection);
-	} catch (Exception e) {
-		DBUtils.rollback(connection);
-		e.printStackTrace();
-	} finally{
-		DBUtils.releaseDB(null, null, connection);
-	}
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		} finally {
+			DBUtils.releaseDB(null, null, connection);
+		}
 		return result;
 	}
 	

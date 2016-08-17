@@ -39,11 +39,23 @@ public class AddChildUserServlet extends HttpServlet{
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
 		int rootId = reqBody.getRoot();
+		String userId=reqBody.getUser_id();
 		UserDao userDao = new UserDao();
-		List<User> users = userDao.getChildUserList(rootId);
-		body.setData(users);
-		body.setRSPCOD(Const.CODE_SUCESS);
-		body.setRSPMSG(Const.REQUEST_SUCCESS);
+		User user=userDao.getUserById(Integer.parseInt(userId));
+		if(user!=null){
+			boolean back = userDao.addChildUser(rootId,Integer.parseInt(userId));
+			if(back){
+				body.setRSPCOD(Const.CODE_SUCCESS);
+				body.setRSPMSG(Const.CHILD_ADD_SUCCESS);
+			}else{
+				body.setRSPCOD(Const.CODE_ERROR);
+				body.setRSPMSG(Const.CHILD_ADD_ERROR);
+			}
+		}else{
+			body.setRSPCOD(Const.CODE_ERROR);
+			body.setRSPMSG(Const.CHILD_ADD_ID_SHORT);
+		}
+		
 		PrintWriter writer = response.getWriter();
 		writer.write(JSON.toJSONString(body));
 		writer.flush();

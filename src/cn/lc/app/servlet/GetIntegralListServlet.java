@@ -47,8 +47,8 @@ public class GetIntegralListServlet extends HttpServlet{
 			int pageSize=reqBody.getPageSize();
 			String userId=reqBody.getUser_id();
 			List<IntegralRecord> integrals=integralDao.getRecordList(Integer.parseInt(userId), state, pageNum, pageSize);
-			map.put(Const.CODE_KEY, Const.CODE_SUCESS);
-			map.put(Const.MSG_KEY, Const.INTEGRAL_LIST_SUCESS);
+			map.put(Const.CODE_KEY, Const.CODE_SUCCESS);
+			map.put(Const.MSG_KEY, Const.INTEGRAL_LIST_SUCCESS);
 			body.setData(integrals);
 		}else{
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);

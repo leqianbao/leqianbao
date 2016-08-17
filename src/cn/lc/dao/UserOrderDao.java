@@ -135,7 +135,7 @@ public class UserOrderDao {
 		UserOrder userOrder = null;
 		try {
 			connection = DBUtils.getConnection();
-			
+			DBUtils.beginTx(connection);
 			userOrder = qR.query(connection, sql.toString(), new BeanListHandler<UserOrder>(UserOrder.class), id).get(0);
 		} catch (Exception e) {
 			DBUtils.rollback(connection);
@@ -226,6 +226,13 @@ public class UserOrderDao {
 		return result;
 	}
 	
+	
+	
+	/**
+	 * 取消订单
+	 * @param orderId
+	 * @return
+	 */
 	public boolean cancelOrder(int orderId){
 		boolean result=false;
 		Connection connection = null;

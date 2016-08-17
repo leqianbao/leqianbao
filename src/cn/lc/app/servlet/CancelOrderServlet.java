@@ -38,8 +38,8 @@ public class CancelOrderServlet extends HttpServlet{
 		UserOrderDao userOrderDao=new UserOrderDao();
 		boolean back=userOrderDao.cancelOrder(Integer.parseInt(orderId));
 		if(back){
-			map.put(Const.CODE_KEY, Const.CODE_SUCESS);
-			map.put(Const.MSG_KEY, Const.ORDER_CANCEL_SUCESS);
+			map.put(Const.CODE_KEY, Const.CODE_SUCCESS);
+			map.put(Const.MSG_KEY, Const.ORDER_CANCEL_SUCCESS);
 		}else{
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ORDER_CANCEL_ERROR);

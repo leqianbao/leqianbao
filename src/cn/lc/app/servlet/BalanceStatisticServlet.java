@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import cn.lc.dao.FetchCashDao;
 import cn.lc.dao.FinanceDao;
+import cn.lc.dao.IntegralRecordDao;
 import cn.lc.dao.InterestDao;
 import cn.lc.dao.PutinMoneyDao;
 import cn.lc.json.model.REQ_BODY;
@@ -76,9 +77,11 @@ public class BalanceStatisticServlet extends HttpServlet {
 		Double lixi = 0.0;
 		if(lixis!=null&&lixis!=""){lixi= Double.parseDouble(lixis);}
 		
-		
-		
-		Double balances = chongzhi - licai + lixi -ftixi; // - tixi
+		IntegralRecordDao integralRecord=new IntegralRecordDao();
+		String integrls=integralRecord.getMoneyByUser(Integer.parseInt(user_id));
+		Double integrl = 0.0;
+		if(integrls!=null&&integrls!=""){integrl= Double.parseDouble(integrls);}
+		Double balances = chongzhi - licai + lixi -ftixi-integrl; // - tixi
 		
 		
 		//Double interests = licai;

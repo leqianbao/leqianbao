@@ -68,8 +68,8 @@ public class RechargeIntegralServlet extends HttpServlet{
 		}else{
 			boolean result=integralDao.rechargeIntegral(Integer.parseInt(userId), integral, comment);
 			if(result){
-				map.put(Const.CODE_KEY, Const.CODE_SUCESS);
-				map.put(Const.MSG_KEY, Const.INTEGRAL_RECORD_SUCESS);
+				map.put(Const.CODE_KEY, Const.CODE_SUCCESS);
+				map.put(Const.MSG_KEY, Const.INTEGRAL_RECORD_SUCCESS);
 			}else{
 				map.put(Const.CODE_KEY, Const.CODE_ERROR);
 				map.put(Const.MSG_KEY, Const.INTEGRAL_RECORD_ERROR);

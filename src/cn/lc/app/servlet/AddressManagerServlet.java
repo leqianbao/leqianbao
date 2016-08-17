@@ -116,8 +116,8 @@ public class AddressManagerServlet extends HttpServlet {
 		boolean back = addressDao.addAddress(request.getUser_id(), request.getAddress(), request.getAddress_phone(),
 				request.getAddress_name());
 		if (back) {
-			map.put(Const.CODE_KEY, Const.CODE_SUCESS);
-			map.put(Const.MSG_KEY, Const.ADDRESS_ADD_SUCESS);
+			map.put(Const.CODE_KEY, Const.CODE_SUCCESS);
+			map.put(Const.MSG_KEY, Const.ADDRESS_ADD_SUCCESS);
 		} else {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ADDRESS_ADD_ERROR);
@@ -130,8 +130,8 @@ public class AddressManagerServlet extends HttpServlet {
 		AddressDao addressDao = new AddressDao();
 		boolean back = addressDao.deleteAddress(id);
 		if (back) {
-			map.put(Const.CODE_KEY, Const.CODE_SUCESS);
-			map.put(Const.MSG_KEY, Const.ADDRESS_DELETE_SUCESS);
+			map.put(Const.CODE_KEY, Const.CODE_SUCCESS);
+			map.put(Const.MSG_KEY, Const.ADDRESS_DELETE_SUCCESS);
 		} else {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ADDRESS_DELETE_ERROR);
@@ -145,8 +145,8 @@ public class AddressManagerServlet extends HttpServlet {
 		boolean back = addressDao.updateAddress(request.getAddress_id(), request.getAddress(),
 				request.getAddress_phone(), request.getAddress_name());
 		if (back) {
-			map.put(Const.CODE_KEY, Const.CODE_SUCESS);
-			map.put(Const.MSG_KEY, Const.ADDRESS_NOTIFY_SUCESS);
+			map.put(Const.CODE_KEY, Const.CODE_SUCCESS);
+			map.put(Const.MSG_KEY, Const.ADDRESS_NOTIFY_SUCCESS);
 		} else {
 			map.put(Const.CODE_KEY, Const.CODE_ERROR);
 			map.put(Const.MSG_KEY, Const.ADDRESS_NOTIFY_ERROR);

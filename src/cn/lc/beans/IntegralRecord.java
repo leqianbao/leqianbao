@@ -1,5 +1,6 @@
 package cn.lc.beans;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class IntegralRecord {
@@ -8,6 +9,13 @@ public class IntegralRecord {
 	private int integral;
 	private Timestamp create_time;
 	private String comment;
+	private BigDecimal money;
+	public BigDecimal getMoney() {
+		return money;
+	}
+	public void setMoney(BigDecimal money) {
+		this.money = money;
+	}
 	private int record_state;
 	private String user_name;
 	

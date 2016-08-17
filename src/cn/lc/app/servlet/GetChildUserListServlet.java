@@ -40,7 +40,7 @@ public class GetChildUserListServlet extends HttpServlet {
 		UserDao userDao = new UserDao();
 		List<User> users = userDao.getChildUserList(rootId);
 		body.setData(users);
-		body.setRSPCOD(Const.CODE_SUCESS);
+		body.setRSPCOD(Const.CODE_SUCCESS);
 		body.setRSPMSG(Const.REQUEST_SUCCESS);
 		PrintWriter writer = response.getWriter();
 		writer.write(JSON.toJSONString(body));
