@@ -70,6 +70,15 @@ public class REQ_BODY {
 	private float money;
 	private int recharge_type;
 	private int pay_type;
+	private int root;
+
+	public int getRoot() {
+		return root;
+	}
+
+	public void setRoot(int root) {
+		this.root = root;
+	}
 
 	public float getMoney() {
 		return money;

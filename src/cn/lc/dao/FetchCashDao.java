@@ -16,6 +16,7 @@ import org.apache.logging.log4j.core.Logger;
 
 import cn.lc.beans.FetchCash;
 import cn.lc.beans.Pager;
+import cn.lc.beans.User;
 
 public class FetchCashDao {
     
@@ -232,5 +233,25 @@ public class FetchCashDao {
          return result;
      }
      
+     /**
+      * 获取未处理的提现申请
+      * @return
+      */
+     public List<FetchCash> getUntreatedList(){
+    	 List<FetchCash> fetchCashs=null;
+    	 Connection connection = null;
+         try {
+        	 connection = DBUtils.getConnection();
+ 			String sql = "SELECT * FROM lc_fetch_cash WHERE handle_tag = 0";
+ 			DBUtils.beginTx(connection);
+ 			fetchCashs = qR.query(connection,sql,new BeanListHandler<FetchCash>(FetchCash.class));
+         } catch (Exception e) {
+             DBUtils.rollback(connection);
+             e.printStackTrace();
+         } finally {
+             DBUtils.releaseDB(null, null, connection);
+         }
+         return fetchCashs;
+     }
 
 }

@@ -8,6 +8,7 @@ public class Const {
 	
 	public final static String SYSTEM_ERROR="系统错误";
 	public final static String PARAM_ERROR="传参错误";
+	public final static String REQUEST_SUCCESS="获取成功";
 	
 	
 	//address manager
@@ -34,4 +35,9 @@ public class Const {
 	//IntegralList 积分列表
 	public final static String INTEGRAL_LIST_SUCESS="获取积分成功";
 	public final static String INTEGRAL_LIST_ERROR="积分积分列表失败";
+	
+	//order
+	public final static String ORDER_STATE_ERROR="订单状态错误";
+	public final static String ORDER_CANCEL_SUCESS="订单取消成功";
+	public final static String ORDER_CANCEL_ERROR="订单取消失败";
 }

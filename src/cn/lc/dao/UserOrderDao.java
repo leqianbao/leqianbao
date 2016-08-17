@@ -225,4 +225,29 @@ public class UserOrderDao {
 		}
 		return result;
 	}
+	
+	public boolean cancelOrder(int orderId){
+		boolean result=false;
+		Connection connection = null;
+		try {
+			String sql ="";
+			connection = DBUtils.getConnection();
+			sql = "DELETE FROM  lc_user_order_details WHERE id=?";
+			DBUtils.beginTx(connection);
+			int isSuccess = qR.update(connection,sql,orderId);
+			if(isSuccess==1){
+			DBUtils.commit(connection);
+			result = true;
+			} else{
+				DBUtils.rollback(connection);
+				result = false;
+			}
+		} catch (Exception e) {
+			DBUtils.rollback(connection);
+			e.printStackTrace();
+		} finally{
+			DBUtils.releaseDB(null, null, connection);
+		}
+		return result;
+	}
 }
