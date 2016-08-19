@@ -110,7 +110,9 @@ public class CommodityDao {
         sql2.append(" and create_date < ?");
         
         StringBuffer sql = new StringBuffer();
-        sql.append("select * from (SELECT commodity_id, commodity_name, commodity_pay, commodity_money,commodity_blend_integral,commodity_blend_money,commodity_imgurl, commodity_type, ");
+        sql.append("select * from (SELECT commodity_id, commodity_name, commodity_num, "
+        		+ "commodity_pay, commodity_money,commodity_blend_integral,commodity_blend_money,"
+        		+ "commodity_imgurl, commodity_type, ");
         sql.append(" commodity_comment, create_date, update_date ");
         sql.append(" FROM lc_commodity_details WHERE delete_flag = '0' and commodity_use_flag = '0' ");
         sql.append(" and create_date < ? order by create_date desc) a ");
