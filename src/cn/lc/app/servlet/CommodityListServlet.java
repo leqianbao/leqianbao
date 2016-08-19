@@ -2,6 +2,7 @@ package cn.lc.app.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -81,6 +82,8 @@ public class CommodityListServlet extends HttpServlet {
 		if(integralBean != null){
 			integral = integralBean.getUser_integral();
 		}
+		String imagePath = request.getScheme()+"://"+InetAddress.getLocalHost().getHostAddress()
+				+":"+request.getServerPort()+request.getContextPath()+"/";
 		//组装主要数据部分
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("current_page", pageData.getCurrent_page());
@@ -90,6 +93,7 @@ public class CommodityListServlet extends HttpServlet {
 		data.put("integral", integral);
 		data.put("data_list", pageData.getData_list());
 		data.put("first_search_date", first_search_date);
+		data.put("server_ip", imagePath);
 		
 		String jsonString = JSON.toJSONString(data);
 		StringBuffer sbf = new StringBuffer();

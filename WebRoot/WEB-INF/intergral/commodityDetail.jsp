@@ -153,7 +153,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    <div class="place">
     <span>位置：</span>
     <ul class="placeul">
-	    <li><a href="doLogin">首页</a></li>
+	    <li><a>首页</a></li>
 	    <li>
 	    	<span style="font-weight:100 !important">
 				<c:url value="/pt/doCommodity" var="backMain">
