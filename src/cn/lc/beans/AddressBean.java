@@ -4,18 +4,18 @@ package cn.lc.beans;
 public class AddressBean {
 	
 	
-	private int id;
+	private int address_id;
 	private String user_id;
 	private String address_address;
 	private String address_phone;
 	private String address_name;
 	
 	
-	public int getId() {
-		return id;
+	public int getAddress_id() {
+		return address_id;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setAddress_id(int address_id) {
+		this.address_id = address_id;
 	}
 	public String getUser_id() {
 		return user_id;

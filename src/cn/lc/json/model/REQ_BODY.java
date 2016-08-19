@@ -71,6 +71,56 @@ public class REQ_BODY {
 	private int recharge_type;
 	private int pay_type;
 	private int root;
+	
+	//添加子账户
+	private String childName;
+	private String childPhone;
+	private String idCard;//身份证号
+	private String bankName;
+	private String bankAccount;
+	public String getIdCard() {
+		return idCard;
+	}
+
+	public void setIdCard(String idCard) {
+		this.idCard = idCard;
+	}
+
+	
+	
+
+	public String getChildName() {
+		return childName;
+	}
+
+	public void setChildName(String childName) {
+		this.childName = childName;
+	}
+
+	public String getChildPhone() {
+		return childPhone;
+	}
+
+	public void setChildPhone(String childPhone) {
+		this.childPhone = childPhone;
+	}
+
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+	public String getBankAccount() {
+		return bankAccount;
+	}
+
+	public void setBankAccount(String bankAccount) {
+		this.bankAccount = bankAccount;
+	}
 
 	public int getRoot() {
 		return root;

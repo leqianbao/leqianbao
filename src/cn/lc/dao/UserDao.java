@@ -291,44 +291,4 @@ public class UserDao {
     	return u;
     }
     
-    public List<User> getChildUserList(int userId){
-    	Connection connection = null;
-		List<User> users=new ArrayList<>();
-		try {
-			connection = DBUtils.getConnection();
-			String sql = "SELECT user_id,user_name,user_phone,user_passwd,user_grade,is_verify,created_by,stamp_created,updated_by,stamp_updated,state FROM lc_user WHERE root = ?";
-			DBUtils.beginTx(connection);
-			users = qR.query(connection,sql,new BeanListHandler<User>(User.class),userId);
-		} catch (Exception e) {
-			DBUtils.rollback(connection);
-			e.printStackTrace();
-		} finally{
-			DBUtils.releaseDB(null, null, connection);
-		}
-    	return users;
-    }
-    
-    public boolean addChildUser(int root,int userId){
-    	boolean  result = false;
-		Connection connection = null;
-		try {
-			connection = DBUtils.getConnection();
-			String sql = "UPDATE lc_user SET root=? WHERE user_id=?";
-			DBUtils.beginTx(connection);
-			int isSuccess = qR.update(connection,sql,root,userId);
-			if(isSuccess==1){
-			DBUtils.commit(connection);
-			result = true;
-			} else{
-				DBUtils.rollback(connection);
-				result = false;
-			}
-		} catch (Exception e) {
-			DBUtils.rollback(connection);
-			e.printStackTrace();
-		} finally{
-			DBUtils.releaseDB(null, null, connection);
-		}
-		return result;
-    }
 }

@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.alibaba.fastjson.JSON;
 
 import cn.lc.beans.User;
+import cn.lc.beans.UserChildBean;
+import cn.lc.dao.UserChildDao;
 import cn.lc.dao.UserDao;
 import cn.lc.json.model.REP_BODY;
 import cn.lc.json.model.REQ_BODY;
@@ -21,7 +23,7 @@ import cn.lc.json.model.Root;
 import cn.lc.utils.Const;
 import cn.lc.utils.DataUtil;
 
-public class AddChildUserServlet extends HttpServlet{
+public class AddChildUserServlet extends HttpServlet {
 
 	/**
 	 * 
@@ -29,33 +31,31 @@ public class AddChildUserServlet extends HttpServlet{
 	private static final long serialVersionUID = 7288578220564487583L;
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
-		Map<String, String> map = new HashMap<>();
-		REP_BODY<List<User>> body = new REP_BODY<>();
+		REP_BODY<Boolean> body=new REP_BODY<>();
+		UserChildDao userChildDao = new UserChildDao();
 		String date = DataUtil.readDateFromRequest(request.getInputStream());
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
-		int rootId = reqBody.getRoot();
-		String userId=reqBody.getUser_id();
-		UserDao userDao = new UserDao();
-		User user=userDao.getUserById(Integer.parseInt(userId));
-		if(user!=null){
-			boolean back = userDao.addChildUser(rootId,Integer.parseInt(userId));
-			if(back){
-				body.setRSPCOD(Const.CODE_SUCCESS);
-				body.setRSPMSG(Const.CHILD_ADD_SUCCESS);
-			}else{
-				body.setRSPCOD(Const.CODE_ERROR);
-				body.setRSPMSG(Const.CHILD_ADD_ERROR);
-			}
-		}else{
+		String userId = reqBody.getUser_id();
+		String name = reqBody.getChildName();
+		String phone = reqBody.getChildPhone();
+		String idCard = reqBody.getIdCard();
+		String bankName = reqBody.getBankName();
+		String bankAccount = reqBody.getBankAccount();
+		boolean back = userChildDao.addChildUser(Integer.parseInt(userId),name,phone,idCard,bankName,bankAccount);
+		if (back) {
+			body.setRSPCOD(Const.CODE_SUCCESS);
+			body.setRSPMSG(Const.CHILD_ADD_SUCCESS);
+		} else {
 			body.setRSPCOD(Const.CODE_ERROR);
-			body.setRSPMSG(Const.CHILD_ADD_ID_SHORT);
+			body.setRSPMSG(Const.CHILD_ADD_ERROR);
 		}
-		
+
 		PrintWriter writer = response.getWriter();
 		writer.write(JSON.toJSONString(body));
 		writer.flush();

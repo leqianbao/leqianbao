@@ -15,6 +15,8 @@ import com.alibaba.fastjson.JSON;
 
 import cn.lc.beans.AddressBean;
 import cn.lc.beans.User;
+import cn.lc.beans.UserChildBean;
+import cn.lc.dao.UserChildDao;
 import cn.lc.dao.UserDao;
 import cn.lc.dao.UserOrderDao;
 import cn.lc.json.model.REP_BODY;
@@ -31,14 +33,13 @@ public class GetChildUserListServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
-		Map<String, String> map = new HashMap<>();
-		REP_BODY<List<User>> body = new REP_BODY<>();
+		REP_BODY<List<UserChildBean>> body = new REP_BODY<>();
 		String date = DataUtil.readDateFromRequest(request.getInputStream());
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
-		int rootId = reqBody.getRoot();
-		UserDao userDao = new UserDao();
-		List<User> users = userDao.getChildUserList(rootId);
+		String userId = reqBody.getUser_id();
+		UserChildDao userChildDao=new UserChildDao();
+		List<UserChildBean> users = userChildDao.getChildUserList(Integer.parseInt(userId));
 		body.setData(users);
 		body.setRSPCOD(Const.CODE_SUCCESS);
 		body.setRSPMSG(Const.REQUEST_SUCCESS);

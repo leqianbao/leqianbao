@@ -67,7 +67,7 @@ public class AddressDao {
 
 		try {
 			connection = DBUtils.getConnection();
-			String sql = "DELETE FROM lc_user_address WHERE id=?";
+			String sql = "DELETE FROM lc_user_address WHERE address_id=?";
 			DBUtils.beginTx(connection);
 			int row = qR.update(connection, sql, id);
 			if (row > 0) {
@@ -132,7 +132,7 @@ public class AddressDao {
 			sql.append(",address_name = ?");
 			params.add(name);
 		}
-		sql.append("where id = ?");
+		sql.append("where address_id = ?");
 		params.add(id);
 		try {
 			connection = DBUtils.getConnection();

@@ -49,6 +49,7 @@ public class GetAddressListServlet extends HttpServlet{
 		}
 		body.setRSPCOD(map.get(Const.CODE_KEY));
 		body.setRSPMSG(map.get(Const.MSG_KEY));
+		String output=JSON.toJSONString(body);
 		writer.write(JSON.toJSONString(body));
 		writer.flush();
 		writer.close();
