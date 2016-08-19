@@ -19,6 +19,7 @@ import cn.lc.beans.UserChildBean;
 import cn.lc.dao.UserChildDao;
 import cn.lc.dao.UserDao;
 import cn.lc.dao.UserOrderDao;
+import cn.lc.json.model.Body;
 import cn.lc.json.model.REP_BODY;
 import cn.lc.json.model.REQ_BODY;
 import cn.lc.json.model.Root;
@@ -33,7 +34,7 @@ public class GetChildUserListServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
-		REP_BODY<List<UserChildBean>> body = new REP_BODY<>();
+		Body<List<UserChildBean>> body = new Body<>();
 		String date = DataUtil.readDateFromRequest(request.getInputStream());
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
@@ -43,8 +44,10 @@ public class GetChildUserListServlet extends HttpServlet {
 		body.setData(users);
 		body.setRSPCOD(Const.CODE_SUCCESS);
 		body.setRSPMSG(Const.REQUEST_SUCCESS);
+		REP_BODY<List<UserChildBean>> repBody = new REP_BODY<>();
+		repBody.REP_BODY = body;
 		PrintWriter writer = response.getWriter();
-		writer.write(JSON.toJSONString(body));
+		writer.write(JSON.toJSONString(repBody));
 		writer.flush();
 		writer.close();
 

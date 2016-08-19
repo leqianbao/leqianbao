@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.util.TextUtils;
 
 import cn.lc.dao.AddressDao;
+import cn.lc.json.model.Body;
 import cn.lc.json.model.REP_BODY;
 import cn.lc.json.model.REQ_BODY;
 import cn.lc.json.model.Root;
@@ -72,12 +73,14 @@ public class AddressManagerServlet extends HttpServlet {
 			break;
 		}
 		PrintWriter writer = response.getWriter();
-		REP_BODY<Boolean> body = new REP_BODY<>();
+		Body<Boolean> body = new Body<>();
 		body.setRSPCOD(map.get(Const.CODE_KEY));
 		;
 		body.setRSPMSG(map.get(Const.MSG_KEY));
 		;
-		writer.write(JSON.toJSONString(body));
+		REP_BODY<Boolean> repBody = new REP_BODY<>();
+		repBody.REP_BODY = body;
+		writer.write(JSON.toJSONString(repBody));
 		writer.flush();
 		writer.close();
 	}

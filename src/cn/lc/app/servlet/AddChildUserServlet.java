@@ -17,6 +17,7 @@ import cn.lc.beans.User;
 import cn.lc.beans.UserChildBean;
 import cn.lc.dao.UserChildDao;
 import cn.lc.dao.UserDao;
+import cn.lc.json.model.Body;
 import cn.lc.json.model.REP_BODY;
 import cn.lc.json.model.REQ_BODY;
 import cn.lc.json.model.Root;
@@ -36,7 +37,7 @@ public class AddChildUserServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
-		REP_BODY<Boolean> body=new REP_BODY<>();
+		Body<Boolean> body = new Body<>();
 		UserChildDao userChildDao = new UserChildDao();
 		String date = DataUtil.readDateFromRequest(request.getInputStream());
 		Root root = JSON.parseObject(date.substring(12), Root.class);
@@ -47,7 +48,7 @@ public class AddChildUserServlet extends HttpServlet {
 		String idCard = reqBody.getIdCard();
 		String bankName = reqBody.getBankName();
 		String bankAccount = reqBody.getBankAccount();
-		boolean back = userChildDao.addChildUser(Integer.parseInt(userId),name,phone,idCard,bankName,bankAccount);
+		boolean back = userChildDao.addChildUser(Integer.parseInt(userId), name, phone, idCard, bankName, bankAccount);
 		if (back) {
 			body.setRSPCOD(Const.CODE_SUCCESS);
 			body.setRSPMSG(Const.CHILD_ADD_SUCCESS);
@@ -55,9 +56,10 @@ public class AddChildUserServlet extends HttpServlet {
 			body.setRSPCOD(Const.CODE_ERROR);
 			body.setRSPMSG(Const.CHILD_ADD_ERROR);
 		}
-
+		REP_BODY<Boolean> repBody = new REP_BODY<>();
+		repBody.REP_BODY = body;
 		PrintWriter writer = response.getWriter();
-		writer.write(JSON.toJSONString(body));
+		writer.write(JSON.toJSONString(repBody));
 		writer.flush();
 		writer.close();
 

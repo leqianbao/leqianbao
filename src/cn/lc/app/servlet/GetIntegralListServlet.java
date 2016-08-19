@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.util.TextUtils;
 
 import cn.lc.beans.IntegralRecord;
+import cn.lc.beans.UserChildBean;
 import cn.lc.dao.IntegralRecordDao;
+import cn.lc.json.model.Body;
 import cn.lc.json.model.REP_BODY;
 import cn.lc.json.model.REQ_BODY;
 import cn.lc.json.model.Root;
@@ -34,7 +36,7 @@ public class GetIntegralListServlet extends HttpServlet{
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 
-		REP_BODY<List<IntegralRecord>> body=new REP_BODY<>();
+		Body<List<IntegralRecord>> body=new Body<>();
 		PrintWriter writer = response.getWriter();
 		Map<String, String> map = new HashMap<>();
 		IntegralRecordDao integralDao=new IntegralRecordDao();
@@ -57,7 +59,9 @@ public class GetIntegralListServlet extends HttpServlet{
 		
 		body.setRSPCOD(map.get(Const.CODE_KEY));
 		body.setRSPMSG(map.get(Const.MSG_KEY));
-		writer.write(JSON.toJSONString(body));
+		REP_BODY<List<IntegralRecord>> repBody = new REP_BODY<>();
+		repBody.REP_BODY = body;
+		writer.write(JSON.toJSONString(repBody));
 		writer.flush();
 		writer.close();
 		

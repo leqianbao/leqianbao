@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSON;
 
 import cn.lc.beans.AddressBean;
 import cn.lc.dao.AddressDao;
+import cn.lc.json.model.Body;
 import cn.lc.json.model.REP_BODY;
 import cn.lc.json.model.REQ_BODY;
 import cn.lc.json.model.Root;
@@ -31,7 +32,7 @@ public class GetAddressListServlet extends HttpServlet{
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 
-		REP_BODY<List<AddressBean>> body=new REP_BODY<>();
+		Body<List<AddressBean>> body=new Body<>();
 		PrintWriter writer = response.getWriter();
 		Map<String, String> map = new HashMap<>();
 		AddressDao addressDao=new AddressDao();
@@ -49,8 +50,9 @@ public class GetAddressListServlet extends HttpServlet{
 		}
 		body.setRSPCOD(map.get(Const.CODE_KEY));
 		body.setRSPMSG(map.get(Const.MSG_KEY));
-		String output=JSON.toJSONString(body);
-		writer.write(JSON.toJSONString(body));
+		REP_BODY<List<AddressBean>> repBody = new REP_BODY<>();
+		repBody.REP_BODY = body;
+		writer.write(JSON.toJSONString(repBody));
 		writer.flush();
 		writer.close();
 	}
