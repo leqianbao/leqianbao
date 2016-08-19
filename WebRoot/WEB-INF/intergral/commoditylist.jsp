@@ -66,10 +66,10 @@ $(function(){
    <div class="place">
     <span>位置：</span>
     <ul class="placeul">
-	    <li><a href="doLogin">首页</a></li>
+	    <li><a>首页</a></li>
 	    <li>
 	    	<span>
-	    		<a href="${refresh}">商品列表</a>
+	    		<a>商品列表</a>
 	    	</span>
 	    </li>
     </ul>

@@ -45,7 +45,6 @@ public class DoLoginServlet extends HttpServlet {
             request.getRequestDispatcher("/login.jsp").forward(request, response);
         } else {
             String pass = DataUtil.getpass(upass);
-            pass = "E1ADC39C3949BA59ABABBE56E0579BA5";
             HttpSession session = request.getSession();
             String realCode = (String) session.getAttribute("check_code");
             if (!code.equalsIgnoreCase(realCode)) {

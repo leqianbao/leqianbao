@@ -132,7 +132,7 @@ public class UserOrderDao {
 	public UserOrder getUserOrderById(long id){
 		// 存放查询参数
 		Connection connection = null;
-		StringBuilder sql = new StringBuilder("SELECT * FROM lc_user_order_details where id=?");
+		StringBuilder sql = new StringBuilder("SELECT * FROM lc_user_order_details where user_order_id=?");
 		UserOrder userOrder = null;
 		try {
 			connection = DBUtils.getConnection();
@@ -151,7 +151,7 @@ public class UserOrderDao {
 	public boolean UpdateUserOrderById(long id,String logistics_number,String order_state){
 		// 存放查询参数
 		Connection connection = null;
-		StringBuilder sql = new StringBuilder("UPDATE  lc_user_order_details SET logistics_number=?,order_state=? WHERE id=?");
+		StringBuilder sql = new StringBuilder("UPDATE  lc_user_order_details SET logistics_number=?,order_state=? WHERE user_order_id=?");
 		boolean result = false;
 		try {
 			connection = DBUtils.getConnection();
@@ -210,7 +210,7 @@ public class UserOrderDao {
 		try {
 			String sql ="";
 			connection = DBUtils.getConnection();
-			sql = "UPDATE  lc_user_order_details SET end_date=?,order_state=? WHERE id=?";
+			sql = "UPDATE  lc_user_order_details SET end_date=?,order_state=? WHERE user_order_id=?";
 			DBUtils.beginTx(connection);
 			int isSuccess = qR.update(connection,sql,userOrder.getEnd_date(),userOrder.getOrder_state(),userOrder.getId().intValue());
 			if(isSuccess==1){
@@ -242,7 +242,7 @@ public class UserOrderDao {
 		try {
 			String sql ="";
 			connection = DBUtils.getConnection();
-			sql = "DELETE FROM  lc_user_order_details WHERE id=?";
+			sql = "DELETE FROM  lc_user_order_details WHERE user_order_id=?";
 			String commoditySql="UPDATE lc_commodity_details set commodity_num = ? WHERE commodity_id = ?";
 			DBUtils.beginTx(connection);
 			int isSuccess = qR.update(connection,sql,orderId);

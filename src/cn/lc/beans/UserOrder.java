@@ -1,7 +1,7 @@
 package cn.lc.beans;
 
 public class UserOrder {
-	private Integer id;
+	private Integer user_order_id;
     private int user_id;      //客户id
     private String order_no;     //按一定规则生成的订单号
     private String commodity_id; //商品id
@@ -68,11 +68,11 @@ public class UserOrder {
 
 
 	public Integer getId() {
-		return id;
+		return user_order_id;
 	}
 
 	public void setId(Integer id) {
-		this.id = id;
+		this.user_order_id = id;
 	}
 
 	public int getUser_id() {
