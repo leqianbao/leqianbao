@@ -26,7 +26,6 @@ public class IntegralRecord {
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
 	}
-	
 	public int getRecord_id() {
 		return record_id;
 	}
