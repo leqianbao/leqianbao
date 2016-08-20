@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class IntegralRecord {
-	private int id;
+	private int record_id;
 	private String user_id;
 	private int integral;
 	private Timestamp create_time;
@@ -26,11 +26,12 @@ public class IntegralRecord {
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
 	}
-	public int getId() {
-		return id;
+	
+	public int getRecord_id() {
+		return record_id;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setRecord_id(int record_id) {
+		this.record_id = record_id;
 	}
 	public String getUser_id() {
 		return user_id;

@@ -106,7 +106,6 @@ public class GoodsOrderServlet extends HttpServlet{
 			map.put("RSPCOD","111111");
 			map.put("RSPMSG","下单失败!");
 		}
-	
 		PrintWriter writer = response.getWriter();
 	    writer.write(DataUtil.addReqBody(map));
 		writer.flush();
