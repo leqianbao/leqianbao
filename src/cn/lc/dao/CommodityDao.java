@@ -2,13 +2,13 @@ package cn.lc.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+
+import com.sun.jmx.snmp.Timestamp;
 
 import cn.lc.beans.Commodity;
 import cn.lc.beans.Pager;
@@ -16,7 +16,7 @@ import cn.lc.beans.Pager;
 public class CommodityDao {
 	QueryRunner qR = new QueryRunner();
 	
-	// @APP--银行卡列表
+	//后台取得商品列表
     public Pager<Commodity> getCommodityList(Commodity searchMode, Integer pageNum, Integer pageRows) {
     	
     	Pager<Commodity> page = new Pager<Commodity>(0, 0, 0, 0,null);
@@ -193,9 +193,7 @@ public class CommodityDao {
 			Integer blend_integral, String blend_money,
     		Integer num, String use_flag, String type, String comment){
     	int update_flag = 0;
-		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");   
-		String timeStr = sDateFormat.format(new Date());  
-    	String update_date = timeStr;
+    	String update_date = (new Timestamp(System.currentTimeMillis()))+"";
     	Connection connection = null;
     	PreparedStatement st = null;
         
@@ -245,10 +243,8 @@ public class CommodityDao {
 	public Boolean setCommodityImg(String commodity_id, String url){
 		int setflag = 0;
     	Connection connection = null;
-    	PreparedStatement st = null;
-		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");   
-		String timeStr = sDateFormat.format(new Date());  
-    	String update_date = timeStr;
+    	PreparedStatement st = null; 
+    	String update_date = (new Timestamp(System.currentTimeMillis()))+"";
         
         StringBuffer sql = new StringBuffer();
         sql.append(" update lc_commodity_details set commodity_imgurl = ?, update_date = ? ");
@@ -282,14 +278,12 @@ public class CommodityDao {
     	Connection connection = null;
     	PreparedStatement st = null;
     	int insertNum = -1;
-		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");   
-		String timeStr = sDateFormat.format(new Date());  
-    	String create_date = timeStr;
+    	String create_date = (new Timestamp(System.currentTimeMillis()))+"";
     	
         StringBuffer sql = new StringBuffer();
         sql.append(" insert into lc_commodity_details (commodity_id, commodity_name");
         sql.append(" , commodity_pay, commodity_money, commodity_blend_integral, commodity_blend_money, commodity_num, commodity_type, commodity_use_flag, commodity_comment, create_date)");
-        sql.append(" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+        sql.append(" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         try {
             connection = DBUtils.getConnection();
             st = connection.prepareStatement(sql.toString());

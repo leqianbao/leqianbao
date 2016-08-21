@@ -3,6 +3,7 @@ package cn.lc.app.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,6 +57,7 @@ public class CommodityListServlet extends HttpServlet {
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
 		String date = DataUtil.readDateFromRequest(request.getInputStream());
+		System.out.print((new Timestamp(System.currentTimeMillis()))+"");
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
 		//当前页码
@@ -67,9 +69,7 @@ public class CommodityListServlet extends HttpServlet {
 		//用户初次查询的时间
 		String first_search_date = "";
 		if(pageNum == 1){
-			SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");   
-			String timeStr = sDateFormat.format(new Date());  
-			first_search_date = timeStr;
+			first_search_date = (new Timestamp(System.currentTimeMillis()))+"";
 		}else{
 			first_search_date = reqBody.getSearch_date();
 		}

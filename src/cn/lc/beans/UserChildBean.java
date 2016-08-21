@@ -3,6 +3,7 @@ package cn.lc.beans;
 import java.math.BigDecimal;
 
 public class UserChildBean {
+	private int id;
 	private int user_id;
 	private String child_name;
 	private String child_phone;
@@ -12,12 +13,6 @@ public class UserChildBean {
 	private BigDecimal child_balance;
 	
 	
-	public BigDecimal getChild_balance() {
-		return child_balance;
-	}
-	public void setChild_balance(BigDecimal child_balance) {
-		this.child_balance = child_balance;
-	}
 	public int getUser_id() {
 		return user_id;
 	}
@@ -53,5 +48,17 @@ public class UserChildBean {
 	}
 	public void setChild_bank_account(String child_bank_account) {
 		this.child_bank_account = child_bank_account;
+	}
+	public BigDecimal getChild_balance() {
+		return child_balance;
+	}
+	public void setChild_balance(BigDecimal child_balance) {
+		this.child_balance = child_balance;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 }
