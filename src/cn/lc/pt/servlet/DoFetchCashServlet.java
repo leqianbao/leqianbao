@@ -72,6 +72,8 @@ public class DoFetchCashServlet extends HttpServlet {
             // 返回结果到页面
             request.setAttribute("result", result);
             request.setAttribute("handle_tag", handle_tag);
+            request.setAttribute("fetch_money", fetch_money);
+            request.setAttribute("fetch_num", fetch_num);
             request.setAttribute("main_no", main_no);
             request.getRequestDispatcher("/WEB-INF/tixian/listtixian.jsp").forward(request, response);
         } else if (tag.equals("handler")) {
