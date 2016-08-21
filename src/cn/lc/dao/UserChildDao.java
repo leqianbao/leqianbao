@@ -8,7 +8,6 @@ import java.util.List;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
-import com.sun.jmx.snmp.Timestamp;
 
 import cn.lc.beans.Commodity;
 import cn.lc.beans.Pager;
@@ -61,7 +60,7 @@ public class UserChildDao {
     	return users;
     }
 	
-	//ºóÌ¨È¡µÃ×ÓÕË»§ÁÐ±í
+	//ï¿½ï¿½Ì¨È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½Ð±ï¿½
     public Pager<UserChildBean> getChildrenList(UserChildBean searchMode, Integer pageNum, Integer pageRows) {
     	
     	Pager<UserChildBean> page = new Pager<UserChildBean>(0, 0, 0, 0,null);
@@ -79,7 +78,7 @@ public class UserChildDao {
         if(user_id.equals("-1")){
         	user_id = null;
         }
-        //²ÎÊý¼¯ºÏ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         List<String> params = new ArrayList<String>(); 
         if(null!=user_id&&!"".equals(user_id.trim())){
         	sql.append(" and user_id = ? ");
@@ -87,7 +86,7 @@ public class UserChildDao {
         	params.add(user_id.trim());
         }
         
-        //´´½¨²ÎÊý×Ö·û´®Êý×é
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         String[] paramStr = params.toArray(new String[params.size()]); 
         
         long fromIndex  = pageRows * (pageNum -1); 
@@ -97,7 +96,7 @@ public class UserChildDao {
         try {
             connection = DBUtils.getConnection();
             DBUtils.beginTx(connection);
-            // »ñÈ¡×Ü¼ÇÂ¼Êý
+            // ï¿½ï¿½È¡ï¿½Ü¼ï¿½Â¼ï¿½ï¿½
             allList = qR.query(connection,sql2.toString(),new BeanListHandler<UserChildBean>(UserChildBean.class), paramStr);
             if(allList == null){
             	totalRecord = 0;
@@ -109,7 +108,7 @@ public class UserChildDao {
             if(totalRecord % pageRows !=0){
                 totalPage++;
             }
-            // ×é×°pager¶ÔÏó
+            // ï¿½ï¿½×°pagerï¿½ï¿½ï¿½ï¿½
             page = new Pager<UserChildBean>(pageRows, pageNum, totalRecord, totalPage, list);
         } catch (Exception e) {
             DBUtils.rollback(connection);

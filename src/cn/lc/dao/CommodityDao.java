@@ -2,13 +2,13 @@ package cn.lc.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
-import com.sun.jmx.snmp.Timestamp;
 
 import cn.lc.beans.Commodity;
 import cn.lc.beans.Pager;
