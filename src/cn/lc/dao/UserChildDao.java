@@ -1,12 +1,17 @@
 package cn.lc.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
+import com.sun.jmx.snmp.Timestamp;
+
+import cn.lc.beans.Commodity;
+import cn.lc.beans.Pager;
 import cn.lc.beans.User;
 import cn.lc.beans.UserChildBean;
 
@@ -54,5 +59,91 @@ public class UserChildDao {
 			DBUtils.releaseDB(null, null, connection);
 		}
     	return users;
+    }
+	
+	//后台取得子账户列表
+    public Pager<UserChildBean> getChildrenList(UserChildBean searchMode, Integer pageNum, Integer pageRows) {
+    	
+    	Pager<UserChildBean> page = new Pager<UserChildBean>(0, 0, 0, 0,null);
+
+        Connection connection = null;
+        List<UserChildBean> list = null;
+        List<UserChildBean> allList = null;
+        
+        StringBuffer sql = new StringBuffer();
+        sql.append("select * from lc_user_child WHERE 1=1 ");
+        StringBuffer sql2 = new StringBuffer();
+        sql2.append("SELECT * FROM lc_user_child WHERE 1=1 ");
+        
+        String user_id = searchMode.getUser_id() + "";
+        if(user_id.equals("-1")){
+        	user_id = null;
+        }
+        //参数集合
+        List<String> params = new ArrayList<String>(); 
+        if(null!=user_id&&!"".equals(user_id.trim())){
+        	sql.append(" and user_id = ? ");
+        	sql2.append(" and user_id = ? ");
+        	params.add(user_id.trim());
+        }
+        
+        //创建参数字符串数组
+        String[] paramStr = params.toArray(new String[params.size()]); 
+        
+        long fromIndex  = pageRows * (pageNum -1); 
+
+        long totalRecord  = 0;
+        sql.append(" limit " + fromIndex + ", " + pageRows);
+        try {
+            connection = DBUtils.getConnection();
+            DBUtils.beginTx(connection);
+            // 获取总记录数
+            allList = qR.query(connection,sql2.toString(),new BeanListHandler<UserChildBean>(UserChildBean.class), paramStr);
+            if(allList == null){
+            	totalRecord = 0;
+            }else{
+            	totalRecord = allList.size();
+            }
+            list = qR.query(connection, sql.toString(), new BeanListHandler<UserChildBean>(UserChildBean.class), paramStr);
+            long totalPage = totalRecord / pageRows;
+            if(totalRecord % pageRows !=0){
+                totalPage++;
+            }
+            // 组装pager对象
+            page = new Pager<UserChildBean>(pageRows, pageNum, totalRecord, totalPage, list);
+        } catch (Exception e) {
+            DBUtils.rollback(connection);
+            e.printStackTrace();
+        } finally {
+            DBUtils.releaseDB(null, null, connection);
+        }
+        return page;
+    }
+    
+    public boolean saveMoney(String id, String money){
+    	int setflag = 0;
+    	Connection connection = null;
+    	PreparedStatement st = null; 
+        
+        StringBuffer sql = new StringBuffer();
+        sql.append(" update lc_user_child set child_balance = ? ");
+        sql.append(" WHERE id = ? ");
+        try {
+            connection = DBUtils.getConnection();
+            st = connection.prepareStatement(sql.toString());
+            st.setString(1, money);
+            st.setString(2, id);
+            setflag = st.executeUpdate();
+        } catch (Exception e) {
+            DBUtils.rollback(connection);
+            e.printStackTrace();
+        } finally {
+            DBUtils.releaseDB(null, null, connection);
+        }
+        if(setflag == 0){
+        	return false;
+        }else{
+        	return true;
+        }
     }
 }
