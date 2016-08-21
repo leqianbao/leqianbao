@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 
 import cn.lc.beans.FetchCash;
+import cn.lc.beans.IntegralRateBean;
 import cn.lc.beans.Pager;
 import cn.lc.beans.User;
 import cn.lc.beans.UserChildBean;
@@ -307,5 +308,9 @@ public class FetchCashDao {
 			DBUtils.releaseDB(null, null, connection);
 		}
 		return result;
+	}
+	
+	public int getIntegral(int rate,float money){
+		return ((int)money)/100*rate;
 	}
 }
