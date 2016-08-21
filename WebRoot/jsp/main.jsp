@@ -7,11 +7,6 @@
 			+ path + "/";
 %>
 
-<%!int getCount() {
-		FetchCashDao fetchCashDao = new FetchCashDao();
-		List<FetchCash> fetchCashs = fetchCashDao.getUntreatedList();
-		return fetchCashs == null ? 0 : fetchCashs.size();
-	}%>
 
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -28,15 +23,7 @@
 <meta http-equiv="description" content="This is my page">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
-<script type="text/javascript">
-	var int = self.setInterval("tip()", 30*60*1000);
-	function tip() {
-		console.log("tip");
-		if(<%=getCount()%>>0){
-			alert("您有未处理的提现请求");
-		}
-	}
-</script>
+
 <frameset rows="88,*" cols="*" frameborder="no" border="0"
 	framespacing="0">
 	<frame src="jsp/top.jsp" name="topFrame" scrolling="No"
