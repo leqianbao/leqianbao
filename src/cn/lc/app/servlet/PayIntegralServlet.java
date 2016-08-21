@@ -3,6 +3,7 @@ package cn.lc.app.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -58,10 +59,10 @@ public class PayIntegralServlet extends HttpServlet {
 		float money = reqBody.getMoney();
 		int integral = reqBody.getIntegral();
 		String comment = reqBody.getComment();
-		String orderId = reqBody.getUser_order_id();
+		String orderNo = reqBody.getOrder_no();
 		int payType = reqBody.getPay_type();
 		// 获取订单信息
-		UserOrder userOrder = userOrderDao.getUserOrderById(Integer.parseInt(orderId));
+		UserOrder userOrder = userOrderDao.getUserOrderById(orderNo);
 		String orderState = userOrder.getOrder_state();
 		if ("0".equals(orderState)) {
 			switch(payType){
@@ -73,7 +74,7 @@ public class PayIntegralServlet extends HttpServlet {
 					if(integralBack){
 						map.put(Const.CODE_KEY, Const.CODE_SUCCESS);
 						map.put(Const.MSG_KEY, Const.INTEGRAL_PAY_SUCCESS);
-						changState(orderId);
+						changState(orderNo);
 					}else{
 						map.put(Const.CODE_KEY, Const.CODE_ERROR);
 						map.put(Const.MSG_KEY, Const.INTEGRAL_PAY_ERROR);
@@ -89,7 +90,7 @@ public class PayIntegralServlet extends HttpServlet {
 					IntegralRecordDao integralRecord = new IntegralRecordDao();
 					boolean back = integralRecord.addRecord(Integer.parseInt(userId), 0, comment, new BigDecimal(Float.toString(money)));
 					if(back){
-						changState(orderId);
+						changState(orderNo);
 						map.put(Const.CODE_KEY, Const.CODE_SUCCESS);
 						map.put(Const.MSG_KEY, Const.INTEGRAL_PAY_SUCCESS);
 					}else{
@@ -110,7 +111,7 @@ public class PayIntegralServlet extends HttpServlet {
 						if(integralBack){
 							map.put(Const.CODE_KEY, Const.CODE_SUCCESS);
 							map.put(Const.MSG_KEY, Const.INTEGRAL_PAY_SUCCESS);
-							changState(orderId);
+							changState(orderNo);
 						}else{
 							map.put(Const.CODE_KEY, Const.CODE_ERROR);
 							map.put(Const.MSG_KEY, Const.INTEGRAL_PAY_ERROR);
@@ -184,12 +185,12 @@ public class PayIntegralServlet extends HttpServlet {
 	}
 
 	
-	public void changState(String orderId){
+	public void changState(String orderNO){
 		UserOrderDao userOrderDao = new UserOrderDao();
 		UserOrder userOrderBean = new UserOrder();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		userOrderBean.setId(Integer.valueOf(orderId));
-		userOrderBean.setEnd_date(sdf.format(new Date()));
+		userOrderBean.setOrder_no(orderNO);
+		userOrderBean.setEnd_date(new Timestamp(System.currentTimeMillis()));
 		userOrderBean.setOrder_state("1");
 		userOrderDao.modifyOrderState(userOrderBean);
 	}

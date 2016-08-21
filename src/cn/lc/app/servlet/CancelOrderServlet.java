@@ -37,13 +37,13 @@ public class CancelOrderServlet extends HttpServlet{
 		String date = DataUtil.readDateFromRequest(request.getInputStream());
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
-		String orderId=reqBody.getUser_order_id();
+		String orderNo=reqBody.getOrder_no();
 		UserOrderDao userOrderDao=new UserOrderDao();
 		
-		UserOrder userOrder =new UserOrderDao().getUserOrderById(Long.valueOf(orderId));
+		UserOrder userOrder =new UserOrderDao().getUserOrderById(orderNo);
 		if(userOrder!=null){
 			Commodity commodity = new CommodityDao().getCommodity(userOrder.getCommodity_id());
-			boolean back=userOrderDao.cancelOrder(Integer.parseInt(orderId),commodity,userOrder);
+			boolean back=userOrderDao.cancelOrder(orderNo,commodity,userOrder);
 			if(back){
 				map.put(Const.CODE_KEY, Const.CODE_SUCCESS);
 				map.put(Const.MSG_KEY, Const.ORDER_CANCEL_SUCCESS);

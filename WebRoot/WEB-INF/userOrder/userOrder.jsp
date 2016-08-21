@@ -91,13 +91,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        <thead>
 		        	<c:forEach items="${result.data_list }" var="userOrder">
 						<tr>
-							<td><c:out value="${userOrder.id }"></c:out></td>
+							<td><c:out value="${userOrder.user_order_id }"></c:out></td>
 							<td><c:out value="${userOrder.order_no }"></c:out></td>
 							<td><c:out value="${userOrder.commodity_name}"></c:out></td> 
 							<td><c:out value="${userOrder.commodity_num }"></c:out></td>
 							<td><c:out value="${userOrder.user_phone }"></c:out></td>
-							<td><c:out value="${userOrder.create_date }"></c:out></td>
-							<td><c:out value="${userOrder.end_date }"></c:out></td>
+							<td><c:out value="${userOrder.create_date.toString().substring(0,19) }"></c:out></td>
+							<td><c:out value="${userOrder.end_date.toString().substring(0,19) }"></c:out></td>
 							<td>
 								<span>
 									<c:if test="${userOrder.order_state eq 0 }">
@@ -119,14 +119,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<c:if test="${userOrder.order_state eq 3 }">
 										<c:url value="/pt/doUserOrder" var="handler">
 											<c:param name="tag" value="check"/>
-											<c:param name="id" value="${userOrder.id}"/>
+											<c:param name="order_no" value="${userOrder.order_no}"/>
 										</c:url>				
 										<a class="gray" href="${handler}">查看</a>
 									</c:if>
 									<c:if test="${userOrder.order_state lt 3 }">
 										<c:url value="/pt/doUserOrder" var="handler">
 											<c:param name="tag" value="edit"/>
-											<c:param name="id" value="${userOrder.id}"/>
+											<c:param name="order_no" value="${userOrder.order_no}"/>
 										</c:url>									
 										<a class="red" href="${handler}">编辑</a>
 									</c:if>									

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.util.TextUtils;
 
 import cn.lc.beans.IntegralRecord;
+import cn.lc.beans.Pager;
 import cn.lc.beans.UserChildBean;
 import cn.lc.dao.IntegralRecordDao;
 import cn.lc.json.model.Body;
@@ -36,7 +37,7 @@ public class GetIntegralListServlet extends HttpServlet{
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 
-		Body<List<IntegralRecord>> body=new Body<>();
+		Body<Pager<IntegralRecord>> body=new Body<>();
 		PrintWriter writer = response.getWriter();
 		Map<String, String> map = new HashMap<>();
 		IntegralRecordDao integralDao=new IntegralRecordDao();
@@ -48,7 +49,7 @@ public class GetIntegralListServlet extends HttpServlet{
 			int pageNum=reqBody.getPageNum();
 			int pageSize=reqBody.getPageSize();
 			String userId=reqBody.getUser_id();
-			List<IntegralRecord> integrals=integralDao.getRecordList(Integer.parseInt(userId), state, pageNum, pageSize);
+			Pager<IntegralRecord> integrals=integralDao.getRecordList(Integer.parseInt(userId), state, pageNum, pageSize);
 			map.put(Const.CODE_KEY, Const.CODE_SUCCESS);
 			map.put(Const.MSG_KEY, Const.INTEGRAL_LIST_SUCCESS);
 			body.setData(integrals);
@@ -59,7 +60,7 @@ public class GetIntegralListServlet extends HttpServlet{
 		
 		body.setRSPCOD(map.get(Const.CODE_KEY));
 		body.setRSPMSG(map.get(Const.MSG_KEY));
-		REP_BODY<List<IntegralRecord>> repBody = new REP_BODY<>();
+		REP_BODY<Pager<IntegralRecord>> repBody = new REP_BODY<>();
 		repBody.REP_BODY = body;
 		writer.write(JSON.toJSONString(repBody));
 		writer.flush();

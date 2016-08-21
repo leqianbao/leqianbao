@@ -58,7 +58,6 @@ public class GoodsOrderServlet extends HttpServlet{
         String order_num = reqBody.getOrder_commodity_num();
         String addressId = reqBody.getOrder_address_id();
         
-		StringBuffer sbf = new StringBuffer();
 		Map<String ,String> map = new HashMap<String ,String>(); 
 		
         Commodity commodity = new CommodityDao().getCommodity(order_commodity_id);
@@ -90,9 +89,8 @@ public class GoodsOrderServlet extends HttpServlet{
     	userOrder.setCommodity_id(order_commodity_id);
     	userOrder.setOrder_no(DataUtil.generateOrderNo(Integer.parseInt(user_id)));
     	userOrder.setCommodity_num(Integer.parseInt(order_num));
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-    	userOrder.setCreate_date(sdf.format(new Date()));
-    	userOrder.setEnd_date("");
+    	userOrder.setCreate_date(new Timestamp(System.currentTimeMillis()));
+    	userOrder.setEnd_date(null);
     	userOrder.setOrder_state("0");
     	userOrder.setLogistics_number("");
     	userOrder.setReceipt_address_id(Long.valueOf(addressId));
@@ -101,7 +99,7 @@ public class GoodsOrderServlet extends HttpServlet{
 			map.put("RSPCOD","000000");
 			map.put("RSPMSG","下单成功!");
 			map.put("user_id", user_id);
-			map.put("order_commodity_id", order_commodity_id);
+			map.put("order_no", userOrder.getOrder_no());
 		}else{
 			map.put("RSPCOD","111111");
 			map.put("RSPMSG","下单失败!");

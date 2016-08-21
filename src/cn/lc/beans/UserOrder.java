@@ -1,13 +1,28 @@
 package cn.lc.beans;
 
+import java.sql.Timestamp;
+
 public class UserOrder {
 	private Integer user_order_id;
     private int user_id;      //客户id
-    private String order_no;     //按一定规则生成的订单号
+    public Timestamp getCreate_date() {
+		return create_date;
+	}
+	public void setCreate_date(Timestamp create_date) {
+		this.create_date = create_date;
+	}
+	public Timestamp getEnd_date() {
+		return end_date;
+	}
+	public void setEnd_date(Timestamp end_date) {
+		this.end_date = end_date;
+	}
+
+	private String order_no;     //按一定规则生成的订单号
     private String commodity_id; //商品id
     private int commodity_num; //下单商品数量
-    private String create_date;  //订单创建时间
-    private String end_date;  //订单结束时间
+    private Timestamp create_date;  //订单创建时间
+    private Timestamp end_date;  //订单结束时间
     private String order_state; //0:订单提交，1:等待确认，2:已收货
     private String logistics_number;  //后台发货之后填写物流单号
     private long receipt_address_id;  //收货地址Id
@@ -67,14 +82,12 @@ public class UserOrder {
 	}
 
 
-	public Integer getId() {
+	public Integer getUser_order_id() {
 		return user_order_id;
 	}
-
-	public void setId(Integer id) {
-		this.user_order_id = id;
+	public void setUser_order_id(Integer user_order_id) {
+		this.user_order_id = user_order_id;
 	}
-
 	public int getUser_id() {
 		return user_id;
 	}
@@ -107,21 +120,7 @@ public class UserOrder {
 		this.commodity_num = commodity_num;
 	}
 
-	public String getCreate_date() {
-		return create_date;
-	}
-
-	public void setCreate_date(String create_date) {
-		this.create_date = create_date;
-	}
-
-	public String getEnd_date() {
-		return end_date;
-	}
-
-	public void setEnd_date(String end_date) {
-		this.end_date = end_date;
-	}
+	
 
 	public String getOrder_state() {
 		return order_state;

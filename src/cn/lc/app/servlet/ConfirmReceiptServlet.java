@@ -2,6 +2,7 @@ package cn.lc.app.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -48,12 +49,11 @@ public class ConfirmReceiptServlet extends HttpServlet{
 		String date = DataUtil.readDateFromRequest(request.getInputStream());
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
-		String user_order_id = reqBody.getUser_order_id();
+		String orderNo = reqBody.getOrder_no();
 		String order_state =reqBody.getOrder_state();
 		UserOrder userOrder = new UserOrder();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		userOrder.setId(Integer.valueOf(user_order_id));
-		userOrder.setEnd_date(sdf.format(new Date()));
+		userOrder.setOrder_no(orderNo);
+		userOrder.setEnd_date(new Timestamp(System.currentTimeMillis()));
 		userOrder.setOrder_state(order_state);
 		
 		UserOrderDao userOrderDao = new UserOrderDao();

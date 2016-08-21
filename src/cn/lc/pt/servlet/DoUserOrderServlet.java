@@ -64,13 +64,9 @@ public class DoUserOrderServlet extends HttpServlet{
                 UserDao userDao = new UserDao();
                 userId = userDao.getUserId(user_phone);
             }
-            // 组装查询条件
-            UserOrder searchModel = new UserOrder();
-            searchModel.setUser_id(userId);
-            searchModel.setOrder_no(order_no);
-            searchModel.setCreate_date(create_date);
+            
             // 调用service 获取查询结果
-            Pager<UserOrder> result = dao.getUserOrderPager(searchModel, pageNum, pageSize);
+            Pager<UserOrder> result = dao.getUserOrderPager(userId,order_no,create_date,pageNum, pageSize);
             for(int i=0;i<result.getData_list().size();i++) {
             	UserOrder userOrder = result.getData_list().get(i);
             	
@@ -93,22 +89,7 @@ public class DoUserOrderServlet extends HttpServlet{
         		if(user != null) {
         			userPhone = user.getUser_phone();
         		}
-        		result.getData_list().get(i).setUser_phone(userPhone);
-        		
-        		//格式化创建时间戳
-        		String createDate = userOrder.getCreate_date();
-        		if(!TextUtils.isEmpty(createDate)) {
-        			createDate = StringUtils.formatDateString(createDate);
-            		result.getData_list().get(i).setCreate_date(createDate);
-        		}
-        		
-        		//格式化结束时间戳
-        		String endDate = userOrder.getEnd_date();
-        		if(!TextUtils.isEmpty(endDate)) {
-        			endDate = StringUtils.formatDateString(endDate);
-            		result.getData_list().get(i).setEnd_date(endDate);
-        		}
-        		
+        		result.getData_list().get(i).setUser_phone(userPhone);	
             }
             // 返回结果到页面
             request.setAttribute("result", result);
@@ -117,10 +98,10 @@ public class DoUserOrderServlet extends HttpServlet{
             request.setAttribute("create_date", create_date);
             request.getRequestDispatcher("/WEB-INF/userOrder/userOrder.jsp").forward(request, response);
 		} else if(tag.equals("edit") || tag.equals("check")) {
-			long id = Long.valueOf(request.getParameter("id"));
+			String order_no=request.getParameter("order_no");
 			UserOrderDao userOrderDao = new UserOrderDao();
 			UserAddressDao userAddressDao = new UserAddressDao();
-			UserOrder userOrder = userOrderDao.getUserOrderById(id);
+			UserOrder userOrder = userOrderDao.getUserOrderById(order_no);
 			if(userOrder.getReceipt_address_id() != 0) {
 				long addressId = userOrder.getReceipt_address_id();
 				UserAddress userAddress = userAddressDao.getUserAddressById(addressId);

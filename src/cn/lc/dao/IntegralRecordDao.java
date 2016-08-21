@@ -45,22 +45,36 @@ public class IntegralRecordDao {
 	 *            状态 0：全部，1：收入，2：支出
 	 * @return
 	 */
-	public List<IntegralRecord> getRecordList(int userId, int state, int pageNum, int pageSize) {
+	public Pager<IntegralRecord> getRecordList(int userId, int state, int pageNum, int pageSize) {
 		List<IntegralRecord> integralRecords = null;
+		List<IntegralRecord> integralRecordsAll = null;
+		Pager<IntegralRecord> page = new Pager<IntegralRecord>(0, 0, 0, 0, null);
 		Connection connection = null;
 		List<Object> params = new ArrayList<>();
+		List<Object> allParams = new ArrayList<>();
 		try {
 			connection = DBUtils.getConnection();
+			StringBuilder allList = new StringBuilder("SELECT * FROM lc_user_integral_record WHERE 1=1");
 			StringBuilder sql = new StringBuilder("SELECT * FROM lc_user_integral_record WHERE 1=1");
 			if (state != 0) {
 				sql.append(" and record_state=?");
+				allList.append(" and record_state=?");
 				params.add(state);
+				allParams.add(state);
 			}
 			long fromIndex = pageSize * (pageNum - 1);
 			sql.append(" order by " + "\'create_date\'" + "desc limit " + fromIndex + ", " + pageSize);
 			DBUtils.beginTx(connection);
 			integralRecords = qR.query(connection, sql.toString(),
 					new BeanListHandler<IntegralRecord>(IntegralRecord.class), params.toArray());
+			integralRecordsAll = qR.query(connection, allList.toString(),
+					new BeanListHandler<IntegralRecord>(IntegralRecord.class), allParams.toArray());
+			DBUtils.commit(connection);
+			page.setData_list(integralRecords);
+			page.setTotal_record(integralRecordsAll == null ? 0 : integralRecordsAll.size());
+			page.setTotal_page(integralRecordsAll == null ? 1 : integralRecordsAll.size() / 10 + 1);
+			page.setCurrent_page(pageNum);
+			page.setPage_size(pageSize);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			DBUtils.rollback(connection);
@@ -68,7 +82,7 @@ public class IntegralRecordDao {
 		} finally {
 			DBUtils.releaseDB(null, null, connection);
 		}
-		return integralRecords;
+		return page;
 	}
 
 	/**
@@ -86,33 +100,41 @@ public class IntegralRecordDao {
 			int pageSize) {
 		List<IntegralRecord> integralRecords = null;
 		List<IntegralRecord> integralRecordsAll = null;
+		
 		Pager<IntegralRecord> page = new Pager<IntegralRecord>(0, 0, 0, 0, null);
 		Connection connection = null;
 		List<Object> params = new ArrayList<>();
+		List<Object> allParams = new ArrayList<>();
 
 		try {
 			connection = DBUtils.getConnection();
-			String allList = "SELECT lc_user.user_name,integral,create_time,comment,money,lc_user_integral_record.record_state FROM lc_user_integral_record ,lc_user WHERE lc_user_integral_record.user_id=lc_user.user_id";
+			StringBuilder allList = new StringBuilder("SELECT lc_user.user_name,integral,create_time,comment,money,lc_user_integral_record.record_state FROM lc_user_integral_record ,lc_user WHERE lc_user_integral_record.user_id=lc_user.user_id");
 			StringBuilder sql = new StringBuilder(
 					"SELECT lc_user.user_name,integral,create_time,comment,money,lc_user_integral_record.record_state FROM lc_user_integral_record ,lc_user WHERE lc_user_integral_record.user_id=lc_user.user_id");
 			if (!TextUtils.isEmpty(state) && Integer.parseInt(state) != 0) {
 				sql.append(" and record_state=?");
+				allList.append(" and record_state=?");
 				params.add(state);
+				allParams.add(state);
 			}
 			if (!TextUtils.isEmpty(userPhone)) {
 				UserDao userDao = new UserDao();
 				int userId = userDao.getUserId(userPhone);
 				if (userId != 0) {
 					sql.append(" and lc_user_integral_record.user_id=?");
+					allList.append(" and lc_user_integral_record.user_id=?");
 					params.add(userId);
+					allParams.add(userId);
 				}
 
 			}
 
 			if (!TextUtils.isEmpty(create_date)) {
-				// create_date = create_date.replaceAll("-", "");
 				sql.append(" and create_time like ? ");
 				params.add("%" + create_date + "%");
+				
+				allList.append(" and create_time like ? ");
+				allParams.add("%" + create_date + "%");
 			}
 			if (TextUtils.isEmpty(pageNum)) {
 				pageNum = "1";
@@ -123,8 +145,8 @@ public class IntegralRecordDao {
 			DBUtils.beginTx(connection);
 			integralRecords = qR.query(connection, sql.toString(),
 					new BeanListHandler<IntegralRecord>(IntegralRecord.class), params.toArray());
-			integralRecordsAll = qR.query(connection, allList,
-					new BeanListHandler<IntegralRecord>(IntegralRecord.class));
+			integralRecordsAll = qR.query(connection, allList.toString(),
+					new BeanListHandler<IntegralRecord>(IntegralRecord.class),params.toArray());
 			DBUtils.commit(connection);
 			page.setData_list(integralRecords);
 			page.setTotal_record(integralRecordsAll == null ? 0 : integralRecordsAll.size());

@@ -31,27 +31,22 @@ public class UserOrderDao {
 	};
 
 	// @PT--分页查询
-	public Pager<UserOrder> getUserOrderPager(UserOrder userOrder, int pageNum, int pageSize) {
+	public Pager<UserOrder> getUserOrderPager(int userId,String orderNo,String create_date, int pageNum, int pageSize) {
 		Pager<UserOrder> result = null;
 		// 存放查询参数
 		Connection connection = null;
 		StringBuilder sql = new StringBuilder("SELECT * FROM lc_user_order_details where 1=1");
 		StringBuilder countSql = new StringBuilder(
-				"SELECT  count(id) as totalRecord FROM lc_user_order_details WHERE 1=1");
+				"SELECT  count(user_order_id) as totalRecord FROM lc_user_order_details WHERE 1=1");
 		// 存放查询参数
 		List<Object> paramList = new ArrayList<Object>();
-		int userId = userOrder.getUser_id();
-		String create_date = userOrder.getCreate_date();
-		String orderNo = userOrder.getOrder_no();
 		if (userId != 0) {
 			sql.append(" and user_id = ?");
 			countSql.append(" and user_id = ?");
 			paramList.add(userId);
 		}
 		if (!TextUtils.isEmpty(create_date)) {
-			create_date = create_date.replaceAll("-", "");
-			sql.append(" and create_date like ? ");
-			countSql.append(" and create_date like ? ");
+			sql.append(" and create_time like ? ");
 			paramList.add("%" + create_date + "%");
 		}
 		if (!TextUtils.isEmpty(orderNo)) {
@@ -96,7 +91,7 @@ public class UserOrderDao {
 		Connection connection = null;
 		StringBuilder sql = new StringBuilder("SELECT * FROM lc_user_order_details where user_id = ?");
 		StringBuilder countSql = new StringBuilder(
-				"SELECT  count(id) as totalRecord FROM lc_user_order_details WHERE user_id = ?");
+				"SELECT  count(user_order_id) as totalRecord FROM lc_user_order_details WHERE user_id = ?");
 		// 存放查询参数
 		List<Object> paramList = new ArrayList<Object>();
 
@@ -129,10 +124,10 @@ public class UserOrderDao {
 		return result;
 	}
 	// @PT--获取订单详细信息
-	public UserOrder getUserOrderById(long id){
+	public UserOrder getUserOrderById(String id){
 		// 存放查询参数
 		Connection connection = null;
-		StringBuilder sql = new StringBuilder("SELECT * FROM lc_user_order_details where user_order_id=?");
+		StringBuilder sql = new StringBuilder("SELECT * FROM lc_user_order_details where order_no=?");
 		UserOrder userOrder = null;
 		try {
 			connection = DBUtils.getConnection();
@@ -173,7 +168,7 @@ public class UserOrderDao {
 		}
 		return result;
 	}
-	//@APP--插入积分数据
+	//@APP--生成订单
 	public boolean insertUserOrder(UserOrder userOrder,int commodityNum){
 		boolean  result = false;
 		Connection connection = null;
@@ -210,9 +205,9 @@ public class UserOrderDao {
 		try {
 			String sql ="";
 			connection = DBUtils.getConnection();
-			sql = "UPDATE  lc_user_order_details SET end_date=?,order_state=? WHERE user_order_id=?";
+			sql = "UPDATE  lc_user_order_details SET end_date=?,order_state=? WHERE order_no=?";
 			DBUtils.beginTx(connection);
-			int isSuccess = qR.update(connection,sql,userOrder.getEnd_date(),userOrder.getOrder_state(),userOrder.getId().intValue());
+			int isSuccess = qR.update(connection,sql,userOrder.getEnd_date(),userOrder.getOrder_state(),userOrder.getOrder_no());
 			if(isSuccess==1){
 			DBUtils.commit(connection);
 			result = true;
@@ -236,16 +231,16 @@ public class UserOrderDao {
 	 * @param orderId
 	 * @return
 	 */
-	public boolean cancelOrder(int orderId,Commodity commodity,UserOrder userOrder){
+	public boolean cancelOrder(String orderNo,Commodity commodity,UserOrder userOrder){
 		boolean result=false;
 		Connection connection = null;
 		try {
 			String sql ="";
 			connection = DBUtils.getConnection();
-			sql = "DELETE FROM  lc_user_order_details WHERE user_order_id=?";
+			sql = "DELETE FROM  lc_user_order_details WHERE order_no=?";
 			String commoditySql="UPDATE lc_commodity_details set commodity_num = ? WHERE commodity_id = ?";
 			DBUtils.beginTx(connection);
-			int isSuccess = qR.update(connection,sql,orderId);
+			int isSuccess = qR.update(connection,sql,orderNo);
 			qR.update(connection,commoditySql,commodity.getCommodity_num()+userOrder.getCommodity_num(),commodity.getCommodity_id());
 			if(isSuccess==1){
 			DBUtils.commit(connection);
