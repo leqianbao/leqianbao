@@ -75,6 +75,8 @@ $(document).ready(function(e) {
 	<input type="hidden" name="tag" value="query" />
 	<input type="hidden" name="main_no" value="${main_no }" />
  	<ul class="seachform">
+    <li><label>流水号 </label><input name="fetch_num" type="text"  value="${fetch_num }" class="scinput" /></li>
+    <li><label>提现金额 </label><input name="fetch_money" type="text"  value="${fetch_money }" class="scinput" /></li>
 	<li><label>是否打款</label>  
     <div class="vocation">
     <select class="select3" name="handle_tag" >
