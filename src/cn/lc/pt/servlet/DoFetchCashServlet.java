@@ -71,15 +71,13 @@ public class DoFetchCashServlet extends HttpServlet {
             Pager<FetchCash> result = gd.findOutPager(searchModel, pageNum, pageSize);
             // 返回结果到页面
             request.setAttribute("result", result);
-            request.setAttribute("fetch_num", fetch_num);
             request.setAttribute("handle_tag", handle_tag);
-            request.setAttribute("fetch_money", fetch_money);
             request.setAttribute("main_no", main_no);
-            request.setAttribute("user_id", user_id);
             request.getRequestDispatcher("/WEB-INF/tixian/listtixian.jsp").forward(request, response);
         } else if (tag.equals("handler")) {
             
           String fetch_id =  request.getParameter("fetch_id");
+          String main_no = request.getParameter("main_no");
           FetchCash fc = new FetchCash();
           fc.setFetch_id(Integer.parseInt(fetch_id));
           fc.setHandle_tag("1");
@@ -91,7 +89,7 @@ public class DoFetchCashServlet extends HttpServlet {
           if(gd.handler(fc)){
               String path = request.getContextPath();
               String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-              response.sendRedirect(basePath+"/pt/doFetchCash?tag=query");
+              response.sendRedirect(basePath+"/pt/doFetchCash?tag=query&main_no="+main_no);
           }else{
               request.setAttribute("errorMsg", "参数传输错误");
               request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);

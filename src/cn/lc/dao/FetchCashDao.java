@@ -155,6 +155,7 @@ public class FetchCashDao {
 		String fetch_num = m.getFetch_num();
 		String user_id = m.getUser_id();
 		String handle_tag = m.getHandle_tag();
+		String main_no=m.getMain_no();
 
 		String fetch_money = null;
 		if (null != m.getFetch_money()) {
@@ -181,6 +182,12 @@ public class FetchCashDao {
 			sql.append(" and user_id = ? ");
 			countSql.append(" and user_id = ? ");
 			paramList.add(user_id.trim());
+		}
+		
+		if (null != main_no && !"".equals(main_no.trim())) {
+			sql.append(" and main_no = ? ");
+			countSql.append(" and main_no = ? ");
+			paramList.add(main_no.trim());
 		}
 
 		String[] str = paramList.toArray(new String[paramList.size()]);

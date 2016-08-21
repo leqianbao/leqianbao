@@ -93,7 +93,7 @@ $(document).ready(function(e) {
     	<thead>
     	<tr>
        <!--  <th><input name="" type="checkbox" value="" checked="checked"/></th> -->
-        <th>ID<i class="sort"><img src="jsp/images/px.gif" /></i></th>
+        <th>序号</th>
         <th>主账户订单号</th>
         <th>用户id</th>
         <th>创建时间</th>
@@ -101,13 +101,18 @@ $(document).ready(function(e) {
         </tr>
         </thead>
         <tbody>
-	
+		<%
+        	int index = 0;
+        %>
 		<c:forEach items="${result.data_list }" var="fetch">
+		<%
+        		index = index + 1;
+        	%>
 						<tr>
-							<td><c:out value="${fetch.main_id }"></c:out></td>
+						<td><%=index%></td>
 							<td><c:out value="${fetch.main_no }"></c:out></td>
 							<td><c:out value="${fetch.user_id }"></c:out></td>
-							<td><c:out value="${fetch.create_date }"></c:out></td>
+							<td><c:out value="${fetch.create_date.toString().substring(0,19) }"></c:out></td>
 							<td><span>
 							<c:url value="/pt/doFetchCash" var="handler">
 							<c:param name="tag" value="query"/>

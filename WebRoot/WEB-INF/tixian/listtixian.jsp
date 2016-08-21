@@ -75,9 +75,6 @@ $(document).ready(function(e) {
 	<input type="hidden" name="tag" value="query" />
 	<input type="hidden" name="main_no" value="${main_no }" />
  	<ul class="seachform">
-    <li><label>订单号 </label><input name="orderNum" type="text"  value="${orderNum }" class="scinput" /></li>
-    <li><label>提现金额 </label><input name="fetch_money" type="text"  value="${fetch_money }" class="scinput" /></li>
-    <li><label>用户ID</label><input name="user_id" type="text"  value="${user_id }" class="scinput" /></li>
 	<li><label>是否打款</label>  
     <div class="vocation">
     <select class="select3" name="handle_tag" >
@@ -88,7 +85,6 @@ $(document).ready(function(e) {
     </div>
     </li>
  	<li><label>&nbsp;</label><input type="submit" class="scbtn" value="查询"/></li>
- 	<li><label>&nbsp;</label><input type="submit" class="scbtn" value="刷新"/></li>
     </ul>
 </form>
     </div>
@@ -103,13 +99,12 @@ $(document).ready(function(e) {
     	<thead>
     	<tr>
        <!--  <th><input name="" type="checkbox" value="" checked="checked"/></th> -->
-        <th>ID<i class="sort"><img src="jsp/images/px.gif" /></i></th>
-        <th>订单号</th>
+        <th>序号</th>
+        <th>流水号</th>
         <th>是否打款</th>
         <th>提现金额</th>
         <th>到账卡号</th>
-        <th>银行名称</th>
-        <th>用户id</th>
+        <th>开户行名称</th>
         <th>提款时间</th>
         <th>更新时间</th>
         <th>状态</th>
@@ -117,10 +112,15 @@ $(document).ready(function(e) {
         </tr>
         </thead>
         <tbody>
-	
+		<%
+        	int index = 0;
+        %>
 		<c:forEach items="${result.data_list }" var="fetch">
+		<%
+        		index = index + 1;
+        	%>
 						<tr>
-							<td><c:out value="${fetch.fetch_id }"></c:out></td>
+							<td><%=index%></td>
 							<td><c:out value="${fetch.fetch_num }"></c:out></td>
 							<td>
 								<c:if test="${fetch.handle_tag eq 0}"><span class="red">未打款</span></c:if>
@@ -131,15 +131,15 @@ $(document).ready(function(e) {
 							
 							<td><c:out value="${fetch.card_number }"></c:out></td>
 							<td><c:out value="${fetch.bank_name }"></c:out></td>
-							<td><c:out value="${fetch.user_id }"></c:out></td>
-							<td><fmt:formatDate value="${fetch.stamp_created }"  type="both" /></td>
-							<td><fmt:formatDate value="${fetch.stamp_updated }"  type="both" /></td>
+							<td><fmt:formatDate value="${fetch.stamp_created}"  type="both" /></td>
+							<td><fmt:formatDate value="${fetch.stamp_updated}"  type="both" /></td>
 							<td><c:out value="${fetch.state }"></c:out></td>
 							<td><span>
 							<c:if test="${fetch.handle_tag eq 0 }">
 							 <c:url value="/pt/doFetchCash" var="handler">
 							<c:param name="tag" value="handler"/>
 							<c:param name="fetch_id" value="${fetch.fetch_id }"/>
+							<c:param name="main_no" value="${main_no }"/>
 							</c:url>
 							<a class="red" href="${handler}"  onclick="return confirm('确定已经打款了吗？')" title="打款">打款</a>
 							</c:if>
