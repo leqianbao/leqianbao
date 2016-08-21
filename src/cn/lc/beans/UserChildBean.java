@@ -1,5 +1,7 @@
 package cn.lc.beans;
 
+import java.math.BigDecimal;
+
 public class UserChildBean {
 	private int user_id;
 	private String child_name;
@@ -7,8 +9,15 @@ public class UserChildBean {
 	private String child_id_card;
 	private String child_bank_name;
 	private String child_bank_account;
+	private BigDecimal child_balance;
 	
 	
+	public BigDecimal getChild_balance() {
+		return child_balance;
+	}
+	public void setChild_balance(BigDecimal child_balance) {
+		this.child_balance = child_balance;
+	}
 	public int getUser_id() {
 		return user_id;
 	}

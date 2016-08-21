@@ -47,4 +47,7 @@ public class Const {
 	public final static String CHILD_ADD_SUCCESS="添加成功";
 	public final static String CHILD_ADD_ERROR="添加失败";
 	public final static String CHILD_ADD_ID_SHORT="用户不存在";
+	//tixian
+	public final static String FETCH_SUCCESS="提现请求成功";
+	public final static String FETCH_ERROR="提现请求失败";
 }

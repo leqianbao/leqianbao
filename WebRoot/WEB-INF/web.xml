@@ -159,6 +159,14 @@
 		<servlet-name>CommodityListServlet</servlet-name>
 		<servlet-class>cn.lc.app.servlet.CommodityListServlet</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>InitiateWithdrawalServlet</servlet-name>
+		<servlet-class>cn.lc.app.servlet.InitiateWithdrawalServlet</servlet-class>
+	</servlet>
+	
+	
+	
 	<servlet>
 		<servlet-name>GetCodeServlet</servlet-name>
 		<servlet-class>cn.lc.pt.servlet.GetCodeServlet</servlet-class>
@@ -362,6 +370,11 @@
 	<servlet-mapping>
 		<servlet-name>GetChildUserListServlet</servlet-name>
 		<url-pattern>/app/getChildUserList</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>InitiateWithdrawalServlet</servlet-name>
+		<url-pattern>/app/initiateWithdraw</url-pattern>
 	</servlet-mapping>
 
 
