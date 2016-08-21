@@ -66,7 +66,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	<span>
 				<c:url value="/pt/doUserOrderDetailServlet" var="refresh">
 					<c:param name="tag" value="detail"/>
-					<c:param name="userOrder" value="${id}"/>
+					<c:param name="userOrder" value="${user_order_id}"/>
 				</c:url>
 	    		<a href="${refresh}">订单详情</a>
 	    	</span>
@@ -78,7 +78,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	<div class="formtitle"><span>订单详细信息</span></div>
 	    <form action="<%=path %>/pt/doUserOrderDetail"   id="stuForm"  method="post">
 	    	<input type="hidden" name="tag" value="save" />
-	    	<input type="hidden" name="id" value="${result.id}" />
+	    	<input type="hidden" name="id" value="${result.user_order_id}" />
 	    	<ul class="forminfo">
 	    		<li>
 	    			<label>订单号</label>
