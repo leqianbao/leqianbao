@@ -16,6 +16,7 @@ import org.apache.http.util.TextUtils;
 import cn.lc.beans.FetchCash;
 import cn.lc.beans.FetchCashMain;
 import cn.lc.beans.Pager;
+import cn.lc.beans.UserOrder;
 
 public class FetchCashMainDao {
     QueryRunner qR = new QueryRunner();
@@ -90,4 +91,52 @@ public class FetchCashMainDao {
         }
         return result;
     }
+    
+    
+  //@APP--修改提现状态
+  	public boolean modifyFetchMainState (int userId,String mainNo,String state){
+  		boolean  result = false;
+  		Connection connection = null;
+  		try {
+  			String sql ="";
+  			connection = DBUtils.getConnection();
+  			sql = "UPDATE  lc_fetch_cash_main SET main_state=? WHERE user_id=? and main_no=?";
+  			DBUtils.beginTx(connection);
+  			int isSuccess = qR.update(connection,sql,"A",userId,mainNo);
+  			if(isSuccess==1){
+  			DBUtils.commit(connection);
+  			result = true;
+  			} else{
+  				DBUtils.rollback(connection);
+  				result = false;
+  			}
+  		} catch (Exception e) {
+  			DBUtils.rollback(connection);
+  			e.printStackTrace();
+  		} finally{
+  			DBUtils.releaseDB(null, null, connection);
+  		}
+  		return result;
+  	}
+  	
+  	public FetchCashMain getFetchMain(int userId,String main_no){
+  		Connection connection = null;
+  		FetchCashMain fetchCashMain=null;
+  		String sql="SELECT * FROM lc_fetch_cash_main WHERE user_id=? and main_no=?";
+  		try {
+            connection = DBUtils.getConnection();
+            DBUtils.beginTx(connection);
+            // 获取总记录数
+            // 获取查询的消息记录
+            fetchCashMain  = qR.query(connection,sql,new BeanListHandler<FetchCashMain>(FetchCashMain.class),userId,main_no).get(0);
+            //获取总页数
+        } catch (Exception e) {
+            DBUtils.rollback(connection);
+            e.printStackTrace();
+        } finally{
+            DBUtils.releaseDB(null, null, connection);
+        }
+  		return fetchCashMain;
+  	}
+  	
 }

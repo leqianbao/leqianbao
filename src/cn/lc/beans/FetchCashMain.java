@@ -1,5 +1,6 @@
 package cn.lc.beans;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class FetchCashMain {
@@ -7,8 +8,22 @@ public class FetchCashMain {
 	private String main_no;
 	private int user_id;
 	private String create_date;
+	private String main_state;
+	private BigDecimal fetch_money;
 	public int getMain_id() {
 		return main_id;
+	}
+	public String getMain_state() {
+		return main_state;
+	}
+	public void setMain_state(String main_state) {
+		this.main_state = main_state;
+	}
+	public BigDecimal getFetch_money() {
+		return fetch_money;
+	}
+	public void setFetch_money(BigDecimal fetch_money) {
+		this.fetch_money = fetch_money;
 	}
 	public void setMain_id(int main_id) {
 		this.main_id = main_id;

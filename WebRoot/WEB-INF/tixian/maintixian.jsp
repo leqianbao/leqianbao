@@ -95,9 +95,11 @@ $(document).ready(function(e) {
        <!--  <th><input name="" type="checkbox" value="" checked="checked"/></th> -->
         <th>序号</th>
         <th>主账户订单号</th>
+        <th>提现金额</th>
         <th>用户id</th>
         <th>创建时间</th>
-        <th>操作</th>
+       	<th>确认提现</th>
+        <th>详情</th>
         </tr>
         </thead>
         <tbody>
@@ -111,14 +113,27 @@ $(document).ready(function(e) {
 						<tr>
 						<td><%=index%></td>
 							<td><c:out value="${fetch.main_no }"></c:out></td>
+							<td><c:out value="${fetch.fetch_money }"></c:out></td>
 							<td><c:out value="${fetch.user_id }"></c:out></td>
 							<td><c:out value="${fetch.create_date.toString().substring(0,19) }"></c:out></td>
+							<td><span>
+							<c:if test="${fetch.main_state eq 'B' }">
+							 <c:url value="/pt/doFetchCashMain" var="handler">
+							<c:param name="tag" value="handler"/>
+							<c:param name="main_no" value="${fetch.main_no}"/>
+							<c:param name="user_id" value="${fetch.user_id}"/>
+							
+							</c:url>
+							<a class="red" href="${handler}"  onclick="return confirm('确定已经提现么？')" title="提现">提现</a>
+							</c:if>
+							<c:if test="${fetch.main_state eq 'A' }">已提现</c:if>
+							</span></td>
 							<td><span>
 							<c:url value="/pt/doFetchCash" var="handler">
 							<c:param name="tag" value="query"/>
 							<c:param name="main_no" value="${fetch.main_no }"/>
 							</c:url>
-							<a class="red" href="${handler}">查看</a>
+							<a class="red" href="${handler}">详情</a>
 							</span></td>
 						</tr>
 		</c:forEach>  

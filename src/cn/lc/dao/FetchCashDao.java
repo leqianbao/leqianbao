@@ -123,7 +123,7 @@ public class FetchCashDao {
 	public String countMoney(String uid) {
 		String result = "";
 		Connection connection = null;
-		String sql = "SELECT  sum(fetch_money) as result FROM lc_fetch_cash WHERE 1=1 AND user_id=? and state=?";
+		String sql = "SELECT  sum(fetch_money) as result FROM lc_fetch_cash_main WHERE 1=1 AND user_id=? and state=?";
 		try {
 			connection = DBUtils.getConnection();
 			DBUtils.beginTx(connection);
@@ -279,20 +279,22 @@ public class FetchCashDao {
 		UserChildDao userChildDao = new UserChildDao();
 		try {
 			connection = DBUtils.getConnection();
-			String sql = "INSERT INTO lc_fetch_cash_main (user_id,main_no,create_date) VALUES (?,?,?)";
+			String sql = "INSERT INTO lc_fetch_cash_main (user_id,main_no,create_date,fetch_money,main_state) VALUES (?,?,?,?,?)";
 			DBUtils.beginTx(connection);
-			int isSuccess = qR.update(connection, sql, userId, mainNo, new Timestamp(System.currentTimeMillis()));
+			List<UserChildBean> userChildBeans = userChildDao.getChildUserList(userId);
+			float fetchNum = 0;
+			for (UserChildBean userChildBean : userChildBeans) {
+				String fetchCash = "INSERT INTO lc_fetch_cash (fetch_num,fetch_money,card_number,bank_name,handle_tag,stamp_created,stamp_updated,state,main_no,child_name,child_phone,child_id_card) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+				int fetchCashBack=qR.update(connection, fetchCash, StringUtils.getstance(),userChildBean.getChild_balance(),userChildBean.getChild_bank_account(), userChildBean.getChild_bank_name(),0,new Timestamp(System.currentTimeMillis()),new Timestamp(System.currentTimeMillis()),"A",mainNo,userChildBean.getChild_name(),userChildBean.getChild_phone(),userChildBean.getChild_id_card());
+				fetchNum+=userChildBean.getChild_balance().floatValue();
+				if(fetchCashBack==0){
+					DBUtils.rollback(connection);
+					return false;
+				}
+			}
+			int isSuccess = qR.update(connection, sql, userId, mainNo, new Timestamp(System.currentTimeMillis()),fetchNum,"B");
 			if (isSuccess == 1) {
 				result = true;
-				List<UserChildBean> userChildBeans = userChildDao.getChildUserList(userId);
-				for (UserChildBean userChildBean : userChildBeans) {
-					String fetchCash = "INSERT INTO lc_fetch_cash (fetch_num,fetch_money,card_number,bank_name,handle_tag,stamp_created,stamp_updated,state,main_no,child_name,child_phone,child_id_card) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-					int fetchCashBack=qR.update(connection, fetchCash, StringUtils.getstance(),userChildBean.getChild_balance(),userChildBean.getChild_bank_account(), userChildBean.getChild_bank_name(),0,new Timestamp(System.currentTimeMillis()),new Timestamp(System.currentTimeMillis()),"A",mainNo,userChildBean.getChild_name(),userChildBean.getChild_phone(),userChildBean.getChild_id_card());
-					if(fetchCashBack==0){
-						DBUtils.rollback(connection);
-						return false;
-					}
-				}
 				DBUtils.commit(connection);
 			} else {
 				result = false;
