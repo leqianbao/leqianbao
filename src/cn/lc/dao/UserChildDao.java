@@ -8,8 +8,6 @@ import java.util.List;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
-import com.sun.jmx.snmp.Timestamp;
-
 import cn.lc.beans.Commodity;
 import cn.lc.beans.Pager;
 import cn.lc.beans.User;
@@ -61,7 +59,7 @@ public class UserChildDao {
     	return users;
     }
 	
-	//ºóÌ¨È¡µÃ×ÓÕË»§ÁĞ±í
+	//åå°å–å¾—å­è´¦æˆ·åˆ—è¡¨
     public Pager<UserChildBean> getChildrenList(UserChildBean searchMode, Integer pageNum, Integer pageRows) {
     	
     	Pager<UserChildBean> page = new Pager<UserChildBean>(0, 0, 0, 0,null);
@@ -79,7 +77,7 @@ public class UserChildDao {
         if(user_id.equals("-1")){
         	user_id = null;
         }
-        //²ÎÊı¼¯ºÏ
+        //å‚æ•°é›†åˆ
         List<String> params = new ArrayList<String>(); 
         if(null!=user_id&&!"".equals(user_id.trim())){
         	sql.append(" and user_id = ? ");
@@ -87,7 +85,7 @@ public class UserChildDao {
         	params.add(user_id.trim());
         }
         
-        //´´½¨²ÎÊı×Ö·û´®Êı×é
+        //åˆ›å»ºå‚æ•°å­—ç¬¦ä¸²æ•°ç»„
         String[] paramStr = params.toArray(new String[params.size()]); 
         
         long fromIndex  = pageRows * (pageNum -1); 
@@ -97,7 +95,7 @@ public class UserChildDao {
         try {
             connection = DBUtils.getConnection();
             DBUtils.beginTx(connection);
-            // »ñÈ¡×Ü¼ÇÂ¼Êı
+            // è·å–æ€»è®°å½•æ•°
             allList = qR.query(connection,sql2.toString(),new BeanListHandler<UserChildBean>(UserChildBean.class), paramStr);
             if(allList == null){
             	totalRecord = 0;
@@ -109,7 +107,7 @@ public class UserChildDao {
             if(totalRecord % pageRows !=0){
                 totalPage++;
             }
-            // ×é×°pager¶ÔÏó
+            // ç»„è£…pagerå¯¹è±¡
             page = new Pager<UserChildBean>(pageRows, pageNum, totalRecord, totalPage, list);
         } catch (Exception e) {
             DBUtils.rollback(connection);
@@ -133,6 +131,31 @@ public class UserChildDao {
             st = connection.prepareStatement(sql.toString());
             st.setString(1, money);
             st.setString(2, id);
+            setflag = st.executeUpdate();
+        } catch (Exception e) {
+            DBUtils.rollback(connection);
+            e.printStackTrace();
+        } finally {
+            DBUtils.releaseDB(null, null, connection);
+        }
+        if(setflag == 0){
+        	return false;
+        }else{
+        	return true;
+        }
+    }
+    
+    public boolean deleteById(String id){
+    	int setflag = 0;
+    	Connection connection = null;
+    	PreparedStatement st = null; 
+        
+        StringBuffer sql = new StringBuffer();
+        sql.append(" delete from lc_user_child where id = ? ");
+        try {
+            connection = DBUtils.getConnection();
+            st = connection.prepareStatement(sql.toString());
+            st.setString(1, id);
             setflag = st.executeUpdate();
         } catch (Exception e) {
             DBUtils.rollback(connection);

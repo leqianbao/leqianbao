@@ -28,64 +28,85 @@
 	<script type="text/javascript" src="jsp/js/jquery.pagination.js"></script>
 	<script type="text/javascript" src="jsp/js/select-ui.min.js"></script>
 	<script type="text/javascript" src="jsp/js/My97DatePicker/WdatePicker.js"></script>
+	<style type="text/css">
+		.input-width{
+			width:170px;
+		}
+	</style>
 	<script type="text/javascript">
- function handlePaginationClick(new_page_index, pagination_container) {
-    $("#comForm").attr("action", "<%=path%>/pt/DoIntegralList?pageNum=" + (new_page_index+1));
-    $("#comForm").submit();
-    return false; 
-}
+ 	function handlePaginationClick(new_page_index, pagination_container) {
+	    $("#comForm").attr("action", "<%=path%>/pt/DoIntegralList?pageNum=" + (new_page_index+1));
+	    $("#comForm").submit();
+	    return false; 
+	}
 
-$(function(){
-	$("#News-Pagination").pagination(${result.total_record}, {
-        items_per_page:${result.page_size}, // 每页显示多少条记录
-        current_page:${result.current_page} - 1, // 当前显示第几页数据
-        num_display_entries:4, // 分页显示的条目数
-        next_text:"下一页",
-        prev_text:"上一页",
-        num_edge_entries:2, // 连接分页主体，显示的条目数
-        callback:handlePaginationClick
-	});
+	$(function(){
+		$("#News-Pagination").pagination(${result.total_record}, {
+	        items_per_page:${result.page_size}, // 每页显示多少条记录
+	        current_page:${result.current_page} - 1, // 当前显示第几页数据
+	        num_display_entries:4, // 分页显示的条目数
+	        next_text:"下一页",
+	        prev_text:"上一页",
+	        num_edge_entries:2, // 连接分页主体，显示的条目数
+	        callback:handlePaginationClick
+		});
 	
-}); 
+	}); 
 	</script>
 	
 	<script type="text/javascript">
-	$(document).ready(function(e) {
-		$(".select3").uedSelect({
-			width : 100
+		$(document).ready(function(e) {
+			$(".select3").uedSelect({
+				width : 100
+			});
 		});
-	});
-</script>
+		function saveIntegral(e,user_id){
+			$this = $(e);
+			var value = $this.val();
+			var r = new RegExp("^\\d+$");
+			if(!(r.test(value))){
+				alert("请输入正确积分数！");
+				return false;
+			}
+			$.ajax({
+				type : "post", 
+				url : "<%=path %>/pt/doIntegral", 
+				async : true, 
+				data : {tag:"update", 
+					user_id: user_id,
+					value : value,
+				},
+				dataType : "*", 
+				success : function(json) { 
+					var msg_body = json.replace("{","").replace("}","");
+					if(msg_body){
+						var msg = msg_body.split("saveMsg:")[1];
+						alert(msg);
+					};
+				},
+				error : function() { 
+					alert('积分保存失败');
+				}
+			});
+		}
+	</script>
 </head>
 <body>
 	<div class="place">
 		<span>位置：</span>
 		<ul class="placeul">
 			<li><a>首页</a></li>
-			<li><a>积分明细</a></li>
+			<li><a>用户积分</a></li>
 		</ul>
 	</div>
 	<div class="rightinfo">
 		<div class="querydiv">
-			<form action="<%=path%>/pt/DoIntegralList" id="stuForm" method="get">
+			<form action="<%=path%>/pt/doIntegral" id="stuForm" method="get">
 				<input type="hidden" name="tag" value="query" />
 				<ul class="seachform">
 					<li>
 						<label>用户手机号</label>
 						<input name="user_phone" type="text" value="${user_phone }" class="scinput" />
-					</li>
-					
-						<li><label>创建时间 </label><input id="create_date" name="create_date" type="text"  value="${create_date }" readonly="readonly" class="scinput Wdate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"/></li>
-					
-					<li>
-						<label>积分状态 </label>
-						<div class="vocation">
-							<select class="select3" name="record_state">
-								<option value="0">全部</option>
-								<option value="1">收入</option>
-								<option value="2">支出</option>
-							</select>
-						</div>
 					</li>
 					<li><label>&nbsp;</label><input type="submit" class="scbtn"
 						value="查询" /></li>
@@ -101,27 +122,32 @@ $(function(){
 			<table class="tablelist">
 				<thead>
 					<tr>
+						<th>用户手机号</th>
 						<th>用户名</th>
 						<th>积分</th>
-						<th>状态</th>
-						<th>详情</th>
-						<th>创建时间</th>
+						<th>更新时间</th>
+						<th>操作</th>
 					</tr>
 				</thead>
 				<thead>
-					<c:forEach items="${result.data_list }" var="record">
+					<c:forEach items="${result.data_list }" var="userIntegral">
 						<tr>
-							<td><c:out value="${record.user_name }"></c:out></td>
-							<td><c:out value="${record.integral }"></c:out></td>
-							<td><c:if test="${record.record_state eq 0}">
-									<span>全部</span>
-								</c:if> <c:if test="${record.record_state eq 1}">
-									<span class="">收入</span>
-								</c:if> <c:if test="${record.record_state eq 2}">
-									<span class="">支出</span>
-								</c:if></td>
-							<td><c:out value="${record.comment }"></c:out></td>
-							<td><c:out value="${record.create_time.toString().substring(0,19)}"></c:out></td>
+							<td><c:out value="${userIntegral.user_phone}"></c:out></td>
+							<td><c:out value="${userIntegral.user_name}"></c:out></td>
+							<td>
+								<input name="integral" value="${userIntegral.user_integral}" 
+									maxlength="10" type="text" class="dfinput input-width" onblur="saveIntegral(this,'${userIntegral.user_id}')"/>
+							</td>
+							<td><c:out value="${userIntegral.update_date}"></c:out></td>
+							<td>
+								<span>
+									<c:url value="/pt/DoIntegralList" var="query">
+										<c:param name="tag" value="query"/>
+										<c:param name="user_phone" value="${userIntegral.user_phone}"/>
+									</c:url>
+									<a href="${query}">查看明细</a>
+								</span>
+							</td>
 						</tr>
 					</c:forEach>
 				</thead>

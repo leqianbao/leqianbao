@@ -241,6 +241,10 @@
 		<servlet-name>DoChildrenServlet</servlet-name>
     		<servlet-class>cn.lc.pt.servlet.DoChildrenServlet</servlet-class>
   	</servlet>
+	<servlet>
+		<servlet-name>DoIntegralServlet</servlet-name>
+		<servlet-class>cn.lc.pt.servlet.DoIntegralServlet</servlet-class>
+  	</servlet>
 	<servlet-mapping>
 		<servlet-name>GoodsOrderServlet</servlet-name>
 		<url-pattern>/app/goodsorder</url-pattern>
@@ -460,6 +464,10 @@
 	<servlet-mapping>
 	    <servlet-name>DoChildrenServlet</servlet-name>
 	    <url-pattern>/pt/doChildren</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DoIntegralServlet</servlet-name>
+		<url-pattern>/pt/doIntegral</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>login.jsp</welcome-file>

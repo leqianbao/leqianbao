@@ -136,6 +136,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        <th>银行名称</th>
 		        <th>银行卡号</th>
 		        <th>账户余额</th>
+		        <th>操作</th>
         	</tr>
         </thead>
         <%
@@ -157,6 +158,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<td>
 						<input name="child_balance" value="${child.child_balance}" 
 							maxlength="13" type="text" class="dfinput" onblur="saveMoney(this,${child.id})"/>
+					</td> 
+					<td>
+						<span>
+							<c:url value="/pt/doChildren" var="delete">
+								<c:param name="tag" value="del"/>
+								<c:param name="id" value="${child.id}"/>
+							</c:url>
+							<a href="${delete}">删除</a>
+						</span>
 					</td> 
 				</tr>
 			</c:forEach> 

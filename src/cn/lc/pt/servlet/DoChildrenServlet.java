@@ -93,6 +93,15 @@ public class DoChildrenServlet extends HttpServlet {
 			 json.append("}");
              out.print(json.toString());
              out.close();
+		}else if(tag.equals("del")){
+			String id = request.getParameter("id");
+			boolean delete = false;
+			delete = dao.deleteById(id);
+			if(delete){
+				String path = request.getContextPath();
+				String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+				response.sendRedirect(basePath+"/pt/doChildren?tag=query");
+			}
 		}
 	}
 
