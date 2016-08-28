@@ -5,6 +5,7 @@ encoding//src/cn/lc/app/servlet/UserLoginServlet.java=UTF-8
 encoding//src/cn/lc/beans=UTF-8
 encoding//src/cn/lc/dao=UTF-8
 encoding//src/cn/lc/dao/FetchCashDao.java=UTF-8
+encoding//src/cn/lc/dao/WithdrawDao.java=UTF-8
 encoding//src/cn/lc/filter=UTF-8
 encoding//src/cn/lc/json/model=UTF-8
 encoding//src/cn/lc/utils=UTF-8

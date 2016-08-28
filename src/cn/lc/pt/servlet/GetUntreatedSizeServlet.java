@@ -10,14 +10,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import cn.lc.beans.FetchCash;
 import cn.lc.dao.FetchCashDao;
+import cn.lc.dao.WithdrawDao;
 
 public class GetUntreatedSizeServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		FetchCashDao fetchCashDao = new FetchCashDao();
-		List<FetchCash> fetchCashs = fetchCashDao.getUntreatedList();
+		WithdrawDao withdrawDao = new WithdrawDao();
+		List<FetchCash> fetchCashs = withdrawDao.getUntreatedList();
 		request.setAttribute("fetch_size",fetchCashs==null?0:fetchCashs.size());
 	}
 	

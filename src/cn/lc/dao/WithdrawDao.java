@@ -22,48 +22,12 @@ import cn.lc.beans.User;
 import cn.lc.beans.UserChildBean;
 import cn.lc.utils.StringUtils;
 
-public class FetchCashDao {
+public class WithdrawDao {
 
-	private static Logger logger = (Logger) LogManager.getLogger(FetchCashDao.class);
+	private static Logger logger = (Logger) LogManager.getLogger(WithdrawDao.class);
 	QueryRunner qR = new QueryRunner();
 
-	// @APP--添加提现订单
-	public boolean addFetchCash(FetchCash f) {
-
-		boolean result = false;
-		Connection connection = null;
-		try {
-			connection = DBUtils.getConnection();
-			String sql = "INSERT INTO lc_fetch_cash (fetch_num,fetch_money,card_number,bank_name,bank_id,user_id,handle_tag,created_by,stamp_created,updated_by,stamp_updated,state) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-			String sql2 = "INSERT INTO lc_message (msg_title,msg_type,user_id,msg_content,created_by,stamp_created,updated_by,stamp_updated,state) VALUES (?,?,?,?,?,?,?,?,?)";
-			SimpleDateFormat gs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			StringBuffer cont = new StringBuffer("尊敬的" + f.getUser().getUser_name() + "用户,你在");
-			cont.append(gs.format(f.getStamp_created()));
-			cont.append("提现" + f.getFetch_money() + "元的到卡号为：" + f.getCard_number() + "的" + f.getBank_name()
-					+ "，预计一个小时后到账，");
-			cont.append("提现流水号为：" + f.getFetch_num());
-			DBUtils.beginTx(connection);
-			int isSuccess = qR.update(connection, sql, f.getFetch_num(), f.getFetch_money(), f.getCard_number(),
-					f.getBank_name(), f.getBank_id(), f.getUser_id(), f.getHandle_tag(), f.getCreated_by(),
-					f.getStamp_created(), f.getUpdated_by(), f.getStamp_updated(), f.getState());
-			int isSuccess2 = qR.update(connection, sql2, "提现消息", 1, f.getUser().getUser_id(), cont.toString(),
-					f.getCreated_by(), f.getStamp_created(), f.getUpdated_by(), f.getStamp_updated(), f.getState());
-			if (isSuccess == 1 && isSuccess2 == 1) {
-				DBUtils.commit(connection);
-				result = true;
-			} else {
-				DBUtils.rollback(connection);
-				result = false;
-			}
-		} catch (Exception e) {
-			DBUtils.rollback(connection);
-			logger.error("Cash to bank card is failed!", e.getMessage());
-			e.printStackTrace();
-		} finally {
-			DBUtils.releaseDB(null, null, connection);
-		}
-		return result;
-	}
+	
 
 	@SuppressWarnings("rawtypes")
 	private ScalarHandler scalarHandler = new ScalarHandler() {
@@ -82,9 +46,9 @@ public class FetchCashDao {
 		// 存放查询参数
 		Connection connection = null;
 		StringBuilder sql = new StringBuilder(
-				"SELECT fetch_id,fetch_num,fetch_money,card_number,bank_name,bank_id,user_id,created_by,stamp_created,updated_by,stamp_updated,state FROM lc_fetch_cash WHERE 1=1 AND user_id=?");
+				"SELECT fetch_id,fetch_num,fetch_money,card_number,bank_name,bank_id,user_id,created_by,stamp_created,updated_by,stamp_updated,state FROM lc_user_withdraw WHERE 1=1 AND user_id=?");
 		StringBuilder countSql = new StringBuilder(
-				"SELECT  count(fetch_id) as totalRecord FROM lc_fetch_cash WHERE 1=1 AND user_id=?");
+				"SELECT  count(fetch_id) as totalRecord FROM lc_user_withdraw WHERE 1=1 AND user_id=?");
 		sql.append("  and state = ?");
 		countSql.append(" and state = ?");
 		long totalRecord = 0;
@@ -123,7 +87,7 @@ public class FetchCashDao {
 	public String countMoney(String uid) {
 		String result = "";
 		Connection connection = null;
-		String sql = "SELECT  sum(fetch_money) as result FROM lc_fetch_cash WHERE 1=1 AND user_id=? and state=?";
+		String sql = "SELECT  sum(fetch_money) as result FROM lc_user_withdraw WHERE 1=1 AND user_id=? and state=?";
 		try {
 			connection = DBUtils.getConnection();
 			DBUtils.beginTx(connection);
@@ -147,9 +111,9 @@ public class FetchCashDao {
 		// 存放查询参数
 		Connection connection = null;
 		StringBuilder sql = new StringBuilder(
-				"SELECT fetch_id,fetch_num,fetch_money,card_number,bank_name,bank_id,user_id,handle_tag,created_by,stamp_created,updated_by,stamp_updated,state FROM lc_fetch_cash WHERE 1=1  AND state=? ");
+				"SELECT fetch_id,fetch_num,fetch_money,card_number,bank_name,bank_id,user_id,handle_tag,created_by,stamp_created,updated_by,stamp_updated,state FROM lc_user_withdraw WHERE 1=1  AND state=? ");
 		StringBuilder countSql = new StringBuilder(
-				"SELECT  count(fetch_id) as totalRecord FROM lc_fetch_cash WHERE 1=1 AND state=? ");
+				"SELECT  count(fetch_id) as totalRecord FROM lc_user_withdraw WHERE 1=1 AND state=? ");
 		// 存放查询参数
 		List<Object> paramList = new ArrayList<Object>();
 		paramList.add("A");
@@ -230,7 +194,7 @@ public class FetchCashDao {
 		try {
 			connection = DBUtils.getConnection();
 			StringBuilder sql = new StringBuilder(
-					"UPDATE lc_fetch_cash set handle_tag=?,stamp_updated =?,updated_by=? WHERE fetch_id=?");
+					"UPDATE lc_user_withdraw set handle_tag=?,stamp_updated =?,updated_by=? WHERE fetch_id=?");
 			DBUtils.beginTx(connection);
 			int isSuccess = qR.update(connection, sql.toString(), fc.getHandle_tag(), fc.getStamp_updated(),
 					fc.getUpdated_by(), fc.getFetch_id());
@@ -260,7 +224,7 @@ public class FetchCashDao {
 		Connection connection = null;
 		try {
 			connection = DBUtils.getConnection();
-			String sql = "SELECT * FROM lc_fetch_cash WHERE handle_tag = 0";
+			String sql = "SELECT * FROM lc_user_withdraw WHERE handle_tag = 0";
 			DBUtils.beginTx(connection);
 			fetchCashs = qR.query(connection, sql, new BeanListHandler<FetchCash>(FetchCash.class));
 		} catch (Exception e) {
@@ -279,12 +243,12 @@ public class FetchCashDao {
 		UserChildDao userChildDao = new UserChildDao();
 		try {
 			connection = DBUtils.getConnection();
-			String sql = "INSERT INTO lc_fetch_cash_main (user_id,main_no,create_date,fetch_money,main_state) VALUES (?,?,?,?,?)";
+			String sql = "INSERT INTO lc_user_withdraw_main (user_id,main_no,create_date,fetch_money,main_state) VALUES (?,?,?,?,?)";
 			DBUtils.beginTx(connection);
 			List<UserChildBean> userChildBeans = userChildDao.getChildUserList(userId);
 			float fetchNum = 0;
 			for (UserChildBean userChildBean : userChildBeans) {
-				String fetchCash = "INSERT INTO lc_fetch_cash (fetch_num,fetch_money,card_number,bank_name,handle_tag,stamp_created,stamp_updated,state,main_no,child_name,child_phone,child_id_card) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+				String fetchCash = "INSERT INTO lc_user_withdraw (fetch_num,fetch_money,card_number,bank_name,handle_tag,stamp_created,stamp_updated,state,main_no,child_name,child_phone,child_id_card) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 				int fetchCashBack=qR.update(connection, fetchCash, StringUtils.getstance(),userChildBean.getChild_balance(),userChildBean.getChild_bank_account(), userChildBean.getChild_bank_name(),0,new Timestamp(System.currentTimeMillis()),new Timestamp(System.currentTimeMillis()),"A",mainNo,userChildBean.getChild_name(),userChildBean.getChild_phone(),userChildBean.getChild_id_card());
 				fetchNum+=userChildBean.getChild_balance().floatValue();
 				if(fetchCashBack==0){

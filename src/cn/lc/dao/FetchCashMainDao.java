@@ -36,8 +36,8 @@ public class FetchCashMainDao {
         // 存放查询参数
         Connection connection = null;
         StringBuilder sql = new StringBuilder(
-                "SELECT * FROM lc_fetch_cash_main WHERE 1=1");
-        StringBuilder countSql = new StringBuilder("SELECT  count(main_id) as totalRecord FROM lc_fetch_cash_main WHERE 1=1");
+                "SELECT * FROM lc_user_withdraw_main WHERE 1=1");
+        StringBuilder countSql = new StringBuilder("SELECT  count(main_id) as totalRecord FROM lc_user_withdraw_main WHERE 1=1");
      // 存放查询参数
         List<Object> paramList = new ArrayList<Object>();
         String main_no = m.getMain_no();
@@ -100,7 +100,7 @@ public class FetchCashMainDao {
   		try {
   			String sql ="";
   			connection = DBUtils.getConnection();
-  			sql = "UPDATE  lc_fetch_cash_main SET main_state=? WHERE user_id=? and main_no=?";
+  			sql = "UPDATE  lc_user_withdraw_main SET main_state=? WHERE user_id=? and main_no=?";
   			DBUtils.beginTx(connection);
   			int isSuccess = qR.update(connection,sql,"A",userId,mainNo);
   			if(isSuccess==1){
@@ -122,7 +122,7 @@ public class FetchCashMainDao {
   	public FetchCashMain getFetchMain(int userId,String main_no){
   		Connection connection = null;
   		FetchCashMain fetchCashMain=null;
-  		String sql="SELECT * FROM lc_fetch_cash_main WHERE user_id=? and main_no=?";
+  		String sql="SELECT * FROM lc_user_withdraw_main WHERE user_id=? and main_no=?";
   		try {
             connection = DBUtils.getConnection();
             DBUtils.beginTx(connection);

@@ -72,7 +72,7 @@ $(document).ready(function(e) {
     <div class="rightinfo">
     
     <div class="querydiv">
-    <form action="<%=path %>/pt/doFetchCashMain"   id="stuForm"  method="post">
+    <form action="<%=path %>/pt/doWithdrawMain"   id="stuForm"  method="post">
 	<input type="hidden" name="tag" value="query" />
  	<ul class="seachform">
     <li><label>主账户订单号 </label><input name="main_no" type="text"  value="${main_no }" class="scinput" /></li>
@@ -118,7 +118,7 @@ $(document).ready(function(e) {
 							<td><c:out value="${fetch.create_date.toString().substring(0,19) }"></c:out></td>
 							<td><span>
 							<c:if test="${fetch.main_state eq 'B' }">
-							 <c:url value="/pt/doFetchCashMain" var="handler">
+							 <c:url value="/pt/doWithdrawMain" var="handler">
 							<c:param name="tag" value="handler"/>
 							<c:param name="main_no" value="${fetch.main_no}"/>
 							<c:param name="user_id" value="${fetch.user_id}"/>
@@ -129,7 +129,7 @@ $(document).ready(function(e) {
 							<c:if test="${fetch.main_state eq 'A' }">已提现</c:if>
 							</span></td>
 							<td><span>
-							<c:url value="/pt/doFetchCash" var="handler">
+							<c:url value="/pt/doWithdraw" var="handler">
 							<c:param name="tag" value="query"/>
 							<c:param name="main_no" value="${fetch.main_no }"/>
 							</c:url>

@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
 
 import cn.lc.dao.FetchCashDao;
 import cn.lc.dao.UserChildDao;
+import cn.lc.dao.WithdrawDao;
 import cn.lc.json.model.Body;
 import cn.lc.json.model.REP_BODY;
 import cn.lc.json.model.REQ_BODY;
@@ -32,12 +33,12 @@ public class InitiateWithdrawalServlet extends HttpServlet{
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
 		Body<Boolean> body = new Body<>();
-		FetchCashDao fetchCashDao = new FetchCashDao();
+		WithdrawDao withdrawDao = new WithdrawDao();
 		String date = DataUtil.readDateFromRequest(request.getInputStream());
 		Root root = JSON.parseObject(date.substring(12), Root.class);
 		REQ_BODY reqBody = root.getREQ_BODY();
 		String userId = reqBody.getUser_id();
-		boolean back=fetchCashDao.addFetchCash(Integer.parseInt(userId), DataUtil.generateOrderNo(Integer.parseInt(userId)));
+		boolean back=withdrawDao.addFetchCash(Integer.parseInt(userId), DataUtil.generateOrderNo(Integer.parseInt(userId)));
 		if (back) {
 			body.setRSPCOD(Const.CODE_SUCCESS);
 			body.setRSPMSG(Const.FETCH_SUCCESS);

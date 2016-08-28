@@ -13,28 +13,32 @@ import cn.lc.beans.FetchCash;
 import cn.lc.beans.Pager;
 import cn.lc.beans.SysManager;
 import cn.lc.dao.FetchCashDao;
+import cn.lc.dao.WithdrawDao;
 import cn.lc.utils.DataUtil;
 
 
 
-public class DoFetchCashServlet extends HttpServlet {
+public class DoWithdrawServlet extends HttpServlet {
 
     private static final long serialVersionUID = 8683509551307435644L;
 
-    public DoFetchCashServlet() {
+    public DoWithdrawServlet() {
         super();
     }
 
-    FetchCashDao gd = new FetchCashDao();
+    
     public void destroy() {
         super.destroy(); //
     }
+    
+    
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String tag=request.getParameter("tag");
-       
+        WithdrawDao withdrawDao = new WithdrawDao();
         if (tag.equals("query")) {
+        	String main_no = request.getParameter("main_no");//主账户订单号
             String fetch_num = request.getParameter("fetch_num"); //订单号
             String fetch_money = request.getParameter("fetch_money");
             String user_id = request.getParameter("user_id");
@@ -61,20 +65,22 @@ public class DoFetchCashServlet extends HttpServlet {
             if(null!=fetch_money&&!"".equals(fetch_money.trim())){
                 searchModel.setFetch_money(Double.parseDouble(fetch_money));
             }
+            searchModel.setMain_no(main_no);
             searchModel.setUser_id(user_id);
             searchModel.setHandle_tag(handle_tag);
             // 调用service 获取查询结果
-            Pager<FetchCash> result = gd.findOutPager(searchModel, pageNum, pageSize);
+            Pager<FetchCash> result = withdrawDao.findOutPager(searchModel, pageNum, pageSize);
             // 返回结果到页面
             request.setAttribute("result", result);
-            request.setAttribute("fetch_num", fetch_num);
             request.setAttribute("handle_tag", handle_tag);
             request.setAttribute("fetch_money", fetch_money);
-            request.setAttribute("user_id", user_id);
-            request.getRequestDispatcher("/WEB-INF/tixian/listtixian.jsp").forward(request, response);
+            request.setAttribute("fetch_num", fetch_num);
+            request.setAttribute("main_no", main_no);
+            request.getRequestDispatcher("/WEB-INF/tixian/withdraw.jsp").forward(request, response);
         } else if (tag.equals("handler")) {
-            
+        
           String fetch_id =  request.getParameter("fetch_id");
+          String main_no = request.getParameter("main_no");
           FetchCash fc = new FetchCash();
           fc.setFetch_id(Integer.parseInt(fetch_id));
           fc.setHandle_tag("1");
@@ -83,10 +89,10 @@ public class DoFetchCashServlet extends HttpServlet {
           SysManager sy = (SysManager) session.getAttribute("SysManager");
           fc.setUpdated_by(sy.getMgr_loginid());
           
-          if(gd.handler(fc)){
+          if(withdrawDao.handler(fc)){
               String path = request.getContextPath();
               String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-              response.sendRedirect(basePath+"/pt/doFetchCash?tag=query");
+              response.sendRedirect(basePath+"/pt/doWithdraw?tag=query&main_no="+main_no);
           }else{
               request.setAttribute("errorMsg", "参数传输错误");
               request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);

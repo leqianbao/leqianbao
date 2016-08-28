@@ -22,14 +22,14 @@ import cn.lc.dao.IntegralDao;
 import cn.lc.dao.IntegralRateDao;
 import cn.lc.utils.DataUtil;
 
-public class DoFetchCashMainServlet extends HttpServlet {
+public class DoWithdrawMainServlet extends HttpServlet {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3997911730040046561L;
 
-	public DoFetchCashMainServlet() {
+	public DoWithdrawMainServlet() {
 		super();
 	}
 
@@ -80,7 +80,7 @@ public class DoFetchCashMainServlet extends HttpServlet {
 			request.setAttribute("main_no", main_no);
 			request.setAttribute("user_id", user_id);
 			request.setAttribute("create_date", create_date);
-			request.getRequestDispatcher("/WEB-INF/tixian/maintixian.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/tixian/withdrawmain.jsp").forward(request, response);
 		} else if (tag.equals("handler")) {
 			String main_no = request.getParameter("main_no"); // 订单号
 			String user_id = request.getParameter("user_id");
@@ -98,7 +98,7 @@ public class DoFetchCashMainServlet extends HttpServlet {
 				String path = request.getContextPath();
 				String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 						+ path + "/";
-				response.sendRedirect(basePath + "/pt/doFetchCashMain?tag=query");
+				response.sendRedirect(basePath + "/pt/doWithdrawMain?tag=query");
 			} else {
 			}
 

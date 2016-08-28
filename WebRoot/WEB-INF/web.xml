@@ -205,8 +205,12 @@
 		<servlet-class>cn.lc.pt.servlet.DoFetchCashServlet</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>DoFetchCashMainServlet</servlet-name>
-		<servlet-class>cn.lc.pt.servlet.DoFetchCashMainServlet</servlet-class>
+		<servlet-name>DoWithdrawMainServlet</servlet-name>
+		<servlet-class>cn.lc.pt.servlet.DoWithdrawMainServlet</servlet-class>
+	</servlet>	
+	<servlet>
+		<servlet-name>DoWithdrawServlet</servlet-name>
+		<servlet-class>cn.lc.pt.servlet.DoWithdrawServlet</servlet-class>
 	</servlet>	
 	<servlet>
 		<servlet-name>DoCommodityServlet</servlet-name>
@@ -431,9 +435,13 @@
 		<url-pattern>/pt/doFetchCash</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>DoFetchCashMainServlet</servlet-name>
-		<url-pattern>/pt/doFetchCashMain</url-pattern>
+		<servlet-name>DoWithdrawMainServlet</servlet-name>
+		<url-pattern>/pt/doWithdrawMain</url-pattern>
 	</servlet-mapping>	
+	<servlet-mapping>
+		<servlet-name>DoWithdrawServlet</servlet-name>
+		<url-pattern>/pt/doWithdraw</url-pattern>
+	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>DoCommodityServlet</servlet-name>
 		<url-pattern>/pt/doCommodity</url-pattern>
