@@ -13,7 +13,7 @@ public class UserAddressDao {
 	public UserAddress getUserAddressById(long id){
 		// 存放查询参数
 		Connection connection = null;
-		StringBuilder sql = new StringBuilder("SELECT * FROM lc_user_address where id=?");
+		StringBuilder sql = new StringBuilder("SELECT * FROM lc_user_address where address_id=?");
 		UserAddress userAddress = null;
 		try {
 			connection = DBUtils.getConnection();

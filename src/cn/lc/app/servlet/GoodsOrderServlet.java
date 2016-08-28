@@ -90,7 +90,7 @@ public class GoodsOrderServlet extends HttpServlet{
     	userOrder.setOrder_no(DataUtil.generateOrderNo(Integer.parseInt(user_id)));
     	userOrder.setCommodity_num(Integer.parseInt(order_num));
     	userOrder.setCreate_date(new Timestamp(System.currentTimeMillis()));
-    	userOrder.setEnd_date(null);
+    	userOrder.setEnd_date(new Timestamp(System.currentTimeMillis()));
     	userOrder.setOrder_state("0");
     	userOrder.setLogistics_number("");
     	userOrder.setReceipt_address_id(Long.valueOf(addressId));

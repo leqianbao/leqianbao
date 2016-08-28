@@ -47,7 +47,7 @@ public class UserChildDao {
 		List<UserChildBean> users=new ArrayList<>();
 		try {
 			connection = DBUtils.getConnection();
-			String sql = "SELECT user_id,child_name,child_phone,child_id_card,child_bank_name,child_bank_account FROM lc_user_child WHERE user_id = ?";
+			String sql = "SELECT user_id,child_name,child_phone,child_id_card,child_bank_name,child_bank_account,child_balance FROM lc_user_child WHERE user_id = ?";
 			DBUtils.beginTx(connection);
 			users = qR.query(connection,sql,new BeanListHandler<UserChildBean>(UserChildBean.class),userId);
 		} catch (Exception e) {

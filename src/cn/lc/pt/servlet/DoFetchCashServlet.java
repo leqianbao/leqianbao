@@ -37,6 +37,7 @@ public class DoFetchCashServlet extends HttpServlet {
         String tag=request.getParameter("tag");
        
         if (tag.equals("query")) {
+        	String main_no = request.getParameter("main_no");//主账户订单号
             String fetch_num = request.getParameter("fetch_num"); //订单号
             String fetch_money = request.getParameter("fetch_money");
             String user_id = request.getParameter("user_id");
@@ -63,20 +64,22 @@ public class DoFetchCashServlet extends HttpServlet {
             if(null!=fetch_money&&!"".equals(fetch_money.trim())){
                 searchModel.setFetch_money(Double.parseDouble(fetch_money));
             }
+            searchModel.setMain_no(main_no);
             searchModel.setUser_id(user_id);
             searchModel.setHandle_tag(handle_tag);
             // 调用service 获取查询结果
             Pager<FetchCash> result = gd.findOutPager(searchModel, pageNum, pageSize);
             // 返回结果到页面
             request.setAttribute("result", result);
-            request.setAttribute("fetch_num", fetch_num);
             request.setAttribute("handle_tag", handle_tag);
             request.setAttribute("fetch_money", fetch_money);
-            request.setAttribute("user_id", user_id);
+            request.setAttribute("fetch_num", fetch_num);
+            request.setAttribute("main_no", main_no);
             request.getRequestDispatcher("/WEB-INF/tixian/listtixian.jsp").forward(request, response);
         } else if (tag.equals("handler")) {
-            
+        
           String fetch_id =  request.getParameter("fetch_id");
+          String main_no = request.getParameter("main_no");
           FetchCash fc = new FetchCash();
           fc.setFetch_id(Integer.parseInt(fetch_id));
           fc.setHandle_tag("1");
@@ -88,7 +91,7 @@ public class DoFetchCashServlet extends HttpServlet {
           if(gd.handler(fc)){
               String path = request.getContextPath();
               String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-              response.sendRedirect(basePath+"/pt/doFetchCash?tag=query");
+              response.sendRedirect(basePath+"/pt/doFetchCash?tag=query&main_no="+main_no);
           }else{
               request.setAttribute("errorMsg", "参数传输错误");
               request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);

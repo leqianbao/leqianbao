@@ -46,7 +46,8 @@ public class UserOrderDao {
 			paramList.add(userId);
 		}
 		if (!TextUtils.isEmpty(create_date)) {
-			sql.append(" and create_time like ? ");
+			sql.append(" and create_date like ? ");
+			countSql.append(" and create_date like ? ");
 			paramList.add("%" + create_date + "%");
 		}
 		if (!TextUtils.isEmpty(orderNo)) {

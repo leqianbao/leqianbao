@@ -26,6 +26,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="jsp/js/jquery-1.11.3.js"></script>
 	<script type="text/javascript" src="jsp/js/jquery.pagination.js"></script>
 	<script type="text/javascript" src="jsp/js/select-ui.min.js"></script>
+    <script type="text/javascript" src="jsp/js/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript">
 
 // 点击分页按钮以后触发的动作
@@ -71,21 +72,12 @@ $(document).ready(function(e) {
     <div class="rightinfo">
     
     <div class="querydiv">
-    <form action="<%=path %>/pt/doFetchCash"   id="stuForm"  method="post">
+    <form action="<%=path %>/pt/doFetchCashMain"   id="stuForm"  method="post">
 	<input type="hidden" name="tag" value="query" />
-	<input type="hidden" name="main_no" value="${main_no }" />
  	<ul class="seachform">
-    <li><label>流水号 </label><input name="fetch_num" type="text"  value="${fetch_num }" class="scinput" /></li>
-    <li><label>提现金额 </label><input name="fetch_money" type="text"  value="${fetch_money }" class="scinput" /></li>
-	<li><label>是否打款</label>  
-    <div class="vocation">
-    <select class="select3" name="handle_tag" >
-    <option value="${handle_tag}">请选择</option>
-    <option value="1" >已打款</option>
-    <option value="0" >未打款</option>
-    </select>
-    </div>
-    </li>
+    <li><label>主账户订单号 </label><input name="main_no" type="text"  value="${main_no }" class="scinput" /></li>
+    <li><label>用户ID</label><input name="user_id" type="text"  value="${user_id }" class="scinput" /></li>
+    <li><label>创建时间</label><input id="create_date" name="create_date" type="text"  value="${create_date }" readonly="readonly" class="scinput Wdate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"/></li>
  	<li><label>&nbsp;</label><input type="submit" class="scbtn" value="查询"/></li>
     </ul>
 </form>
@@ -102,15 +94,12 @@ $(document).ready(function(e) {
     	<tr>
        <!--  <th><input name="" type="checkbox" value="" checked="checked"/></th> -->
         <th>序号</th>
-        <th>流水号</th>
-        <th>是否打款</th>
+        <th>主账户订单号</th>
         <th>提现金额</th>
-        <th>到账卡号</th>
-        <th>开户行名称</th>
-        <th>提款时间</th>
-        <th>更新时间</th>
-        <th>状态</th>
-        <th>操作</th>
+        <th>用户id</th>
+        <th>创建时间</th>
+       	<th>确认提现</th>
+        <th>详情</th>
         </tr>
         </thead>
         <tbody>
@@ -122,30 +111,29 @@ $(document).ready(function(e) {
         		index = index + 1;
         	%>
 						<tr>
-							<td><%=index%></td>
-							<td><c:out value="${fetch.fetch_num }"></c:out></td>
-							<td>
-								<c:if test="${fetch.handle_tag eq 0}"><span class="red">未打款</span></c:if>
-								<c:if test="${fetch.handle_tag eq 1}"><span>已打款</span></c:if> 
-							</td>
-							<%-- <td><c:out value="${fetch.fetch_money }"/></td>--%>
-							 <td><fmt:formatNumber value="${fetch.fetch_money}" pattern="#,###.##" /></td> 
-							
-							<td><c:out value="${fetch.card_number }"></c:out></td>
-							<td><c:out value="${fetch.bank_name }"></c:out></td>
-							<td><fmt:formatDate value="${fetch.stamp_created}"  type="both" /></td>
-							<td><fmt:formatDate value="${fetch.stamp_updated}"  type="both" /></td>
-							<td><c:out value="${fetch.state }"></c:out></td>
+						<td><%=index%></td>
+							<td><c:out value="${fetch.main_no }"></c:out></td>
+							<td><c:out value="${fetch.fetch_money }"></c:out></td>
+							<td><c:out value="${fetch.user_id }"></c:out></td>
+							<td><c:out value="${fetch.create_date.toString().substring(0,19) }"></c:out></td>
 							<td><span>
-							<c:if test="${fetch.handle_tag eq 0 }">
-							 <c:url value="/pt/doFetchCash" var="handler">
+							<c:if test="${fetch.main_state eq 'B' }">
+							 <c:url value="/pt/doFetchCashMain" var="handler">
 							<c:param name="tag" value="handler"/>
-							<c:param name="fetch_id" value="${fetch.fetch_id }"/>
-							<c:param name="main_no" value="${main_no }"/>
+							<c:param name="main_no" value="${fetch.main_no}"/>
+							<c:param name="user_id" value="${fetch.user_id}"/>
+							
 							</c:url>
-							<a class="red" href="${handler}"  onclick="return confirm('确定已经打款了吗？')" title="打款">打款</a>
+							<a class="red" href="${handler}"  onclick="return confirm('确定已经提现么？')" title="提现">提现</a>
 							</c:if>
-							<c:if test="${fetch.handle_tag eq 1 }">已打款</c:if>
+							<c:if test="${fetch.main_state eq 'A' }">已提现</c:if>
+							</span></td>
+							<td><span>
+							<c:url value="/pt/doFetchCash" var="handler">
+							<c:param name="tag" value="query"/>
+							<c:param name="main_no" value="${fetch.main_no }"/>
+							</c:url>
+							<a class="red" href="${handler}">详情</a>
 							</span></td>
 						</tr>
 		</c:forEach>  

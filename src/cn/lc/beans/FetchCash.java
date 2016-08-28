@@ -19,8 +19,38 @@ public class FetchCash {
     private String updated_by;
     private Date stamp_updated;
     private String state;
+    private String main_no;
+    private String child_name;
+    private String child_phone;
+    private String child_id_card;
     
-    private User user;
+    
+    
+    public String getChild_name() {
+		return child_name;
+	}
+	public void setChild_name(String child_name) {
+		this.child_name = child_name;
+	}
+	public String getChild_phone() {
+		return child_phone;
+	}
+	public void setChild_phone(String child_phone) {
+		this.child_phone = child_phone;
+	}
+	public String getChild_id_card() {
+		return child_id_card;
+	}
+	public void setChild_id_card(String child_id_card) {
+		this.child_id_card = child_id_card;
+	}
+	public String getMain_no() {
+		return main_no;
+	}
+	public void setMain_no(String main_no) {
+		this.main_no = main_no;
+	}
+	private User user;
     
     public User getUser() {
         return user;

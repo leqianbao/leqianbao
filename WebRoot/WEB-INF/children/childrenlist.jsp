@@ -133,7 +133,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        <th>名称</th>
 		        <th>手机号</th>
 		        <th>身份证号</th>
-		        <th>银行名称</th>
+		        <th>开户行名称</th>
 		        <th>银行卡号</th>
 		        <th>账户余额</th>
 		        <th>操作</th>
