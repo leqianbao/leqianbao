@@ -38,7 +38,7 @@ public class DoIntegralListServlet extends HttpServlet{
 		String state = request.getParameter("record_state"); //状态：0：全部，1：收入，2：支出
 		String userPhone = request.getParameter("user_phone"); //用户手机号
 		String create_date = request.getParameter("create_date"); //创建时间
-		String pageNum = request.getParameter("page_num"); //页数
+		String pageNum = request.getParameter("pageNum"); //页数
 		
 		IntegralRecordDao integralDao=new IntegralRecordDao();
 		Pager<IntegralRecord> integralRecords=integralDao.getRecordList(userPhone, state, create_date, pageNum, 10);
@@ -51,6 +51,12 @@ public class DoIntegralListServlet extends HttpServlet{
 		
 	}
 	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
 
 	@Override
 	public void destroy() {

@@ -30,8 +30,8 @@
 	<script type="text/javascript" src="jsp/js/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript">
  function handlePaginationClick(new_page_index, pagination_container) {
-    $("#comForm").attr("action", "<%=path%>/pt/DoIntegralList?pageNum=" + (new_page_index+1));
-    $("#comForm").submit();
+    $("#stuForm").attr("action", "<%=path%>/pt/DoIntegralList?tag=query&pageNum=" + (new_page_index+1));
+    $("#stuForm").submit();
     return false; 
 }
 
@@ -67,7 +67,7 @@ $(function(){
 	</div>
 	<div class="rightinfo">
 		<div class="querydiv">
-			<form action="<%=path%>/pt/DoIntegralList" id="stuForm" method="get">
+			<form action="<%=path%>/pt/DoIntegralList" id="stuForm" method="post">
 				<input type="hidden" name="tag" value="query" />
 				<ul class="seachform">
 					<li>

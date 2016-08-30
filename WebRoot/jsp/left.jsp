@@ -267,7 +267,7 @@
 					<c:if test="${right=='AA'}">
 						<c:url value="/pt/doIntegral" var="userIntegralList">
 							<c:param name="tag" value="query" />
-							<c:param name="page_num" value="1" />
+							<c:param name="pageNum" value="1" />
 						</c:url>
 						<li><cite></cite><a href="${userIntegralList}"
 							target="rightFrame">查看用户积分</a><i></i></li>
@@ -276,7 +276,7 @@
 				<c:forEach items="${sessionScope.rightList}" var="right">
 					<c:if test="${right=='AA'}">
 						<c:url value="/pt/DoIntegralList" var="queryIntegralList">
-							<c:param name="page_num" value="1" />
+							<c:param name="pageNum" value="1" />
 							<c:param name="state" value="0" />
 						</c:url>
 						<li><cite></cite><a href="${queryIntegralList}"

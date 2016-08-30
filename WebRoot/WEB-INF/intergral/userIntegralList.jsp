@@ -35,8 +35,8 @@
 	</style>
 	<script type="text/javascript">
  	function handlePaginationClick(new_page_index, pagination_container) {
-	    $("#comForm").attr("action", "<%=path%>/pt/DoIntegralList?pageNum=" + (new_page_index+1));
-	    $("#comForm").submit();
+	    $("#stuForm").attr("action", "<%=path%>/pt/doIntegral?tag=query&pageNum=" + (new_page_index+1));
+	    $("#stuForm").submit();
 	    return false; 
 	}
 
@@ -101,7 +101,7 @@
 	</div>
 	<div class="rightinfo">
 		<div class="querydiv">
-			<form action="<%=path%>/pt/doIntegral" id="stuForm" method="get">
+			<form action="<%=path%>/pt/doIntegral" id="stuForm" method="post">
 				<input type="hidden" name="tag" value="query" />
 				<ul class="seachform">
 					<li>
@@ -143,6 +143,7 @@
 								<span>
 									<c:url value="/pt/DoIntegralList" var="query">
 										<c:param name="tag" value="query"/>
+										<c:param name="pageNum" value="1"/>
 										<c:param name="user_phone" value="${userIntegral.user_phone}"/>
 									</c:url>
 									<a href="${query}">查看明细</a>
